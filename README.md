@@ -1,5 +1,5 @@
 # Olyxee Cortex (Enterprise Cognition Infrastructure)
-![Uploading d56fffcc-252e-4c45-a493-285f64b26693.png…]()
+<img width="1536" height="1024" alt="system design" src="https://github.com/user-attachments/assets/988d3efa-fbd1-47a0-b3b4-683edd3b92e4" />
 
 Olyxee Cortex is a persistent organizational cognition system designed to give enterprise AI systems operational understanding, memory, coordination, and reasoning across long-running workflows.
 
