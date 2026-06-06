@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.api.routes import memory as memory_router
 from contextlib import asynccontextmanager
-from app.core.config import get_settings
+from app.core.config import settings
 from app.core.database import create_db_and_tables
 from app.models import entities, relationships, ingestion, workflows, agents, verification
 from app.models.workflow_state import WorkflowState
@@ -15,8 +15,8 @@ from app.api.routes import (
     verification as verification_router,
     dashboard as dashboard_router,
     workflow_agent as workflow_agent_router,
+    verification_engine as verification_engine_router,
 )
-settings = get_settings()
 
 
 @asynccontextmanager
@@ -41,6 +41,7 @@ app.include_router(agents_router.router)
 app.include_router(verification_router.router)
 app.include_router(dashboard_router.router)
 app.include_router(workflow_agent_router.router)
+app.include_router(verification_engine_router.router)
 app.include_router(memory_router.router)
 
 @app.get("/")
