@@ -41,3 +41,53 @@ def update_event_status(event_id: int, status: IngestionStatus, session: Session
     session.commit()
     session.refresh(event)
     return event
+from pydantic import BaseModel as PydanticBaseModel
+from fastapi import HTTPException
+
+
+class DirectIngestRequest(PydanticBaseModel):
+    source: str
+    raw_content: str
+
+
+@router.post("/ingest")
+async def ingest_and_process(
+    request: DirectIngestRequest, session: Session = Depends(get_session)
+):
+    from app.models.ingestion import IngestionEvent
+    from app.agents.ingestion_agent import process_ingestion_event
+    event = IngestionEvent(
+        source=request.source,
+        event_type="direct_ingest",
+        raw_content=request.raw_content,
+        status="pending"
+    )
+    session.add(event)
+    session.commit()
+    session.refresh(event)
+    return await process_ingestion_event(event.id, session)
+
+
+@router.post("/events/{event_id}/process")
+async def process_existing_event(
+    event_id: int, session: Session = Depends(get_session)
+):
+    from app.agents.ingestion_agent import process_ingestion_event
+    result = await process_ingestion_event(event_id, session)
+    if result.get("status") == "failed":
+        raise HTTPException(status_code=422, detail=result)
+    return result
+
+
+@router.get("/workflow-states")
+def list_workflow_states(session: Session = Depends(get_session)):
+    from app.models.workflow_state import WorkflowState
+    from sqlmodel import select
+    return session.exec(select(WorkflowState)).all()
+
+
+@router.get("/decisions")
+def list_enterprise_decisions(session: Session = Depends(get_session)):
+    from app.models.enterprise_decision import EnterpriseDecision
+    from sqlmodel import select
+    return session.exec(select(EnterpriseDecision)).all()
