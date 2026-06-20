@@ -1,0 +1,89 @@
+/**
+ * src/models/validation.model.js
+ *
+ * Tracks validation results for every extracted claim.
+ * Orgni does not just extract — it verifies each finding
+ * against the source before adding it to the knowledge map.
+ *
+ * Validation states:
+ *   verified   — claim is supported by source text
+ *   uncertain  — claim is plausible but not explicitly stated
+ *   rejected   — claim contradicts or is not supported by source
+ *   needs_review — confidence is below threshold, human should check
+ */
+
+const { v4: uuidv4 } = require('uuid');
+const db = require('../db');
+
+const C = 'validations';
+
+const CONFIDENCE_THRESHOLD = parseFloat(process.env.CONFIDENCE_THRESHOLD || '0.75');
+
+async function create(data) {
+  const status = deriveStatus(data.confidence, data.supported);
+  const record = {
+    id: uuidv4(),
+    orgId: data.orgId,
+    mapId: data.mapId,
+    insightType: data.insightType,     // workflow | role | rule | risk | gap | opportunity
+    claim: data.claim,                 // the extracted statement
+    sourceDocumentId: data.sourceDocumentId || null,
+    sourceDocumentName: data.sourceDocumentName || null,
+    sourceExcerpt: data.sourceExcerpt || null,  // exact text that supports the claim
+    confidence: data.confidence || 0,
+    supported: data.supported || false,         // is it directly in the source?
+    status,
+    reason: data.reason || '',
+    reviewedBy: null,                           // set when a human confirms
+    reviewedAt: null,
+    createdAt: new Date().toISOString()
+  };
+  return db.insert(C, record);
+}
+
+function deriveStatus(confidence, supported) {
+  if (!supported) return 'rejected';
+  if (confidence >= CONFIDENCE_THRESHOLD) return 'verified';
+  if (confidence >= 0.5) return 'uncertain';
+  return 'needs_review';
+}
+
+async function findByMap(mapId)      { return db.findMany(C, { mapId }); }
+async function findByOrg(orgId)      { return db.findMany(C, { orgId }); }
+async function findNeedsReview(orgId) {
+  const all = await findByOrg(orgId);
+  return all.filter(v => v.status === 'needs_review' || v.status === 'uncertain');
+}
+
+async function humanConfirm(id, reviewedBy) {
+  return db.update(C, id, {
+    status: 'verified',
+    reviewedBy,
+    reviewedAt: new Date().toISOString()
+  });
+}
+
+async function humanReject(id, reviewedBy, reason) {
+  return db.update(C, id, {
+    status: 'rejected',
+    reviewedBy,
+    reviewedAt: new Date().toISOString(),
+    reason
+  });
+}
+
+async function getStats(orgId) {
+  const all = await findByOrg(orgId);
+  return {
+    total: all.length,
+    verified: all.filter(v => v.status === 'verified').length,
+    uncertain: all.filter(v => v.status === 'uncertain').length,
+    rejected: all.filter(v => v.status === 'rejected').length,
+    needsReview: all.filter(v => v.status === 'needs_review').length,
+    averageConfidence: all.length
+      ? Math.round((all.reduce((s, v) => s + v.confidence, 0) / all.length) * 100) / 100
+      : 0
+  };
+}
+
+module.exports = { create, findByMap, findByOrg, findNeedsReview, humanConfirm, humanReject, getStats };

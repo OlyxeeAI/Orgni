@@ -1,0 +1,5 @@
+{
+  "businessId": "demo-logistics-001",
+  "name": "Rapid Freight Solutions",
+  "description": "We are a small logistics company. Admin receives invoices by email. The finance assistant checks invoice details against delivery records. Payments over R5,000 require manager approval. Any supplier invoice without a matching delivery record must be flagged. Month-end reconciliation is done manually using bank statements and spreadsheets. The finance manager signs off on all reconciliation reports. Supplier disputes are escalated to the operations manager. We have no formal dispute resolution workflow documented."
+}

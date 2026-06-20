@@ -1,280 +1,272 @@
-# Olyxee Cortex (Enterprise Cognition Infrastructure)
-<img width="1536" height="1024" alt="system design" src="https://github.com/user-attachments/assets/988d3efa-fbd1-47a0-b3b4-683edd3b92e4" />
+# Orgni Engine — Backend
 
-Olyxee Cortex is a persistent organizational cognition system designed to give enterprise AI systems operational understanding, memory, coordination, and reasoning across long-running workflows.
-
-Unlike traditional AI systems that only retrieve information, Cortex is designed to help AI systems develop continuously evolving understanding of:
-
-* organizational workflows
-* operational context
-* decision history
-* business processes
-* institutional memory
-* enterprise reasoning patterns
-
-Cortex acts as the cognition layer between enterprise systems, AI agents, operational workflows, and organizational knowledge.
+> The core intelligence layer of Orgni by Olyxee.
+> Understands how a business operates. Stores that understanding. Powers Orgni products.
 
 ---
 
-# The Problem
+## What it is
 
-Modern AI systems are intelligent, but operationally fragmented.
+Orgni Engine is not a chatbot, not a workflow tool, not accounting software.
 
-Today’s enterprise AI stacks typically rely on:
+It is the system that reads business information — documents, descriptions, rules, roles, workflows — extracts the structure, validates every finding against its source, and stores a persistent knowledge map of how the business operates.
 
-* RAG pipelines
-* vector databases
-* isolated AI agents
-* disconnected workflows
-* stateless interactions
-
-This creates major operational problems:
-
-* context loss
-* fragmented organizational memory
-* repeated decision-making
-* workflow inconsistency
-* long-horizon task failure
-* unreliable agent coordination
-* operational drift
-* poor institutional knowledge retention
-
-Current AI systems can retrieve information.
-
-They cannot maintain persistent organizational understanding over time.
+Other products (Orgni Workflow, Orgni Finance) plug into this engine and get exactly the context they need.
 
 ---
 
-# What Cortex Does
+## Architecture
 
-Cortex enables enterprise AI systems to:
-
-* maintain persistent operational memory
-* understand organizational workflows
-* reason across long-running tasks
-* coordinate multiple AI agents
-* track decision history
-* preserve institutional knowledge
-* detect operational inconsistencies
-* maintain contextual continuity across systems
-
-The system continuously builds an evolving operational model of the organization.
-
----
-
-# Core Capabilities
-
-## Organizational Memory Graphs
-
-Maintain structured memory of:
-
-* teams
-* workflows
-* systems
-* documents
-* approvals
-* decisions
-* operational relationships
-
-## Procedural Memory
-
-Track:
-
-* long-running workflows
-* execution history
-* task dependencies
-* escalation chains
-* operational states
-
-## Multi-Agent Coordination
-
-Coordinate AI systems across:
-
-* workflows
-* departments
-* tools
-* enterprise systems
-
-## Runtime Verification
-
-Validate:
-
-* workflow consistency
-* execution integrity
-* operational correctness
-* policy compliance
-
-## Operational Intelligence
-
-Learn:
-
-* recurring workflow patterns
-* bottlenecks
-* approval behaviors
-* organizational processes
-* operational exceptions
-
-## Temporal Reasoning
-
-Reason across:
-
-* historical workflows
-* evolving organizational states
-* long-horizon operations
-* future execution implications
-
----
-
-# System Architecture
-
-```text id="d9sq4u"
-Enterprise Systems
-- CRM
-- ERP
-- Databases
-- Emails
-- Documents
-- APIs
-
-        ↓
-
-Cortex Ingestion Layer
-- Event ingestion
-- Workflow ingestion
-- Context extraction
-
-        ↓
-
-Organizational Memory Graph
-- Entities
-- Relationships
-- Decisions
-- Temporal states
-
-        ↓
-
-Cognition Engine
-- Operational reasoning
-- Procedural memory
-- Context synthesis
-- Multi-agent coordination
-
-        ↓
-
-Verification Layer
-- Runtime validation
-- Integrity checking
-- Policy enforcement
-- Drift detection
-
-        ↓
-
-Execution & Intelligence APIs
-- AI agents
-- Enterprise applications
-- Workflow systems
+```
+Business Input (docs / text / profiles)
+              ↓
+        INTAKE LAYER
+   (parser → corpus builder)
+              ↓
+      EXTRACTION LAYER
+  ┌──────────────────────────────┐
+  │ workflow  role  rule  risk   │  ← parallel extractors
+  │ opportunity  summary         │
+  └──────────────────────────────┘
+              ↓
+     VALIDATION LAYER
+  (confidence score + source check)
+              ↓
+      KNOWLEDGE MAP
+  (versioned, persistent, mergeable)
+              ↓
+        ENGINE SDK
+  ┌─────────────┬──────────────┐
+  │   Workflow  │   Finance    │  ← domain-scoped context
+  └─────────────┴──────────────┘
 ```
 
 ---
 
-# Example Workflow
+## Quick start
 
-```text id="8x4s0j"
-Vendor onboarding begins
-        ↓
-Cortex retrieves historical onboarding context
-        ↓
-System identifies missing compliance documents
-        ↓
-AI agent requests required information
-        ↓
-Cortex detects operational risk pattern
-        ↓
-Runtime verification validates workflow integrity
-        ↓
-Approval routing initiated
-        ↓
-Organizational memory updated
+```bash
+git clone / unzip orgni-engine
+cd orgni
+npm install
+cp .env.example .env
+# Add your AI key to .env
+npm start
+npm test
 ```
 
 ---
 
-# Research Foundations
+## Swapping the database
 
-Cortex is inspired by emerging research in:
+Open `src/db/index.js`. Change one line:
 
-* long-horizon AI systems
-* persistent memory architectures
-* enterprise cognition systems
-* runtime verification
-* organizational intelligence
-* temporal reasoning
-* multi-agent coordination
-* AI operational infrastructure
+```js
+// Current (prototype):
+const LowdbAdapter = require('./adapters/lowdb.adapter');
+module.exports = new LowdbAdapter();
 
-Research influences include:
+// Production (PostgreSQL):
+const PostgresAdapter = require('./adapters/postgres.adapter');
+module.exports = new PostgresAdapter();
+```
 
-* Microsoft Research
-* DeepMind
-* Anthropic
-* Stanford
-* MemGPT / Letta
-* Agent runtime verification systems
-* Enterprise ontology research
+Set `DATABASE_URL` in `.env`. Nothing else changes.
 
 ---
 
-# Key Principles
+## Swapping the AI provider
 
-* Persistent organizational cognition
-* Enterprise operational understanding
-* Runtime reliability
-* Memory continuity
-* Human-AI coordination
-* Verification-first execution
-* Explainable operational reasoning
-* Long-horizon workflow awareness
+In `.env`:
 
----
+```env
+# Anthropic (default)
+AI_PROVIDER=anthropic
+AI_MODEL=claude-sonnet-4-6
+AI_API_KEY=sk-ant-...
+AI_BASE_URL=https://api.anthropic.com
 
-# Vision
+# Grok (production)
+AI_PROVIDER=grok
+AI_MODEL=grok-3
+AI_API_KEY=xai-...
+AI_BASE_URL=https://api.x.ai
 
-Cortex is being built as the cognition infrastructure layer for enterprise AI systems.
-
-The goal is to move enterprise AI beyond:
-
-* retrieval,
-* isolated chat systems,
-* stateless agents,
-
-toward:
-
-* persistent organizational intelligence,
-* operational reasoning,
-* coordinated AI systems,
-* enterprise cognition infrastructure.
+# OpenAI
+AI_PROVIDER=openai
+AI_MODEL=gpt-4o
+AI_API_KEY=sk-...
+AI_BASE_URL=https://api.openai.com
+```
 
 ---
 
-# Current Focus Areas
+## API Reference
 
-* Organizational memory systems
-* Runtime verification
-* Multi-agent coordination
-* Procedural memory
-* Operational intelligence graphs
-* Long-horizon workflow reasoning
-* Enterprise cognition infrastructure
+### Organisation
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/orgs` | Create organisation |
+| GET | `/api/orgs` | List all organisations |
+| GET | `/api/orgs/:id` | Get organisation |
+| PATCH | `/api/orgs/:id` | Update profile |
+| DELETE | `/api/orgs/:id` | Delete organisation |
+| GET | `/api/orgs/:id/dashboard` | Full dashboard |
+| GET | `/api/orgs/:id/activity` | Activity log |
+
+### Documents
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/orgs/:id/documents` | Upload files (multipart, up to 10) |
+| GET | `/api/orgs/:id/documents` | List documents |
+| GET | `/api/orgs/:id/documents/:docId` | Get document with content |
+| DELETE | `/api/orgs/:id/documents/:docId` | Delete document |
+
+Supported: `.txt` `.md` `.csv` `.json` `.pdf` `.docx` (up to 10MB each)
+
+### Engine
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/orgs/:id/engine/intake` | Run full intelligence intake |
+| GET | `/api/orgs/:id/engine/context` | Full business context |
+| GET | `/api/orgs/:id/engine/context/workflow` | Context for Orgni Workflow |
+| GET | `/api/orgs/:id/engine/context/finance` | Context for Orgni Finance |
+| GET | `/api/orgs/:id/engine/history` | Knowledge map version history |
+| POST | `/api/orgs/:id/engine/ask` | Ask grounded question |
+| GET | `/api/orgs/:id/engine/validation` | Validation stats + items needing review |
+| POST | `/api/orgs/:id/engine/validation/:vid/confirm` | Human confirms a finding |
+| POST | `/api/orgs/:id/engine/validation/:vid/reject` | Human rejects a finding |
+| GET | `/api/orgs/:id/engine/insights` | All extracted insights (filter by ?type=) |
+| POST | `/api/orgs/:id/engine/actions` | Run an AI action |
+
+**Action types:** `task_list` `draft_message` `workflow_summary` `flag_missing` `next_step`
 
 ---
 
-# Status
+## How to use the SDK (for Orgni products)
 
-Current Stage:
-Research & Active Development
+```js
+const OrgniEngine = require('./src/sdk/engine.sdk');
 
-Built by:
-Olyxee (Pty) Ltd
+// Run intake after documents are uploaded
+await OrgniEngine.intake(orgId, documents);
 
-Website:
-https://olyxee.com
+// Orgni Workflow gets its context
+const ctx = await OrgniEngine.forWorkflow(orgId);
+// ctx.workflows, ctx.roles, ctx.dependencies, ctx.blueprint
+
+// Orgni Finance gets its context
+const ctx = await OrgniEngine.forFinance(orgId);
+// ctx.rules, ctx.approvals, ctx.exceptions, ctx.risks
+
+// Ask a grounded question
+const result = await OrgniEngine.ask(orgId, 'Who approves payments above R50,000?', docs);
+// result.answer, result.grounded, result.sources
+
+// Get validation status
+const stats = await OrgniEngine.getValidationStats(orgId);
+// stats.verified, stats.needsReview, stats.averageConfidence
+```
+
+---
+
+## How memory works
+
+Every document upload triggers:
+1. Parse → extract text
+2. If no knowledge map exists → full intake on next `/engine/intake` call
+3. If knowledge map exists → incremental update (merges new findings, preserves existing)
+
+Knowledge maps are versioned. Every change creates a new version. Old versions are archived, never deleted.
+
+---
+
+## How validation works
+
+Every extracted finding gets a validation record:
+
+- **verified** — directly supported by source text (confidence ≥ 0.75)
+- **uncertain** — plausible but not explicit (confidence 0.5–0.75)
+- **needs_review** — low confidence, human should check
+- **rejected** — contradicts or not supported by source
+
+Humans can confirm or reject any finding via the API. Confirmed findings carry higher weight in future extractions.
+
+---
+
+## Project structure
+
+```
+src/
+  db/
+    index.js                 ← swap DB here (one line)
+    repository.interface.js  ← contract all adapters implement
+    adapters/
+      lowdb.adapter.js       ← current (JSON file)
+      postgres.adapter.js    ← ready to implement
+    logger.js
+  engine/
+    orgni.engine.js          ← core intelligence coordinator
+    extractors/
+      workflow.extractor.js
+      role.extractor.js
+      rule.extractor.js
+      risk.extractor.js
+      opportunity.extractor.js
+  sdk/
+    engine.sdk.js            ← public interface for other products
+  models/
+    organization.model.js
+    document.model.js
+    knowledgeMap.model.js    ← persistent business memory
+    insight.model.js         ← individual traceable findings
+    validation.model.js      ← confidence + source verification
+    conversation.model.js
+    activity.model.js
+  controllers/
+    organization.controller.js
+    document.controller.js
+    engine.controller.js
+    intelligence.controller.js
+  middleware/
+    orgResolver.js           ← org isolation on every route
+    errorHandler.js
+    requestLogger.js
+  validators/
+    index.js
+  services/
+    ai.service.js            ← provider-agnostic AI interface
+    parser.service.js        ← file text extraction
+    analysis.service.js      ← AI action generation
+  routes/
+    index.js
+  tests/
+    orgni.test.js            ← 25 tests
+```
+
+---
+
+## Environment variables
+
+```env
+PORT=3000
+NODE_ENV=development
+
+# AI — swap provider here
+AI_PROVIDER=anthropic
+AI_MODEL=claude-sonnet-4-6
+AI_API_KEY=your_key_here
+AI_BASE_URL=https://api.anthropic.com
+
+# Storage
+DB_PATH=./data/db.json
+UPLOAD_DIR=./uploads
+LOG_DIR=./logs
+LOG_LEVEL=info
+
+# Validation
+CONFIDENCE_THRESHOLD=0.75
+```

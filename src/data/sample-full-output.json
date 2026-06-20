@@ -1,0 +1,465 @@
+{
+  "meta": {
+    "businessId": "demo-logistics-001",
+    "businessName": "Rapid Freight Solutions",
+    "createdAt": "2026-06-14T08:00:00.000Z",
+    "status": "blueprint_ready"
+  },
+  "orgMap": {
+    "businessId": "demo-logistics-001",
+    "business_type": "Logistics / Freight Company",
+    "business_name": "Rapid Freight Solutions",
+    "departments": ["Administration", "Finance", "Operations", "Management"],
+    "roles": [
+      {
+        "role": "Admin",
+        "department": "Administration",
+        "responsibilities": [
+          "Receive supplier invoices via email",
+          "Route invoices to Finance Assistant",
+          "Manage incoming supplier correspondence"
+        ],
+        "approval_authority": []
+      },
+      {
+        "role": "Finance Assistant",
+        "department": "Finance",
+        "responsibilities": [
+          "Review invoice details (supplier, amount, date, line items)",
+          "Match invoices against delivery records",
+          "Flag exceptions and missing delivery records",
+          "Prepare month-end bank reconciliation",
+          "Submit approved invoices for payment scheduling"
+        ],
+        "approval_authority": ["Payments under R5,000"]
+      },
+      {
+        "role": "Finance Manager",
+        "department": "Finance",
+        "responsibilities": [
+          "Approve payments between R5,000 and R50,000",
+          "Review and sign off reconciliation reports",
+          "Investigate unrecognised suppliers",
+          "Review unmatched reconciliation items"
+        ],
+        "approval_authority": ["Payments R5,000–R50,000", "Reconciliation sign-off"]
+      },
+      {
+        "role": "Operations Manager",
+        "department": "Operations",
+        "responsibilities": [
+          "Handle supplier disputes",
+          "Review purchase order mismatches"
+        ],
+        "approval_authority": []
+      },
+      {
+        "role": "Director",
+        "department": "Management",
+        "responsibilities": [
+          "Approve payments above R50,000",
+          "Approve all international payments",
+          "Review reconciliation discrepancies above R10,000"
+        ],
+        "approval_authority": ["Payments above R50,000", "All international payments"]
+      }
+    ],
+    "systems": ["Email", "Spreadsheets (Excel)", "Bank statements", "Delivery records log"],
+    "documents": [
+      "Supplier invoices",
+      "Delivery records",
+      "Bank statements",
+      "General ledger",
+      "Reconciliation reports",
+      "Purchase orders"
+    ],
+    "decision_points": [
+      "Invoice amount threshold check (R5,000 / R50,000)",
+      "Delivery record matching",
+      "Exception classification",
+      "Reconciliation discrepancy review",
+      "Supplier verification"
+    ],
+    "confidence": 0.89,
+    "confidence_reason": "Roles, approval thresholds, and document types were explicitly described. Director role inferred from payment hierarchy.",
+    "extractedAt": "2026-06-14T08:01:00.000Z"
+  },
+  "workflows": {
+    "workflows": [
+      {
+        "workflow_name": "Invoice Approval",
+        "trigger": "New supplier invoice received via email by Admin",
+        "steps": [
+          "Admin receives invoice email and forwards to Finance Assistant",
+          "Finance Assistant extracts invoice details (supplier, amount, date, line items)",
+          "Finance Assistant searches delivery records log for matching delivery",
+          "If no delivery record found: flag invoice, notify supplier, hold payment",
+          "If delivery record found: verify amount matches purchase order",
+          "If amount mismatch: hold and escalate to Operations Manager",
+          "If amount matches and invoice < R5,000: Finance Assistant approves",
+          "If invoice R5,000–R50,000: submit to Finance Manager for approval",
+          "If invoice > R50,000 or international: submit to Director for approval",
+          "Approved invoice added to payment schedule"
+        ],
+        "required_roles": ["Admin", "Finance Assistant", "Finance Manager", "Director", "Operations Manager"],
+        "required_documents": ["Supplier invoice", "Delivery record", "Purchase order"],
+        "approval_rules": [
+          {
+            "condition": "invoice_amount < 5000 AND delivery_record_found = true",
+            "required_approval": "Finance Assistant",
+            "threshold": "R5,000"
+          },
+          {
+            "condition": "invoice_amount >= 5000 AND invoice_amount <= 50000",
+            "required_approval": "Finance Manager",
+            "threshold": "R5,000–R50,000"
+          },
+          {
+            "condition": "invoice_amount > 50000 OR is_international = true",
+            "required_approval": "Director",
+            "threshold": "R50,000+"
+          },
+          {
+            "condition": "delivery_record_found = false",
+            "required_approval": "N/A — payment blocked",
+            "threshold": "Any amount"
+          }
+        ],
+        "confidence": 0.93,
+        "confidence_reason": "Workflow steps, roles, and thresholds were explicitly described in detail",
+        "missing_information": ["Who notifies the supplier of missing delivery record?", "What is the SLA for supplier response on disputes?"]
+      },
+      {
+        "workflow_name": "Month-End Bank Reconciliation",
+        "trigger": "End of month",
+        "steps": [
+          "Finance Assistant downloads bank statement",
+          "Finance Assistant opens general ledger in Excel",
+          "Finance Assistant manually matches bank transactions to ledger entries",
+          "Unmatched items listed as exceptions",
+          "Exceptions reviewed by Finance Manager",
+          "Discrepancies above R10,000 escalated to Director",
+          "Finance Manager signs off reconciliation report",
+          "Report filed"
+        ],
+        "required_roles": ["Finance Assistant", "Finance Manager", "Director"],
+        "required_documents": ["Bank statement", "General ledger", "Reconciliation report"],
+        "approval_rules": [
+          {
+            "condition": "reconciliation_discrepancy > 10000",
+            "required_approval": "Director",
+            "threshold": "R10,000"
+          }
+        ],
+        "confidence": 0.85,
+        "confidence_reason": "Process steps described but timing and SLA not specified",
+        "missing_information": ["How long does reconciliation typically take?", "Is there a formal sign-off document or just verbal approval?", "What happens to unresolved discrepancies?"]
+      },
+      {
+        "workflow_name": "Supplier Exception Handling",
+        "trigger": "Invoice exception detected during approval workflow",
+        "steps": [
+          "Exception type identified (missing record, duplicate, amount mismatch, unknown supplier)",
+          "Finance Assistant logs exception",
+          "For missing delivery record: notify supplier and hold payment",
+          "For duplicate invoice: reject and notify supplier",
+          "For amount mismatch: escalate to Operations Manager with PO reference",
+          "For unrecognised supplier: escalate to Finance Manager for verification",
+          "Resolution documented",
+          "Invoice either approved, rejected, or held pending resolution"
+        ],
+        "required_roles": ["Finance Assistant", "Finance Manager", "Operations Manager"],
+        "required_documents": ["Invoice", "Delivery record", "Purchase order"],
+        "approval_rules": [],
+        "confidence": 0.79,
+        "confidence_reason": "Exception types listed but resolution steps are partially implied, not fully defined",
+        "missing_information": [
+          "What is the escalation SLA for each exception type?",
+          "Who has authority to reject a supplier permanently?",
+          "Is there a dispute log or tracking system?"
+        ]
+      }
+    ]
+  },
+  "governance": {
+    "rules": [
+      {
+        "rule_name": "Low-value payment authority",
+        "condition": "payment_amount < 5000 AND delivery_verified = true",
+        "action": "finance_assistant_approves",
+        "risk_level": "low",
+        "department": "Finance",
+        "confidence": 0.95,
+        "confidence_reason": "Explicitly stated",
+        "source": "Payments under R5,000: Finance Assistant can approve"
+      },
+      {
+        "rule_name": "Mid-value payment approval",
+        "condition": "payment_amount >= 5000 AND payment_amount <= 50000",
+        "action": "require_finance_manager_approval",
+        "risk_level": "medium",
+        "department": "Finance",
+        "confidence": 0.97,
+        "confidence_reason": "Explicitly stated with clear threshold",
+        "source": "Payments R5,000 to R50,000: Finance Manager approval required"
+      },
+      {
+        "rule_name": "High-value payment approval",
+        "condition": "payment_amount > 50000",
+        "action": "require_director_signoff",
+        "risk_level": "high",
+        "department": "Finance",
+        "confidence": 0.97,
+        "confidence_reason": "Explicitly stated",
+        "source": "Payments above R50,000: Director sign-off required"
+      },
+      {
+        "rule_name": "International payment rule",
+        "condition": "is_international_payment = true",
+        "action": "require_director_signoff",
+        "risk_level": "high",
+        "department": "Finance",
+        "confidence": 0.95,
+        "confidence_reason": "Explicitly stated",
+        "source": "All international payments: Director sign-off required regardless of amount"
+      },
+      {
+        "rule_name": "Missing delivery record — payment block",
+        "condition": "invoice_has_no_matching_delivery_record = true",
+        "action": "flag_exception_and_hold_payment",
+        "risk_level": "high",
+        "department": "Finance",
+        "confidence": 0.94,
+        "confidence_reason": "Explicitly stated",
+        "source": "Any supplier invoice without a matching delivery record must be flagged"
+      },
+      {
+        "rule_name": "Large reconciliation discrepancy escalation",
+        "condition": "reconciliation_discrepancy > 10000",
+        "action": "escalate_to_director",
+        "risk_level": "high",
+        "department": "Finance",
+        "confidence": 0.91,
+        "confidence_reason": "Explicitly stated",
+        "source": "Any discrepancies above R10,000 are escalated to Director"
+      },
+      {
+        "rule_name": "Duplicate invoice rejection",
+        "condition": "invoice_is_duplicate = true",
+        "action": "reject_and_notify_supplier",
+        "risk_level": "medium",
+        "department": "Finance",
+        "confidence": 0.88,
+        "confidence_reason": "Explicitly listed as exception type",
+        "source": "Duplicate invoice: Reject and notify supplier"
+      }
+    ]
+  },
+  "risks": {
+    "risks": [
+      {
+        "risk": "Invoices may be paid without delivery verification due to manual matching",
+        "severity": "high",
+        "reason": "The delivery matching step is entirely manual. Human error could cause payments to be made for goods never received.",
+        "affected_workflow": "Invoice Approval",
+        "recommendation": "Implement automated invoice-to-delivery-record matching before human review"
+      },
+      {
+        "risk": "Single point of failure in Finance Assistant role",
+        "severity": "high",
+        "reason": "The Finance Assistant is the only person performing invoice checks, matching, and reconciliation. No documented backup or cover process.",
+        "affected_workflow": "Invoice Approval, Month-End Bank Reconciliation",
+        "recommendation": "Document a cover process and cross-train at least one other team member"
+      },
+      {
+        "risk": "Month-end reconciliation is entirely manual and time-consuming",
+        "severity": "medium",
+        "reason": "Manual Excel matching for entire month's transactions creates risk of errors and takes excessive time (company notes: last week of the month).",
+        "affected_workflow": "Month-End Bank Reconciliation",
+        "recommendation": "Adopt bank reconciliation software or automate transaction matching"
+      },
+      {
+        "risk": "No audit trail for exception handling",
+        "severity": "medium",
+        "reason": "No mention of a tracking system or log for exceptions. Disputed invoices may be lost or mismanaged.",
+        "affected_workflow": "Supplier Exception Handling",
+        "recommendation": "Implement an exception register with status tracking"
+      }
+    ],
+    "gaps": [
+      {
+        "gap": "No formal supplier dispute resolution workflow",
+        "type": "process",
+        "recommendation": "Define a step-by-step dispute workflow with SLAs, escalation paths, and resolution criteria",
+        "affected_workflow": "Supplier Exception Handling"
+      },
+      {
+        "gap": "No SLA defined for invoice processing",
+        "type": "documentation",
+        "recommendation": "Set and document target turnaround times for invoice approval (e.g. 48 hours for standard invoices)",
+        "affected_workflow": "Invoice Approval"
+      },
+      {
+        "gap": "No system of record for invoices — email is primary storage",
+        "type": "system",
+        "recommendation": "Implement an invoice management system or accounts payable software",
+        "affected_workflow": "Invoice Approval, Supplier Exception Handling"
+      }
+    ],
+    "overall_risk_score": 0.72,
+    "overall_risk_reason": "High reliance on manual processes with no system controls creates significant operational and financial risk"
+  },
+  "blueprint": {
+    "businessId": "demo-logistics-001",
+    "generatedAt": "2026-06-14T08:05:00.000Z",
+    "blueprints": [
+      {
+        "workflow": "Invoice Approval",
+        "description": "AI-assisted invoice processing from receipt to payment recommendation",
+        "ai_actions": [
+          {
+            "action": "extract_invoice_data",
+            "description": "Parse invoice PDF/image and extract supplier, amount, date, line items",
+            "allowed": true,
+            "requires_human_approval": false,
+            "risk_level": "low",
+            "reason": "Data extraction only — no financial action taken"
+          },
+          {
+            "action": "match_invoice_to_delivery_record",
+            "description": "Search delivery records and return match/no-match with confidence score",
+            "allowed": true,
+            "requires_human_approval": false,
+            "risk_level": "medium",
+            "reason": "AI can perform matching but human should verify low-confidence matches"
+          },
+          {
+            "action": "check_invoice_amount_threshold",
+            "description": "Evaluate invoice amount against approval thresholds and route accordingly",
+            "allowed": true,
+            "requires_human_approval": false,
+            "risk_level": "low",
+            "reason": "Rule-based routing — deterministic, no judgment required"
+          },
+          {
+            "action": "flag_missing_delivery_record",
+            "description": "Raise exception flag and draft supplier notification",
+            "allowed": true,
+            "requires_human_approval": true,
+            "risk_level": "high",
+            "reason": "Exception classification should be reviewed before supplier contact"
+          },
+          {
+            "action": "draft_payment_recommendation",
+            "description": "Prepare structured payment recommendation with supporting evidence",
+            "allowed": true,
+            "requires_human_approval": true,
+            "risk_level": "medium",
+            "reason": "AI recommends, human decides — financial output"
+          },
+          {
+            "action": "send_payment",
+            "description": "Execute bank transfer or payment instruction",
+            "allowed": false,
+            "requires_human_approval": true,
+            "risk_level": "critical",
+            "reason": "Financial transaction — AI must never execute payments autonomously"
+          },
+          {
+            "action": "notify_supplier",
+            "description": "Send automated notification to supplier regarding invoice status",
+            "allowed": true,
+            "requires_human_approval": true,
+            "risk_level": "medium",
+            "reason": "External communication should be reviewed before sending"
+          }
+        ],
+        "human_approval_points": [
+          "Any payment above R5,000",
+          "Any flagged exception before action is taken",
+          "Any supplier communication before sending",
+          "Final payment confirmation regardless of amount"
+        ],
+        "ai_autonomy_level": "medium",
+        "estimated_automation_percentage": 65,
+        "recommended_next_steps": [
+          "Integrate with email to auto-capture incoming invoices",
+          "Connect to delivery records database for automated matching",
+          "Build approval notification system for Finance Manager"
+        ]
+      },
+      {
+        "workflow": "Month-End Bank Reconciliation",
+        "description": "AI-assisted bank statement matching and exception reporting",
+        "ai_actions": [
+          {
+            "action": "parse_bank_statement",
+            "description": "Extract all transactions from bank statement CSV or PDF",
+            "allowed": true,
+            "requires_human_approval": false,
+            "risk_level": "low",
+            "reason": "Read-only data extraction"
+          },
+          {
+            "action": "match_transactions_to_ledger",
+            "description": "Match bank transactions to general ledger entries with confidence scores",
+            "allowed": true,
+            "requires_human_approval": false,
+            "risk_level": "low",
+            "reason": "Matching is deterministic and non-destructive"
+          },
+          {
+            "action": "identify_unmatched_items",
+            "description": "Flag transactions with no ledger match and categorise by type",
+            "allowed": true,
+            "requires_human_approval": false,
+            "risk_level": "low",
+            "reason": "Identification only — no action taken"
+          },
+          {
+            "action": "generate_reconciliation_report",
+            "description": "Produce structured reconciliation report with matched, unmatched, and exception items",
+            "allowed": true,
+            "requires_human_approval": true,
+            "risk_level": "medium",
+            "reason": "Report must be reviewed by Finance Manager before sign-off"
+          },
+          {
+            "action": "escalate_large_discrepancy",
+            "description": "Automatically flag discrepancies above R10,000 for Director review",
+            "allowed": true,
+            "requires_human_approval": true,
+            "risk_level": "high",
+            "reason": "Escalation notification — human must action"
+          }
+        ],
+        "human_approval_points": [
+          "Finance Manager sign-off on reconciliation report",
+          "Director review of any discrepancy above R10,000",
+          "All unmatched items before closing the month"
+        ],
+        "ai_autonomy_level": "high",
+        "estimated_automation_percentage": 80,
+        "recommended_next_steps": [
+          "Connect bank feed via API for real-time transaction import",
+          "Integrate with accounting software (Xero, Sage) for ledger access",
+          "Set up automated month-end trigger and report delivery"
+        ]
+      }
+    ],
+    "integration_readiness": {
+      "ready": false,
+      "blockers": [
+        "No digital delivery records system — currently a spreadsheet",
+        "No API-connected bank feed — currently manual download",
+        "No invoice management system — currently email-based"
+      ],
+      "recommended_integrations": [
+        "Bank feed API (Standard Bank, FNB, Nedbank, or similar)",
+        "Accounting software (Xero, Sage Business Cloud, QuickBooks)",
+        "Invoice capture tool (Dext, AutoEntry, or custom OCR)",
+        "Addup (finance execution layer)"
+      ]
+    }
+  }
+}
