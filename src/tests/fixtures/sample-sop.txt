@@ -1,0 +1,13 @@
+Invoice Approval Process — Rapid Freight Solutions
+
+The Finance Assistant receives supplier invoices by email and checks each invoice
+against the delivery records before approving payment.
+
+Payments over R5,000 require Finance Manager approval.
+Payments over R50,000 require Director sign-off.
+
+If a delivery record cannot be matched to the invoice, the invoice must be flagged
+and held until the discrepancy is resolved.
+
+The Operations team is responsible for maintaining delivery records.
+The Finance Manager reviews all flagged invoices weekly.

@@ -1,1 +1,0 @@
-Finance assistant checks invoices. Payments over R5000 need manager approval.

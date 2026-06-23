@@ -1,38 +1,65 @@
-const path = require('path');
-const fs   = require('fs');
+/**
+ * src/controllers/document.controller.js
+ */
+
+const path          = require('path');
+const fs            = require('fs');
 const docModel      = require('../models/document.model');
 const orgModel      = require('../models/organization.model');
 const activityModel = require('../models/activity.model');
 const OrgniEngine   = require('../sdk/engine.sdk');
-const { parseFile } = require('../services/parser.service');
+const { parseFile, ParserError, SUPPORTED_EXTENSIONS } = require('../services/parser.service');
 const { asyncHandler } = require('../middleware/errorHandler');
-const logger = require('../db/logger');
+const logger        = require('../db/logger');
 
 const upload = asyncHandler(async (req, res) => {
   if (!req.files || req.files.length === 0) {
-    return res.status(400).json({ error: 'No files uploaded' });
+    return res.status(400).json({ error: 'No files uploaded. Send files via multipart/form-data with field name "files".' });
   }
-  const orgId = req.org.id;
+
+  const orgId   = req.org.id;
   const uploaded = [];
+  const rejected = [];
 
   for (const file of req.files) {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (!SUPPORTED_EXTENSIONS.has(ext)) {
+      // Clean up the file multer already saved
+      if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
+      rejected.push({ name: file.originalname, reason: `File type "${ext}" is not supported` });
+      continue;
+    }
+
     const doc = await docModel.create({
       orgId,
-      filename: file.filename,
+      filename:     file.filename,
       originalName: file.originalname,
-      fileType: path.extname(file.originalname).toLowerCase(),
-      filePath: file.path,
-      fileSize: file.size
+      fileType:     ext,
+      filePath:     file.path,
+      fileSize:     file.size
     });
+
+    // Parse asynchronously — do not block the HTTP response
     parseAndUpdate(doc, orgId);
+
     uploaded.push({ id: doc.id, name: file.originalname, size: file.size, status: 'pending' });
     await activityModel.log(orgId, 'document_uploaded', `Uploaded "${file.originalname}"`, { docId: doc.id });
   }
 
+  if (uploaded.length === 0) {
+    return res.status(400).json({
+      error:    'No files could be accepted.',
+      rejected,
+      supported: [...SUPPORTED_EXTENSIONS].join(', ')
+    });
+  }
+
   await orgModel.update(orgId, { knowledgeStatus: 'partial' });
+
   res.status(201).json({
-    message: `${uploaded.length} document(s) uploaded and queued for parsing`,
-    documents: uploaded
+    message:  `${uploaded.length} file(s) uploaded and queued for parsing`,
+    documents: uploaded,
+    ...(rejected.length ? { rejected } : {})
   });
 });
 
@@ -40,12 +67,14 @@ async function parseAndUpdate(doc, orgId) {
   try {
     const content = await parseFile(doc.filePath, doc.originalName);
     const updated = await docModel.update(doc.id, {
-      content, wordCount: content.split(/\s+/).length,
-      status: 'parsed', parsedAt: new Date().toISOString()
+      content,
+      wordCount: content.split(/\s+/).length,
+      status:    'parsed',
+      parsedAt:  new Date().toISOString()
     });
-    logger.info('Document parsed', { docId: doc.id, words: updated.wordCount });
+    logger.info('Document parsed', { docId: doc.id, name: doc.originalName, words: updated.wordCount });
 
-    // Trigger incremental update if a knowledge map already exists
+    // Trigger incremental engine update if knowledge map already exists
     const allDocs = await docModel.findByOrg(orgId);
     const isReady = await OrgniEngine.isReady(orgId);
     if (isReady) {
@@ -54,33 +83,46 @@ async function parseAndUpdate(doc, orgId) {
       );
     }
   } catch (err) {
-    await docModel.update(doc.id, { status: 'failed', parseError: err.message });
-    logger.error('Document parse failed', { docId: doc.id, error: err.message });
+    const parseError = err instanceof ParserError ? err.message : `Parse failed: ${err.message}`;
+    await docModel.update(doc.id, { status: 'failed', parseError });
+    logger.error('Document parse failed', { docId: doc.id, name: doc.originalName, error: parseError });
   }
 }
 
 const list = asyncHandler(async (req, res) => {
   const docs = await docModel.findByOrg(req.org.id);
   res.json({
-    count: docs.length,
+    count:     docs.length,
     documents: docs.map(d => ({
-      id: d.id, name: d.originalName, fileType: d.fileType,
-      fileSize: d.fileSize, status: d.status, wordCount: d.wordCount,
-      uploadedAt: d.uploadedAt, parsedAt: d.parsedAt
+      id:          d.id,
+      name:        d.originalName,
+      fileType:    d.fileType,
+      fileSize:    d.fileSize,
+      status:      d.status,
+      parseError:  d.parseError || null,
+      wordCount:   d.wordCount,
+      uploadedAt:  d.uploadedAt,
+      parsedAt:    d.parsedAt
     }))
   });
 });
 
 const get = asyncHandler(async (req, res) => {
   const doc = await docModel.findById(req.params.docId);
-  if (!doc || doc.orgId !== req.org.id) return res.status(404).json({ error: 'Document not found' });
+  if (!doc || doc.orgId !== req.org.id) {
+    return res.status(404).json({ error: 'Document not found' });
+  }
   res.json({ document: doc });
 });
 
 const remove = asyncHandler(async (req, res) => {
   const doc = await docModel.findById(req.params.docId);
-  if (!doc || doc.orgId !== req.org.id) return res.status(404).json({ error: 'Document not found' });
-  if (doc.filePath && fs.existsSync(doc.filePath)) fs.unlinkSync(doc.filePath);
+  if (!doc || doc.orgId !== req.org.id) {
+    return res.status(404).json({ error: 'Document not found' });
+  }
+  if (doc.filePath && fs.existsSync(doc.filePath)) {
+    fs.unlinkSync(doc.filePath);
+  }
   await docModel.remove(doc.id);
   await activityModel.log(req.org.id, 'document_deleted', `Deleted "${doc.originalName}"`);
   res.json({ message: 'Document deleted' });
