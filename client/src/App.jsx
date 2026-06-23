@@ -646,108 +646,107 @@ function KnowledgeMap({ context, history, expandedWorkflow, setExpandedWorkflow 
 
 function KnowledgeNetwork({ context }) {
   const network = buildKnowledgeNetwork(context);
+  if (!network.nodes.length) return null;
   return (
     <div className="panel span-2 network-panel">
       <PanelHeader icon={Map} title="Knowledge network" />
+      <p className="network-hint">Your business sits at the centre. Each branch groups related knowledge — the small connected notes are the specific items Orgni found.</p>
       <div className="network-wrap" aria-label="Knowledge map network">
         <svg className="network-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
           {network.edges.map((edge) => {
             const from = network.nodeMap.get(edge.from);
             const to = network.nodeMap.get(edge.to);
             if (!from || !to) return null;
-            return <line key={`${edge.from}-${edge.to}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} />;
+            return <line key={`${edge.from}-${edge.to}`} className={`edge ${edge.kind} ${edge.type || ''}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} />;
           })}
         </svg>
         {network.nodes.map((node) => (
-          <div className={`network-node ${node.type}`} key={node.id} style={{ left: `${node.x}%`, top: `${node.y}%` }}>
-            <span>{node.type}</span>
+          <div
+            className={`network-node ${node.kind} ${node.type}`}
+            key={node.id}
+            style={{ left: `${node.x}%`, top: `${node.y}%` }}
+            title={node.label}
+          >
+            {node.kind !== 'leaf' && <span className="node-dot" aria-hidden="true" />}
             <strong>{node.label}</strong>
+            {node.count != null && <em>{node.count} {node.count === 1 ? 'item' : 'items'}</em>}
           </div>
         ))}
       </div>
-      <div className="network-legend">
-        {network.legend.map((item) => <span key={item.type} className={item.type}>{item.label}</span>)}
-      </div>
+      {network.legend.length ? (
+        <div className="network-legend">
+          {network.legend.map((item) => <span key={item.type} className={item.type}><i className="dot" />{item.label}</span>)}
+        </div>
+      ) : (
+        <p className="empty-inline">No branches extracted yet — upload more detail and rebuild the map.</p>
+      )}
     </div>
   );
 }
 
 function buildKnowledgeNetwork(context) {
-  const nodes = [];
-  const edges = [];
-  const addNode = (node) => {
-    if (!nodes.some((item) => item.id === node.id)) nodes.push(node);
-  };
-  const addEdge = (from, to) => {
-    if (from && to && !edges.some((edge) => edge.from === from && edge.to === to)) edges.push({ from, to });
-  };
   const slug = (value) => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'item';
   const textValue = (value) => {
     if (Array.isArray(value)) return value.map(textValue).filter(Boolean).join(', ');
     if (value && typeof value === 'object') return formatItem(value);
     return value == null ? '' : String(value);
   };
-  const pickLabel = (item, fields) => textValue(fields.map((field) => item?.[field]).find(Boolean) || formatItem(item));
-  const place = (items, x, startY, gap) => items.map((item, index) => ({ item, x, y: startY + index * gap }));
+  const trim = (value, max = 64) => {
+    const text = textValue(value).trim();
+    return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+  };
 
-  const businessName = context.summary?.business_name || context.orgName || 'Business';
-  addNode({ id: 'business', label: businessName, type: 'business', x: 50, y: 48 });
+  const businessName = trim(context.summary?.business_name || context.orgName || 'Business', 40);
 
-  const departments = (context.departments || []).slice(0, 5);
-  const roles = (context.roles || []).slice(0, 5);
-  const workflows = (context.workflows || []).slice(0, 6);
-  const rules = (context.rules || []).slice(0, 5);
-  const risks = (context.risks || []).slice(0, 4);
-  const documents = (context.sourceDocuments || []).slice(0, 3);
+  const categories = [
+    { key: 'workflow', label: 'Workflows', items: (context.workflows || []).map((item) => item.workflow_name || item.name || item) },
+    { key: 'role', label: 'Roles', items: (context.roles || []).map((item) => item.role || item.name || item) },
+    { key: 'department', label: 'Departments', items: (context.departments || []).map((item) => item.name || item.department || item) },
+    { key: 'rule', label: 'Rules', items: (context.rules || []).map((item) => item.rule_name || item.rule || item.condition || item) },
+    { key: 'risk', label: 'Risks', items: (context.risks || []).map((item) => item.risk || item.title || item) }
+  ]
+    .map((cat) => ({ ...cat, items: cat.items.map(textValue).filter(Boolean) }))
+    .filter((cat) => cat.items.length);
 
-  place(departments, 16, 18, 13).forEach(({ item, x, y }) => {
-    const id = `department-${slug(item.name || item.department)}`;
-    addNode({ id, label: textValue(item.name || item.department || item || 'Department'), type: 'department', x, y });
-    addEdge('business', id);
-  });
+  const nodes = [];
+  const edges = [];
+  const cx = 50;
+  const cy = 50;
+  nodes.push({ id: 'business', label: businessName, type: 'business', kind: 'business', x: cx, y: cy });
 
-  place(roles, 32, 12, 12).forEach(({ item, x, y }) => {
-    const id = `role-${slug(item.role || item.name)}`;
-    addNode({ id, label: textValue(item.role || item.name || item || 'Role'), type: 'role', x, y });
-    const departmentId = item.department ? `department-${slug(item.department)}` : 'business';
-    addEdge(departmentId, id);
-  });
+  const hubRx = 21;
+  const hubRy = 27;
+  const leafRx = 41;
+  const leafRy = 44;
+  const n = categories.length || 1;
 
-  place(workflows, 50, 12, 12).forEach(({ item, x, y }) => {
-    const id = `workflow-${slug(item.workflow_name || item.name)}`;
-    addNode({ id, label: textValue(item.workflow_name || item.name || item || 'Workflow'), type: 'workflow', x, y });
-    addEdge('business', id);
-  });
+  categories.forEach((cat, i) => {
+    const angle = (-Math.PI / 2) + (i / n) * Math.PI * 2;
+    const hx = cx + hubRx * Math.cos(angle);
+    const hy = cy + hubRy * Math.sin(angle);
+    const hubId = `hub-${cat.key}`;
+    const visible = cat.items.slice(0, 5);
+    nodes.push({ id: hubId, label: cat.label, count: cat.items.length, type: cat.key, kind: 'hub', x: hx, y: hy });
+    edges.push({ from: 'business', to: hubId, kind: 'trunk', type: cat.key });
 
-  place(rules, 72, 16, 12).forEach(({ item, x, y }, index) => {
-    const id = `rule-${slug(item.rule_name || item.rule || index)}`;
-    addNode({ id, label: pickLabel(item, ['rule_name', 'rule', 'condition']), type: 'rule', x, y });
-    addEdge(workflows[index % Math.max(workflows.length, 1)] ? `workflow-${slug(workflows[index % workflows.length].workflow_name || workflows[index % workflows.length].name)}` : 'business', id);
-  });
-
-  place(risks, 86, 24, 14).forEach(({ item, x, y }, index) => {
-    const id = `risk-${slug(item.risk || item.title || index)}`;
-    addNode({ id, label: textValue(item.risk || item.title || item || 'Risk'), type: 'risk', x, y });
-    addEdge(workflows[index % Math.max(workflows.length, 1)] ? `workflow-${slug(workflows[index % workflows.length].workflow_name || workflows[index % workflows.length].name)}` : 'business', id);
-  });
-
-  place(documents, 22, 78, 9).forEach(({ item, x, y }) => {
-    const id = `document-${slug(item.name || item.originalName || item.id)}`;
-    addNode({ id, label: textValue(item.name || item.originalName || item.id || 'Source document'), type: 'document', x, y });
-    addEdge(id, 'business');
+    const k = visible.length;
+    const spread = k <= 1 ? 0 : Math.min(Math.PI * 0.55, 0.34 * (k - 1));
+    visible.forEach((label, j) => {
+      const t = k === 1 ? 0 : (j / (k - 1)) - 0.5;
+      const childAngle = angle + t * spread;
+      const lx = cx + leafRx * Math.cos(childAngle);
+      const ly = cy + leafRy * Math.sin(childAngle);
+      const leafId = `${cat.key}-leaf-${slug(label)}-${j}`;
+      nodes.push({ id: leafId, label: trim(label, 48), type: cat.key, kind: 'leaf', x: lx, y: ly });
+      edges.push({ from: hubId, to: leafId, kind: 'branch', type: cat.key });
+    });
   });
 
   return {
     nodes,
     edges,
     nodeMap: new globalThis.Map(nodes.map((node) => [node.id, node])),
-    legend: [
-      { type: 'business', label: 'Business' },
-      { type: 'workflow', label: 'Workflow' },
-      { type: 'rule', label: 'Rule' },
-      { type: 'risk', label: 'Risk' },
-      { type: 'document', label: 'Source' }
-    ]
+    legend: categories.map((cat) => ({ type: cat.key, label: cat.label }))
   };
 }
 
