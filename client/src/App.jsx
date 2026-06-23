@@ -6,7 +6,6 @@ import {
   Building2,
   Check,
   ChevronDown,
-  CircleDollarSign,
   ClipboardList,
   FileText,
   History,
@@ -39,6 +38,8 @@ import {
   siZapier
 } from 'simple-icons';
 import orgniLogo from './assets/orgni-logo.png';
+import orgniWorkflowLogo from './assets/orgni-workflow.png';
+import orgniFinanceLogo from './assets/orgni-finance.png';
 
 const navItems = [
   { id: 'documents', label: 'Documents', icon: FileText },
@@ -47,8 +48,8 @@ const navItems = [
 ];
 
 const pluginItems = [
-  { id: 'workflowPlugin', label: 'Workflow', icon: Layers3 },
-  { id: 'financePlugin', label: 'Finance', icon: CircleDollarSign }
+  { id: 'workflowPlugin', label: 'Workflow', image: orgniWorkflowLogo },
+  { id: 'financePlugin', label: 'Finance', image: orgniFinanceLogo }
 ];
 
 const externalPlugins = [
@@ -389,15 +390,12 @@ export function App() {
         </nav>
 
         <nav className="chrome-plugins" aria-label="Plugins">
-          {pluginItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <button key={item.id} className={view === item.id ? 'active plugin-active' : 'plugin-link'} onClick={() => setView(item.id)}>
-                <Icon size={16} />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
+          {pluginItems.map((item) => (
+            <button key={item.id} className={view === item.id ? 'active plugin-active' : 'plugin-link'} onClick={() => setView(item.id)}>
+              <img className="plugin-logo" src={item.image} alt="" />
+              <span>{item.label}</span>
+            </button>
+          ))}
         </nav>
 
         <button className={`profile-link ${view === 'profile' ? 'active' : ''}`} onClick={() => setView('profile')}>
@@ -433,7 +431,7 @@ function WorkflowPlugin({ context, onSource }) {
           <h2>Workflow</h2>
           <p>Operational context for process design: workflows, roles, dependencies, bottlenecks, and AI execution boundaries.</p>
         </div>
-        <Layers3 size={56} />
+        <img className="hero-logo" src={orgniWorkflowLogo} alt="Orgni Workflow" />
       </div>
       <div className="stats">
         <Metric label="Workflows" value={count(context.workflows)} />
@@ -467,7 +465,7 @@ function FinancePlugin({ context, onSource }) {
           <h2>Finance</h2>
           <p>Financial operating context for controls: business rules, approvals, exceptions, risks, and gaps.</p>
         </div>
-        <CircleDollarSign size={56} />
+        <img className="hero-logo" src={orgniFinanceLogo} alt="Orgni Finance" />
       </div>
       <div className="stats">
         <Metric label="Rules" value={count(context.rules)} />
@@ -509,14 +507,14 @@ function PluginsCatalog({ onOpen }) {
         <p className="lead">Connect Orgni's business context to the tools where work already happens.</p>
         <div className="native-plugin-grid">
           <button className="native-plugin" onClick={() => onOpen('workflowPlugin')}>
-            <BrandGlyph icon={Layers3} />
+            <BrandGlyph image={orgniWorkflowLogo} />
             <div>
               <strong>Workflow</strong>
               <span>Roles, steps, dependencies, bottlenecks, and AI execution boundaries.</span>
             </div>
           </button>
           <button className="native-plugin" onClick={() => onOpen('financePlugin')}>
-            <BrandGlyph icon={CircleDollarSign} />
+            <BrandGlyph image={orgniFinanceLogo} />
             <div>
               <strong>Finance</strong>
               <span>Rules, approvals, exceptions, risks, gaps, and missing controls.</span>
@@ -544,9 +542,13 @@ function PluginsCatalog({ onOpen }) {
   );
 }
 
-function BrandGlyph({ icon: Icon, iconData, mark, color }) {
+function BrandGlyph({ icon: Icon, iconData, mark, color, image }) {
+  if (image) {
+    return <span className="brand-glyph brand-glyph-image"><img src={image} alt="" /></span>;
+  }
+  const brand = color || `#${iconData?.hex || 'f26a1b'}`;
   return (
-    <span className="brand-glyph" style={{ '--brand': color || `#${iconData?.hex || 'f26a1b'}` }}>
+    <span className="brand-glyph brand-glyph-solid" style={{ '--brand': brand }}>
       {Icon ? <Icon size={20} /> : iconData ? (
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d={iconData.path} />
