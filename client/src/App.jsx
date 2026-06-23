@@ -6,7 +6,9 @@ import {
   Building2,
   Check,
   ClipboardList,
+  Database,
   FileText,
+  Globe,
   Layers3,
   Loader2,
   Map,
@@ -40,9 +42,18 @@ import orgniWorkflowLogo from './assets/orgni-workflow.png';
 import orgniFinanceLogo from './assets/orgni-finance.png';
 
 const navItems = [
-  { id: 'documents', label: 'Documents', icon: FileText },
+  { id: 'documents', label: 'Sources', icon: Database },
   { id: 'map', label: 'Knowledge', icon: Map },
   { id: 'plugins', label: 'Plugins', icon: Plug }
+];
+
+const connectSources = [
+  { name: 'Google Drive', iconData: siGoogledrive, detail: 'Sync folders & files' },
+  { name: 'Notion', iconData: siNotion, detail: 'Import internal docs' },
+  { name: 'Gmail', iconData: siGmail, detail: 'Learn from email' },
+  { name: 'HubSpot', iconData: siHubspot, detail: 'Connect CRM records' },
+  { name: 'Airtable', iconData: siAirtable, detail: 'Map structured data' },
+  { name: 'Website / URL', glyphIcon: Globe, color: '#0d9488', detail: 'Crawl a public page' }
 ];
 
 const pluginItems = [
@@ -350,7 +361,7 @@ export function App() {
     <EmptyState title="Create your business" body="Orgni needs one business profile before documents can be mapped." action={<button className="primary" onClick={() => setShowCreate(true)}><Plus size={16} /> New business</button>} />
   ) : (
     <>
-      {view === 'documents' && <Documents docs={docs} onUpload={uploadFiles} onDelete={deleteDocument} onIntake={runIntake} />}
+      {view === 'documents' && <Documents docs={docs} onUpload={uploadFiles} onDelete={deleteDocument} onIntake={runIntake} onConnect={(name) => toast(`${name} connections are coming soon — upload files for now.`, 'info')} />}
       {view === 'map' && <KnowledgeMap context={context} />}
       {view === 'validation' && <Validation validation={validation} onReview={reviewFinding} />}
       {view === 'actions' && <Actions actionContext={actionContext} setActionContext={setActionContext} result={actionResult} onRun={runAction} />}
@@ -549,21 +560,41 @@ function BrandGlyph({ icon: Icon, iconData, mark, color, image }) {
   );
 }
 
-function Documents({ docs, onUpload, onDelete, onIntake }) {
+function Documents({ docs, onUpload, onDelete, onIntake, onConnect }) {
   return (
     <section className="view-grid">
       <div className="panel span-2">
-        <PanelHeader icon={UploadCloud} title="Upload documents" />
-        <label className="dropzone">
-          <UploadCloud size={28} />
-          <strong>Drop or choose files</strong>
-          <span>.txt, .md, .csv, .json, .pdf, .docx</span>
-          <input type="file" multiple onChange={(event) => onUpload(event.target.files)} />
-        </label>
+        <PanelHeader icon={Database} title="Add a knowledge source" />
+        <p className="lead">Give Orgni something to learn from — upload your files, or connect a tool where your knowledge already lives.</p>
+
+        <div className="source-options">
+          <label className="dropzone">
+            <UploadCloud size={28} />
+            <strong>Upload files</strong>
+            <span>.txt, .md, .csv, .json, .pdf, .docx</span>
+            <input type="file" multiple onChange={(event) => onUpload(event.target.files)} />
+          </label>
+
+          <div className="source-connect">
+            <p className="source-connect-title">Or connect a source</p>
+            <div className="source-grid">
+              {connectSources.map((src) => (
+                <button type="button" className="source-card" key={src.name} onClick={() => onConnect(src.name)}>
+                  <BrandGlyph icon={src.glyphIcon} iconData={src.iconData} color={src.color} />
+                  <span className="source-text">
+                    <strong>{src.name}</strong>
+                    <span>{src.detail}</span>
+                  </span>
+                  <span className="source-soon">Soon</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="panel span-2">
-        <PanelHeader icon={FileText} title={`Documents (${docs.length})`} />
+        <PanelHeader icon={FileText} title={`Your sources (${docs.length})`} />
         <div className="doc-list">
           {docs.length ? docs.map((doc) => (
             <div className="doc-row" key={doc.id}>
@@ -574,9 +605,9 @@ function Documents({ docs, onUpload, onDelete, onIntake }) {
                 {doc.parseError && <em>{doc.parseError}</em>}
               </div>
               <span className={`pill ${doc.status}`}>{doc.status}</span>
-              <button className="icon-btn danger" title="Delete document" onClick={() => onDelete(doc.id)}><Trash2 size={16} /></button>
+              <button className="icon-btn danger" title="Remove source" onClick={() => onDelete(doc.id)}><Trash2 size={16} /></button>
             </div>
-          )) : <EmptyInline message="No documents uploaded." />}
+          )) : <EmptyInline message="No sources added yet — upload a file or connect a tool above." />}
         </div>
         <div className="inline-actions">
           <button className="primary" onClick={onIntake} disabled={!docs.length}><Sparkles size={16} /> Build map</button>
