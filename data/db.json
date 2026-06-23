@@ -18,7 +18,7 @@
       "status": "active",
       "knowledgeStatus": "ready",
       "createdAt": "2026-06-22T00:29:07.964Z",
-      "updatedAt": "2026-06-23T23:28:23.669Z"
+      "updatedAt": "2026-06-23T23:54:37.833Z"
     }
   ],
   "documents": [
@@ -3198,7 +3198,7 @@
       "id": "a6c6cf5c-48db-4400-a2da-b381b5fc1c04",
       "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
       "version": 4,
-      "status": "active",
+      "status": "archived",
       "businessSummary": {
         "business_name": "Clover",
         "business_type": "Logistics",
@@ -4243,7 +4243,1058 @@
         "Close gap: • unclear task ownership"
       ],
       "generatedAt": "2026-06-23T23:28:22.779Z",
-      "updatedAt": "2026-06-23T23:28:22.779Z"
+      "updatedAt": "2026-06-23T23:54:37.316Z"
+    },
+    {
+      "id": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "version": 5,
+      "status": "active",
+      "businessSummary": {
+        "business_name": "Clover",
+        "business_type": "Logistics",
+        "plain_english_summary": "Clover is a Logistics with 12 documented workflows and 21 extracted rules. The map was built deterministically from profile data and parsed source documents.",
+        "core_function": "Logistics",
+        "key_operational_facts": [
+          "Workflow: Alert admin when we receive order",
+          "Workflow: Key workflows: Alert admin when we receive order",
+          "Workflow: • execute workflows safely",
+          "Workflow: AI business workflow execution system",
+          "Workflow: Solution Logistics workflow solution powered by Ordo",
+          "Workflow: • Review workflow for finance teams",
+          "Workflow: AI business workflow execution system.",
+          "Workflow: Ordo helps businesses execute workflows end",
+          "Workflow: documents, systems, APIs, databases, and human approvals.",
+          "Workflow: • understand workflow intent",
+          "Workflow: • route approvals",
+          "Workflow: Ordo is an AI workflow execution system that turns business instructions",
+          "Rule: Addup should remain focused on accuracy before speed",
+          "Rule: The product must prove that it can detect financial issues reliably and",
+          "Rule: Cortex should not be sold as a standalone product at this stage"
+        ],
+        "systems_in_use": [
+          "Codex"
+        ],
+        "document_types_in_use": [
+          "pdf"
+        ],
+        "confidence": 0.85,
+        "confidence_reason": "Confidence is rule-based: higher when source text contains explicit workflow steps, approval rules, and source excerpts.",
+        "missing_information": []
+      },
+      "departments": [
+        {
+          "name": "Manufacturing,IT departent,Finance",
+          "functions": []
+        },
+        {
+          "name": "Finance",
+          "functions": [
+            "Approvals",
+            "Payments",
+            "Invoice processing"
+          ]
+        },
+        {
+          "name": "Logistics",
+          "functions": [
+            "Delivery operations"
+          ]
+        },
+        {
+          "name": "Operations",
+          "functions": [
+            "Delivery records",
+            "Process execution"
+          ]
+        },
+        {
+          "name": "Support",
+          "functions": [
+            "Customer requests",
+            "Issue resolution"
+          ]
+        }
+      ],
+      "roles": [],
+      "workflows": [
+        {
+          "workflow_name": "Alert admin when we receive order",
+          "trigger": "Key workflows: Alert admin when we receive order",
+          "steps": [
+            "Key workflows: Alert admin when we receive order"
+          ],
+          "owner": "Manufacturing,IT departent,Finance",
+          "required_documents": [],
+          "decision_points": [
+            "Key workflows: Alert admin when we receive order"
+          ],
+          "approval_points": [],
+          "dependencies": [],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Key workflows: Alert admin when we receive order",
+          "_confidence": 0.58,
+          "_supported": true
+        },
+        {
+          "workflow_name": "Key workflows: Alert admin when we receive order",
+          "trigger": "Key workflows: Alert admin when we receive order",
+          "steps": [
+            "Key workflows: Alert admin when we receive order"
+          ],
+          "owner": "Manufacturing,IT departent,Finance",
+          "required_documents": [],
+          "decision_points": [
+            "Key workflows: Alert admin when we receive order"
+          ],
+          "approval_points": [],
+          "dependencies": [],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Key workflows: Alert admin when we receive order",
+          "_confidence": 0.58,
+          "_supported": true
+        },
+        {
+          "workflow_name": "• execute workflows safely",
+          "trigger": "",
+          "steps": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection",
+            "• Review workflow for finance teams",
+            "• Add review dashboard"
+          ],
+          "owner": "Manufacturing,IT departent,Finance",
+          "required_documents": [
+            "Invoice",
+            "Purchase Order",
+            "Contract",
+            "Receipt",
+            "Statement"
+          ],
+          "decision_points": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection"
+          ],
+          "approval_points": [
+            "• route approvals"
+          ],
+          "dependencies": [
+            "Cortex should remain internal until there is a clear market need to"
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+          "_confidence": 0.76,
+          "_supported": true
+        },
+        {
+          "workflow_name": "AI business workflow execution system",
+          "trigger": "",
+          "steps": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection",
+            "• Review workflow for finance teams",
+            "• Add review dashboard"
+          ],
+          "owner": "Manufacturing,IT departent,Finance",
+          "required_documents": [
+            "Invoice",
+            "Purchase Order",
+            "Contract",
+            "Receipt",
+            "Statement"
+          ],
+          "decision_points": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection"
+          ],
+          "approval_points": [
+            "• route approvals"
+          ],
+          "dependencies": [
+            "Cortex should remain internal until there is a clear market need to"
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+          "_confidence": 0.76,
+          "_supported": true
+        },
+        {
+          "workflow_name": "Solution Logistics workflow solution powered by Ordo",
+          "trigger": "",
+          "steps": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection",
+            "• Review workflow for finance teams",
+            "• Add review dashboard"
+          ],
+          "owner": "Manufacturing,IT departent,Finance",
+          "required_documents": [
+            "Invoice",
+            "Purchase Order",
+            "Contract",
+            "Receipt",
+            "Statement"
+          ],
+          "decision_points": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection"
+          ],
+          "approval_points": [
+            "• route approvals"
+          ],
+          "dependencies": [
+            "Cortex should remain internal until there is a clear market need to"
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+          "_confidence": 0.76,
+          "_supported": true
+        },
+        {
+          "workflow_name": "• Review workflow for finance teams",
+          "trigger": "",
+          "steps": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection",
+            "• Review workflow for finance teams",
+            "• Add review dashboard"
+          ],
+          "owner": "Manufacturing,IT departent,Finance",
+          "required_documents": [
+            "Invoice",
+            "Purchase Order",
+            "Contract",
+            "Receipt",
+            "Statement"
+          ],
+          "decision_points": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection"
+          ],
+          "approval_points": [
+            "• route approvals"
+          ],
+          "dependencies": [
+            "Cortex should remain internal until there is a clear market need to"
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+          "_confidence": 0.76,
+          "_supported": true
+        },
+        {
+          "workflow_name": "AI business workflow execution system.",
+          "trigger": "",
+          "steps": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection",
+            "• Review workflow for finance teams",
+            "• Add review dashboard"
+          ],
+          "owner": "Manufacturing,IT departent,Finance",
+          "required_documents": [
+            "Invoice",
+            "Purchase Order",
+            "Contract",
+            "Receipt",
+            "Statement"
+          ],
+          "decision_points": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection"
+          ],
+          "approval_points": [
+            "• route approvals"
+          ],
+          "dependencies": [
+            "Cortex should remain internal until there is a clear market need to"
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+          "_confidence": 0.76,
+          "_supported": true
+        },
+        {
+          "workflow_name": "Ordo helps businesses execute workflows end",
+          "trigger": "",
+          "steps": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection",
+            "• Review workflow for finance teams",
+            "• Add review dashboard"
+          ],
+          "owner": "Manufacturing,IT departent,Finance",
+          "required_documents": [
+            "Invoice",
+            "Purchase Order",
+            "Contract",
+            "Receipt",
+            "Statement"
+          ],
+          "decision_points": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection"
+          ],
+          "approval_points": [
+            "• route approvals"
+          ],
+          "dependencies": [
+            "Cortex should remain internal until there is a clear market need to"
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+          "_confidence": 0.76,
+          "_supported": true
+        },
+        {
+          "workflow_name": "documents, systems, APIs, databases, and human approvals.",
+          "trigger": "",
+          "steps": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection",
+            "• Review workflow for finance teams",
+            "• Add review dashboard"
+          ],
+          "owner": "Manufacturing,IT departent,Finance",
+          "required_documents": [
+            "Invoice",
+            "Purchase Order",
+            "Contract",
+            "Receipt",
+            "Statement"
+          ],
+          "decision_points": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection"
+          ],
+          "approval_points": [
+            "• route approvals"
+          ],
+          "dependencies": [
+            "Cortex should remain internal until there is a clear market need to"
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+          "_confidence": 0.76,
+          "_supported": true
+        },
+        {
+          "workflow_name": "• understand workflow intent",
+          "trigger": "",
+          "steps": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection",
+            "• Review workflow for finance teams",
+            "• Add review dashboard"
+          ],
+          "owner": "Manufacturing,IT departent,Finance",
+          "required_documents": [
+            "Invoice",
+            "Purchase Order",
+            "Contract",
+            "Receipt",
+            "Statement"
+          ],
+          "decision_points": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection"
+          ],
+          "approval_points": [
+            "• route approvals"
+          ],
+          "dependencies": [
+            "Cortex should remain internal until there is a clear market need to"
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+          "_confidence": 0.76,
+          "_supported": true
+        },
+        {
+          "workflow_name": "• route approvals",
+          "trigger": "",
+          "steps": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection",
+            "• Review workflow for finance teams",
+            "• Add review dashboard"
+          ],
+          "owner": "Manufacturing,IT departent,Finance",
+          "required_documents": [
+            "Invoice",
+            "Purchase Order",
+            "Contract",
+            "Receipt",
+            "Statement"
+          ],
+          "decision_points": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection"
+          ],
+          "approval_points": [
+            "• route approvals"
+          ],
+          "dependencies": [
+            "Cortex should remain internal until there is a clear market need to"
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+          "_confidence": 0.76,
+          "_supported": true
+        },
+        {
+          "workflow_name": "Ordo is an AI workflow execution system that turns business instructions",
+          "trigger": "",
+          "steps": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection",
+            "• Review workflow for finance teams",
+            "• Add review dashboard"
+          ],
+          "owner": "Manufacturing,IT departent,Finance",
+          "required_documents": [
+            "Invoice",
+            "Purchase Order",
+            "Contract",
+            "Receipt",
+            "Statement"
+          ],
+          "decision_points": [
+            "Addup helps businesses reconcile financial records, detect mismatches,",
+            "• unmatched transactions",
+            "• reversal mismatches",
+            "compares financial records, identifies differences, explains mismatches,",
+            "• Unmatched transaction detection",
+            "• Reference mismatch detection"
+          ],
+          "approval_points": [
+            "• route approvals"
+          ],
+          "dependencies": [
+            "Cortex should remain internal until there is a clear market need to"
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+          "_confidence": 0.76,
+          "_supported": true
+        }
+      ],
+      "rules": [
+        {
+          "rule_name": "Addup should remain focused on accuracy before speed",
+          "condition": "",
+          "action": "Addup should remain focused on accuracy before speed.",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Addup should remain focused on accuracy before speed.",
+          "_confidence": 0.72,
+          "source": "Addup should remain focused on accuracy before speed."
+        },
+        {
+          "rule_name": "The product must prove that it can detect financial issues reliably and",
+          "condition": "",
+          "action": "The product must prove that it can detect financial issues reliably and",
+          "risk_level": "medium",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "The product must prove that it can detect financial issues reliably and",
+          "_confidence": 0.72,
+          "source": "The product must prove that it can detect financial issues reliably and"
+        },
+        {
+          "rule_name": "Cortex should not be sold as a standalone product at this stage",
+          "condition": "",
+          "action": "Cortex should not be sold as a standalone product at this stage.",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Cortex should not be sold as a standalone product at this stage.",
+          "_confidence": 0.72,
+          "source": "Cortex should not be sold as a standalone product at this stage."
+        },
+        {
+          "rule_name": "should be positioned as the intelligence layer that powers Ordo",
+          "condition": "",
+          "action": "should be positioned as the intelligence layer that powers Ordo.",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "should be positioned as the intelligence layer that powers Ordo.",
+          "_confidence": 0.72,
+          "source": "should be positioned as the intelligence layer that powers Ordo."
+        },
+        {
+          "rule_name": "Ordo should become Olyxee’s main workflow execution infrastructure",
+          "condition": "",
+          "action": "Ordo should become Olyxee’s main workflow execution infrastructure.",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Ordo should become Olyxee’s main workflow execution infrastructure.",
+          "_confidence": 0.72,
+          "source": "Ordo should become Olyxee’s main workflow execution infrastructure."
+        },
+        {
+          "rule_name": "It should support both general business workflows and vertical solutions",
+          "condition": "",
+          "action": "It should support both general business workflows and vertical solutions",
+          "risk_level": "low",
+          "department": "Support",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "It should support both general business workflows and vertical solutions",
+          "_confidence": 0.72,
+          "source": "It should support both general business workflows and vertical solutions"
+        },
+        {
+          "rule_name": "Togent should support workflows around tools such as:",
+          "condition": "",
+          "action": "Togent should support workflows around tools such as:",
+          "risk_level": "low",
+          "department": "Support",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Togent should support workflows around tools such as:",
+          "_confidence": 0.72,
+          "source": "Togent should support workflows around tools such as:"
+        },
+        {
+          "rule_name": "Togent should start as a focused tool for AI coding-agent cost and",
+          "condition": "",
+          "action": "Togent should start as a focused tool for AI coding-agent cost and",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Togent should start as a focused tool for AI coding-agent cost and",
+          "_confidence": 0.72,
+          "source": "Togent should start as a focused tool for AI coding-agent cost and"
+        },
+        {
+          "rule_name": "The first version should not be a full enterprise governance platform",
+          "condition": "The first version should not be a full enterprise governance platform.",
+          "action": "The first version should not be a full enterprise governance platform.",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "The first version should not be a full enterprise governance platform.",
+          "_confidence": 0.72,
+          "source": "The first version should not be a full enterprise governance platform."
+        },
+        {
+          "rule_name": "should prove the pain around repeated context, poor memory, and rising",
+          "condition": "",
+          "action": "should prove the pain around repeated context, poor memory, and rising",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "should prove the pain around repeated context, poor memory, and rising",
+          "_confidence": 0.72,
+          "source": "should prove the pain around repeated context, poor memory, and rising"
+        },
+        {
+          "rule_name": "Courier Loop should be positioned as a logistics solution powered by",
+          "condition": "",
+          "action": "Courier Loop should be positioned as a logistics solution powered by",
+          "risk_level": "low",
+          "department": "Logistics",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Courier Loop should be positioned as a logistics solution powered by",
+          "_confidence": 0.72,
+          "source": "Courier Loop should be positioned as a logistics solution powered by"
+        },
+        {
+          "rule_name": "Courier Loop should not be treated as a separate core platform for now",
+          "condition": "",
+          "action": "Courier Loop should not be treated as a separate core platform for now.",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Courier Loop should not be treated as a separate core platform for now.",
+          "_confidence": 0.72,
+          "source": "Courier Loop should not be treated as a separate core platform for now."
+        },
+        {
+          "rule_name": "It should be packaged as a vertical solution powered by Ordo",
+          "condition": "",
+          "action": "It should be packaged as a vertical solution powered by Ordo.",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "It should be packaged as a vertical solution powered by Ordo.",
+          "_confidence": 0.72,
+          "source": "It should be packaged as a vertical solution powered by Ordo."
+        },
+        {
+          "rule_name": "ODI should be offered as a module/API, not as a separate core product",
+          "condition": "",
+          "action": "ODI should be offered as a module/API, not as a separate core product",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "ODI should be offered as a module/API, not as a separate core product",
+          "_confidence": 0.72,
+          "source": "ODI should be offered as a module/API, not as a separate core product"
+        },
+        {
+          "rule_name": "It should strengthen Addup and Ordo by ensuring documents are",
+          "condition": "",
+          "action": "It should strengthen Addup and Ordo by ensuring documents are",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "It should strengthen Addup and Ordo by ensuring documents are",
+          "_confidence": 0.72,
+          "source": "It should strengthen Addup and Ordo by ensuring documents are"
+        },
+        {
+          "rule_name": "Cortex should remain internal until there is a clear market need to",
+          "condition": "",
+          "action": "Cortex should remain internal until there is a clear market need to",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Cortex should remain internal until there is a clear market need to",
+          "_confidence": 0.72,
+          "source": "Cortex should remain internal until there is a clear market need to"
+        },
+        {
+          "rule_name": "Olyxee’s product architecture should be understood as follows:",
+          "condition": "",
+          "action": "Olyxee’s product architecture should be understood as follows:",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Olyxee’s product architecture should be understood as follows:",
+          "_confidence": 0.72,
+          "source": "Olyxee’s product architecture should be understood as follows:"
+        },
+        {
+          "rule_name": "Olyxee should follow this product development path:",
+          "condition": "",
+          "action": "Olyxee should follow this product development path:",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Olyxee should follow this product development path:",
+          "_confidence": 0.72,
+          "source": "Olyxee should follow this product development path:"
+        },
+        {
+          "rule_name": "Olyxee should publicly communicate the portfolio as:",
+          "condition": "",
+          "action": "Olyxee should publicly communicate the portfolio as:",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Olyxee should publicly communicate the portfolio as:",
+          "_confidence": 0.72,
+          "source": "Olyxee should publicly communicate the portfolio as:"
+        },
+        {
+          "rule_name": "The company should move forward with three core products:",
+          "condition": "",
+          "action": "The company should move forward with three core products:",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "The company should move forward with three core products:",
+          "_confidence": 0.72,
+          "source": "The company should move forward with three core products:"
+        },
+        {
+          "rule_name": "Cortex should be removed as a standalone product and kept as the",
+          "condition": "",
+          "action": "Cortex should be removed as a standalone product and kept as the",
+          "risk_level": "low",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Cortex should be removed as a standalone product and kept as the",
+          "_confidence": 0.72,
+          "source": "Cortex should be removed as a standalone product and kept as the"
+        }
+      ],
+      "approvals": [],
+      "exceptions": [
+        {
+          "exception": "• weak exception handling",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "• weak exception handling",
+          "_confidence": 0.7
+        },
+        {
+          "exception": "• Exception handling",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "• Exception handling",
+          "_confidence": 0.7
+        },
+        {
+          "exception": "• Add exception handling",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "• Add exception handling",
+          "_confidence": 0.7
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Main problems:",
+          "severity": "low",
+          "reason": "Main problems:",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Main problems:",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "researches real problems created by AI adoption and builds practical",
+          "severity": "low",
+          "reason": "researches real problems created by AI adoption and builds practical",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "researches real problems created by AI adoption and builds practical",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "Common problems include:",
+          "severity": "low",
+          "reason": "Common problems include:",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Common problems include:",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "• missing entries",
+          "severity": "medium",
+          "reason": "• missing entries",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Document the exception path and responsible owner.",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "• missing entries",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "These problems affect financial reporting, decision-making, and trust in",
+          "severity": "low",
+          "reason": "These problems affect financial reporting, decision-making, and trust in",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "These problems affect financial reporting, decision-making, and trust in",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "produce reconciliation results that can be compared against a manual",
+          "severity": "medium",
+          "reason": "produce reconciliation results that can be compared against a manual",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Standardise or automate this check where possible.",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "produce reconciliation results that can be compared against a manual",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "• Compare Addup output with manual accountant results",
+          "severity": "medium",
+          "reason": "• Compare Addup output with manual accountant results",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Standardise or automate this check where possible.",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "• Compare Addup output with manual accountant results",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "• Businesses with manual approval and execution processes",
+          "severity": "medium",
+          "reason": "• Businesses with manual approval and execution processes",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Standardise or automate this check where possible.",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "• Businesses with manual approval and execution processes",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "• manual delivery tracking",
+          "severity": "medium",
+          "reason": "• manual delivery tracking",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Standardise or automate this check where possible.",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "• manual delivery tracking",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "• unclear task ownership",
+          "severity": "low",
+          "reason": "• unclear task ownership",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "• unclear task ownership",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "• delays in status updates",
+          "severity": "low",
+          "reason": "• delays in status updates",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "• delays in status updates",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "• Missing-field detection",
+          "severity": "medium",
+          "reason": "• Missing-field detection",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Document the exception path and responsible owner.",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "• Missing-field detection",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "explore technical problems and turn validated opportunities into",
+          "severity": "low",
+          "reason": "explore technical problems and turn validated opportunities into",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "explore technical problems and turn validated opportunities into",
+          "_confidence": 0.68
+        }
+      ],
+      "bottlenecks": [],
+      "gaps": [
+        {
+          "gap": "• missing entries",
+          "type": "process",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Document the owner, rule, and resolution path."
+        },
+        {
+          "gap": "• unclear task ownership",
+          "type": "process",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Document the owner, rule, and resolution path."
+        },
+        {
+          "gap": "• Missing-field detection",
+          "type": "process",
+          "affected_workflow": "Alert admin when we receive order",
+          "recommendation": "Document the owner, rule, and resolution path."
+        }
+      ],
+      "dependencies": [
+        {
+          "dependency": "Cortex should remain internal until there is a clear market need to",
+          "_sourceDocName": "Olyxee Product Document.pdf",
+          "_sourceExcerpt": "Cortex should remain internal until there is a clear market need to",
+          "_confidence": 0.62
+        }
+      ],
+      "aiOpportunities": [],
+      "readiness": [
+        {
+          "workflow": "Alert admin when we receive order",
+          "readiness_score": 55,
+          "reason": "Readiness is based on documented steps and rules, not AI interpretation.",
+          "blockers": [
+            "• missing entries",
+            "• unclear task ownership",
+            "• Missing-field detection"
+          ],
+          "required_integrations": []
+        }
+      ],
+      "blueprint": {
+        "blueprints": []
+      },
+      "missingInformation": [
+        "Approval rules are not clearly documented."
+      ],
+      "overallConfidence": 0.85,
+      "overallRiskScore": 0.85,
+      "sourceDocuments": [
+        {
+          "id": "44261227-a390-42b3-8e71-3639ae4c84ac",
+          "name": "Olyxee Product Document.pdf"
+        }
+      ],
+      "recommendedNextSteps": [
+        "Review workflow: Alert admin when we receive order — Most clearly documented workflow.",
+        "Close gap: • missing entries",
+        "Close gap: • unclear task ownership"
+      ],
+      "generatedAt": "2026-06-23T23:54:37.322Z",
+      "updatedAt": "2026-06-23T23:54:37.322Z"
     }
   ],
   "validations": [
@@ -7374,6 +8425,788 @@
       "reviewedBy": null,
       "reviewedAt": null,
       "createdAt": "2026-06-23T23:28:23.657Z"
+    },
+    {
+      "id": "e2470e21-b5af-4cb6-b821-615dfc345764",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "workflow",
+      "claim": "Workflow: Alert admin when we receive order",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Key workflows: Alert admin when we receive order",
+      "confidence": 0.58,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Extracted from Business profile",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.344Z"
+    },
+    {
+      "id": "e9acb632-2acd-47bd-9d4a-4400a6db5680",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "workflow",
+      "claim": "Workflow: Key workflows: Alert admin when we receive order",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Key workflows: Alert admin when we receive order",
+      "confidence": 0.58,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Extracted from Business profile",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.355Z"
+    },
+    {
+      "id": "c39d1a8c-cd30-41a9-b46e-4d769fd95ea5",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "workflow",
+      "claim": "Workflow: • execute workflows safely",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from Olyxee Product Document.pdf",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.369Z"
+    },
+    {
+      "id": "24454fee-f067-4b20-b915-fed2073c05b2",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "workflow",
+      "claim": "Workflow: AI business workflow execution system",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from Olyxee Product Document.pdf",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.384Z"
+    },
+    {
+      "id": "0c02a33d-9459-450e-b57d-26c251d6c117",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "workflow",
+      "claim": "Workflow: Solution Logistics workflow solution powered by Ordo",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from Olyxee Product Document.pdf",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.394Z"
+    },
+    {
+      "id": "5f583cc7-f368-4e54-9228-71a27f3dc2c2",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "workflow",
+      "claim": "Workflow: • Review workflow for finance teams",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from Olyxee Product Document.pdf",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.405Z"
+    },
+    {
+      "id": "e828e023-e7f8-46e1-a058-b41c7f498e40",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "workflow",
+      "claim": "Workflow: AI business workflow execution system.",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from Olyxee Product Document.pdf",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.416Z"
+    },
+    {
+      "id": "34c72543-111d-43be-80e9-d1740884448b",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "workflow",
+      "claim": "Workflow: Ordo helps businesses execute workflows end",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from Olyxee Product Document.pdf",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.426Z"
+    },
+    {
+      "id": "f5297008-a7ae-4b24-bbc7-fa1482e3169e",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "workflow",
+      "claim": "Workflow: documents, systems, APIs, databases, and human approvals.",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from Olyxee Product Document.pdf",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.435Z"
+    },
+    {
+      "id": "2bee7ecb-4373-4892-b94c-48f79bf4ca9a",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "workflow",
+      "claim": "Workflow: • understand workflow intent",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from Olyxee Product Document.pdf",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.444Z"
+    },
+    {
+      "id": "606dd7e9-d384-4948-a021-0630caacedc2",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "workflow",
+      "claim": "Workflow: • route approvals",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from Olyxee Product Document.pdf",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.455Z"
+    },
+    {
+      "id": "5f8cadcc-7ab7-4130-92ba-389feda0ae10",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "workflow",
+      "claim": "Workflow: Ordo is an AI workflow execution system that turns business instructions",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from Olyxee Product Document.pdf",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.466Z"
+    },
+    {
+      "id": "6d877fbe-977b-4d41-bd03-403b8d378442",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: Addup should remain focused on accuracy before speed",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup should remain focused on accuracy before speed.",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.476Z"
+    },
+    {
+      "id": "b4a292e7-f508-4c9d-8e75-5e7afcc98f02",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: The product must prove that it can detect financial issues reliably and",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "The product must prove that it can detect financial issues reliably and",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.486Z"
+    },
+    {
+      "id": "d7577c59-e503-474c-ba0c-175590581236",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: Cortex should not be sold as a standalone product at this stage",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Cortex should not be sold as a standalone product at this stage.",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.497Z"
+    },
+    {
+      "id": "48254eac-cae8-4cdc-a17a-41568dbbb451",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: should be positioned as the intelligence layer that powers Ordo",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "should be positioned as the intelligence layer that powers Ordo.",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.507Z"
+    },
+    {
+      "id": "6ffc0196-f751-4460-9f29-1acda4fabf33",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: Ordo should become Olyxee’s main workflow execution infrastructure",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Ordo should become Olyxee’s main workflow execution infrastructure.",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.517Z"
+    },
+    {
+      "id": "1e3a492a-1256-485b-b19d-173f5b1ed428",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: It should support both general business workflows and vertical solutions",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "It should support both general business workflows and vertical solutions",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.526Z"
+    },
+    {
+      "id": "17d39c59-272d-4512-88cf-b5322b7c41a6",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: Togent should support workflows around tools such as:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Togent should support workflows around tools such as:",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.535Z"
+    },
+    {
+      "id": "884f7146-47b4-4d54-9c5e-949a7b35355d",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: Togent should start as a focused tool for AI coding-agent cost and",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Togent should start as a focused tool for AI coding-agent cost and",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.546Z"
+    },
+    {
+      "id": "1ad1266c-562e-4a9f-83e5-e362ca6bfc93",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: The first version should not be a full enterprise governance platform",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "The first version should not be a full enterprise governance platform.",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.555Z"
+    },
+    {
+      "id": "60fb1e02-2bb4-457e-9642-2b2717a5efde",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: should prove the pain around repeated context, poor memory, and rising",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "should prove the pain around repeated context, poor memory, and rising",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.564Z"
+    },
+    {
+      "id": "abe40cb8-f951-4540-aa18-a4256634776e",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: Courier Loop should be positioned as a logistics solution powered by",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Courier Loop should be positioned as a logistics solution powered by",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.572Z"
+    },
+    {
+      "id": "62500198-f2b5-4ec5-801f-fae0dc97055e",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: Courier Loop should not be treated as a separate core platform for now",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Courier Loop should not be treated as a separate core platform for now.",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.581Z"
+    },
+    {
+      "id": "7441af39-bfd9-49de-b66d-e09d02ab1a9c",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: It should be packaged as a vertical solution powered by Ordo",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "It should be packaged as a vertical solution powered by Ordo.",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.590Z"
+    },
+    {
+      "id": "8888af4c-158f-4e89-8bd0-b0a94a0b0493",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: ODI should be offered as a module/API, not as a separate core product",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "ODI should be offered as a module/API, not as a separate core product",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.600Z"
+    },
+    {
+      "id": "af8f5a97-4a37-44e2-a262-eee3ced8d36a",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: It should strengthen Addup and Ordo by ensuring documents are",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "It should strengthen Addup and Ordo by ensuring documents are",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.610Z"
+    },
+    {
+      "id": "fc072266-dba1-4eff-8488-e0d5b3e1bdaa",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: Cortex should remain internal until there is a clear market need to",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Cortex should remain internal until there is a clear market need to",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.619Z"
+    },
+    {
+      "id": "bfe07cc6-7b3a-47b1-8445-09bb723f31ce",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: Olyxee’s product architecture should be understood as follows:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Olyxee’s product architecture should be understood as follows:",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.628Z"
+    },
+    {
+      "id": "a0b8a8a3-1403-491d-a003-6bef894aa5c9",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: Olyxee should follow this product development path:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Olyxee should follow this product development path:",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.638Z"
+    },
+    {
+      "id": "87f1e12e-c5e0-4e79-857f-f422e9bd4a5c",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: Olyxee should publicly communicate the portfolio as:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Olyxee should publicly communicate the portfolio as:",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.648Z"
+    },
+    {
+      "id": "28752337-cc62-41db-8936-ddda0c0d0a6e",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: The company should move forward with three core products:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "The company should move forward with three core products:",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.657Z"
+    },
+    {
+      "id": "0ddcf224-1589-486b-ae6f-32bbf81007eb",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "rule",
+      "claim": "Rule: Cortex should be removed as a standalone product and kept as the",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Cortex should be removed as a standalone product and kept as the",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.670Z"
+    },
+    {
+      "id": "34eef8e8-dc62-4440-9e31-83f384f028af",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: Main problems:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Main problems:",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.681Z"
+    },
+    {
+      "id": "043638ac-d84b-4e18-9d54-b25fe65568b6",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: researches real problems created by AI adoption and builds practical",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "researches real problems created by AI adoption and builds practical",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.694Z"
+    },
+    {
+      "id": "101f9f00-fc0c-4dae-870c-9453bdbe1b3f",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: Common problems include:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Common problems include:",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.704Z"
+    },
+    {
+      "id": "ec034bdd-7776-4192-979e-a2ddfa064097",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: • missing entries",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "• missing entries",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.714Z"
+    },
+    {
+      "id": "424a68ce-497d-4bdb-bd06-abdcad86b9c9",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: These problems affect financial reporting, decision-making, and trust in",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "These problems affect financial reporting, decision-making, and trust in",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.729Z"
+    },
+    {
+      "id": "0fbb755c-464d-4dfd-95cb-54ef1926c1cc",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: produce reconciliation results that can be compared against a manual",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "produce reconciliation results that can be compared against a manual",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.740Z"
+    },
+    {
+      "id": "83917137-1607-4c81-b07f-985b7e3ef7ff",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: • Compare Addup output with manual accountant results",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "• Compare Addup output with manual accountant results",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.754Z"
+    },
+    {
+      "id": "6f3f7fc4-c209-4722-ae1b-72868849f6c3",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: • Businesses with manual approval and execution processes",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "• Businesses with manual approval and execution processes",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.764Z"
+    },
+    {
+      "id": "00df909d-699c-439c-b7eb-19ce8e733fa6",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: • manual delivery tracking",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "• manual delivery tracking",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.775Z"
+    },
+    {
+      "id": "fcda9659-436c-48b1-8768-6c9f41b59433",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: • unclear task ownership",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "• unclear task ownership",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.787Z"
+    },
+    {
+      "id": "2b356821-b228-40a4-aafc-b202916a92a8",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: • delays in status updates",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "• delays in status updates",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.800Z"
+    },
+    {
+      "id": "57799196-0e6f-4ab1-91c9-ea26cc5dc1eb",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: • Missing-field detection",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "• Missing-field detection",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.819Z"
+    },
+    {
+      "id": "d92aaa07-dbc0-430d-9a10-f22d37751114",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "insightType": "risk",
+      "claim": "Risk: explore technical problems and turn validated opportunities into",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "explore technical problems and turn validated opportunities into",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-23T23:54:37.828Z"
     }
   ],
   "insights": [
@@ -12948,6 +14781,1399 @@
       "sourceExcerpt": null,
       "confidence": 0.68,
       "createdAt": "2026-06-23T23:28:23.647Z"
+    },
+    {
+      "id": "4be44778-d507-4c29-ac30-5b20af5e52ad",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Alert admin when we receive order",
+        "trigger": "Key workflows: Alert admin when we receive order",
+        "steps": [
+          "Key workflows: Alert admin when we receive order"
+        ],
+        "owner": "Manufacturing,IT departent,Finance",
+        "required_documents": [],
+        "decision_points": [
+          "Key workflows: Alert admin when we receive order"
+        ],
+        "approval_points": [],
+        "dependencies": [],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Key workflows: Alert admin when we receive order",
+        "_confidence": 0.58,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Key workflows: Alert admin when we receive order",
+      "confidence": 0.58,
+      "createdAt": "2026-06-23T23:54:37.337Z"
+    },
+    {
+      "id": "1d1d5161-e9f7-4a72-8d72-4433b77fe38e",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Key workflows: Alert admin when we receive order",
+        "trigger": "Key workflows: Alert admin when we receive order",
+        "steps": [
+          "Key workflows: Alert admin when we receive order"
+        ],
+        "owner": "Manufacturing,IT departent,Finance",
+        "required_documents": [],
+        "decision_points": [
+          "Key workflows: Alert admin when we receive order"
+        ],
+        "approval_points": [],
+        "dependencies": [],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Key workflows: Alert admin when we receive order",
+        "_confidence": 0.58,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Key workflows: Alert admin when we receive order",
+      "confidence": 0.58,
+      "createdAt": "2026-06-23T23:54:37.350Z"
+    },
+    {
+      "id": "04ad0ae6-906a-464a-a005-223fc3445d60",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "• execute workflows safely",
+        "trigger": "",
+        "steps": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection",
+          "• Review workflow for finance teams",
+          "• Add review dashboard"
+        ],
+        "owner": "Manufacturing,IT departent,Finance",
+        "required_documents": [
+          "Invoice",
+          "Purchase Order",
+          "Contract",
+          "Receipt",
+          "Statement"
+        ],
+        "decision_points": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection"
+        ],
+        "approval_points": [
+          "• route approvals"
+        ],
+        "dependencies": [
+          "Cortex should remain internal until there is a clear market need to"
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "createdAt": "2026-06-23T23:54:37.362Z"
+    },
+    {
+      "id": "897fc661-08f8-4e07-83b3-d9f6c56a416c",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "AI business workflow execution system",
+        "trigger": "",
+        "steps": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection",
+          "• Review workflow for finance teams",
+          "• Add review dashboard"
+        ],
+        "owner": "Manufacturing,IT departent,Finance",
+        "required_documents": [
+          "Invoice",
+          "Purchase Order",
+          "Contract",
+          "Receipt",
+          "Statement"
+        ],
+        "decision_points": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection"
+        ],
+        "approval_points": [
+          "• route approvals"
+        ],
+        "dependencies": [
+          "Cortex should remain internal until there is a clear market need to"
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "createdAt": "2026-06-23T23:54:37.376Z"
+    },
+    {
+      "id": "e417dc26-12e4-43b2-9764-67ffaf07cdbb",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Solution Logistics workflow solution powered by Ordo",
+        "trigger": "",
+        "steps": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection",
+          "• Review workflow for finance teams",
+          "• Add review dashboard"
+        ],
+        "owner": "Manufacturing,IT departent,Finance",
+        "required_documents": [
+          "Invoice",
+          "Purchase Order",
+          "Contract",
+          "Receipt",
+          "Statement"
+        ],
+        "decision_points": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection"
+        ],
+        "approval_points": [
+          "• route approvals"
+        ],
+        "dependencies": [
+          "Cortex should remain internal until there is a clear market need to"
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "createdAt": "2026-06-23T23:54:37.390Z"
+    },
+    {
+      "id": "6e88077f-f666-4d65-a1d1-d3dcc87c4e23",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "• Review workflow for finance teams",
+        "trigger": "",
+        "steps": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection",
+          "• Review workflow for finance teams",
+          "• Add review dashboard"
+        ],
+        "owner": "Manufacturing,IT departent,Finance",
+        "required_documents": [
+          "Invoice",
+          "Purchase Order",
+          "Contract",
+          "Receipt",
+          "Statement"
+        ],
+        "decision_points": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection"
+        ],
+        "approval_points": [
+          "• route approvals"
+        ],
+        "dependencies": [
+          "Cortex should remain internal until there is a clear market need to"
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "createdAt": "2026-06-23T23:54:37.400Z"
+    },
+    {
+      "id": "0e4e5932-3cd0-46e0-ad7e-bc016a607b83",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "AI business workflow execution system.",
+        "trigger": "",
+        "steps": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection",
+          "• Review workflow for finance teams",
+          "• Add review dashboard"
+        ],
+        "owner": "Manufacturing,IT departent,Finance",
+        "required_documents": [
+          "Invoice",
+          "Purchase Order",
+          "Contract",
+          "Receipt",
+          "Statement"
+        ],
+        "decision_points": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection"
+        ],
+        "approval_points": [
+          "• route approvals"
+        ],
+        "dependencies": [
+          "Cortex should remain internal until there is a clear market need to"
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "createdAt": "2026-06-23T23:54:37.411Z"
+    },
+    {
+      "id": "091b61a5-69d3-4705-91b5-78e891f5bbea",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Ordo helps businesses execute workflows end",
+        "trigger": "",
+        "steps": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection",
+          "• Review workflow for finance teams",
+          "• Add review dashboard"
+        ],
+        "owner": "Manufacturing,IT departent,Finance",
+        "required_documents": [
+          "Invoice",
+          "Purchase Order",
+          "Contract",
+          "Receipt",
+          "Statement"
+        ],
+        "decision_points": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection"
+        ],
+        "approval_points": [
+          "• route approvals"
+        ],
+        "dependencies": [
+          "Cortex should remain internal until there is a clear market need to"
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "createdAt": "2026-06-23T23:54:37.422Z"
+    },
+    {
+      "id": "509490ad-bf16-490f-b2d4-edf9440ef071",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "documents, systems, APIs, databases, and human approvals.",
+        "trigger": "",
+        "steps": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection",
+          "• Review workflow for finance teams",
+          "• Add review dashboard"
+        ],
+        "owner": "Manufacturing,IT departent,Finance",
+        "required_documents": [
+          "Invoice",
+          "Purchase Order",
+          "Contract",
+          "Receipt",
+          "Statement"
+        ],
+        "decision_points": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection"
+        ],
+        "approval_points": [
+          "• route approvals"
+        ],
+        "dependencies": [
+          "Cortex should remain internal until there is a clear market need to"
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "createdAt": "2026-06-23T23:54:37.431Z"
+    },
+    {
+      "id": "93c00770-fc44-4440-bffb-1fe684697ef9",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "• understand workflow intent",
+        "trigger": "",
+        "steps": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection",
+          "• Review workflow for finance teams",
+          "• Add review dashboard"
+        ],
+        "owner": "Manufacturing,IT departent,Finance",
+        "required_documents": [
+          "Invoice",
+          "Purchase Order",
+          "Contract",
+          "Receipt",
+          "Statement"
+        ],
+        "decision_points": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection"
+        ],
+        "approval_points": [
+          "• route approvals"
+        ],
+        "dependencies": [
+          "Cortex should remain internal until there is a clear market need to"
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "createdAt": "2026-06-23T23:54:37.440Z"
+    },
+    {
+      "id": "71ab6643-ef2e-4ed5-9085-538b3c5bd959",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "• route approvals",
+        "trigger": "",
+        "steps": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection",
+          "• Review workflow for finance teams",
+          "• Add review dashboard"
+        ],
+        "owner": "Manufacturing,IT departent,Finance",
+        "required_documents": [
+          "Invoice",
+          "Purchase Order",
+          "Contract",
+          "Receipt",
+          "Statement"
+        ],
+        "decision_points": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection"
+        ],
+        "approval_points": [
+          "• route approvals"
+        ],
+        "dependencies": [
+          "Cortex should remain internal until there is a clear market need to"
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "createdAt": "2026-06-23T23:54:37.449Z"
+    },
+    {
+      "id": "c435ee68-fc4d-434f-8f92-e8743e62259f",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Ordo is an AI workflow execution system that turns business instructions",
+        "trigger": "",
+        "steps": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection",
+          "• Review workflow for finance teams",
+          "• Add review dashboard"
+        ],
+        "owner": "Manufacturing,IT departent,Finance",
+        "required_documents": [
+          "Invoice",
+          "Purchase Order",
+          "Contract",
+          "Receipt",
+          "Statement"
+        ],
+        "decision_points": [
+          "Addup helps businesses reconcile financial records, detect mismatches,",
+          "• unmatched transactions",
+          "• reversal mismatches",
+          "compares financial records, identifies differences, explains mismatches,",
+          "• Unmatched transaction detection",
+          "• Reference mismatch detection"
+        ],
+        "approval_points": [
+          "• route approvals"
+        ],
+        "dependencies": [
+          "Cortex should remain internal until there is a clear market need to"
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup helps businesses reconcile financial records, detect mismatches,",
+      "confidence": 0.76,
+      "createdAt": "2026-06-23T23:54:37.461Z"
+    },
+    {
+      "id": "30f5903d-6c23-4989-a089-e9b9ea9be20f",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "Addup should remain focused on accuracy before speed",
+        "condition": "",
+        "action": "Addup should remain focused on accuracy before speed.",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Addup should remain focused on accuracy before speed.",
+        "_confidence": 0.72,
+        "source": "Addup should remain focused on accuracy before speed."
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Addup should remain focused on accuracy before speed.",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.471Z"
+    },
+    {
+      "id": "0af99166-7546-49be-9fe3-2c6ef386e8dc",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "The product must prove that it can detect financial issues reliably and",
+        "condition": "",
+        "action": "The product must prove that it can detect financial issues reliably and",
+        "risk_level": "medium",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "The product must prove that it can detect financial issues reliably and",
+        "_confidence": 0.72,
+        "source": "The product must prove that it can detect financial issues reliably and"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "The product must prove that it can detect financial issues reliably and",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.482Z"
+    },
+    {
+      "id": "7f23b67f-fc8c-43f8-b285-70c166e6d2d7",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "Cortex should not be sold as a standalone product at this stage",
+        "condition": "",
+        "action": "Cortex should not be sold as a standalone product at this stage.",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Cortex should not be sold as a standalone product at this stage.",
+        "_confidence": 0.72,
+        "source": "Cortex should not be sold as a standalone product at this stage."
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Cortex should not be sold as a standalone product at this stage.",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.493Z"
+    },
+    {
+      "id": "224fb843-acc9-4306-bf3a-c83b69e172d7",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "should be positioned as the intelligence layer that powers Ordo",
+        "condition": "",
+        "action": "should be positioned as the intelligence layer that powers Ordo.",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "should be positioned as the intelligence layer that powers Ordo.",
+        "_confidence": 0.72,
+        "source": "should be positioned as the intelligence layer that powers Ordo."
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "should be positioned as the intelligence layer that powers Ordo.",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.502Z"
+    },
+    {
+      "id": "cbbd1d5f-63ed-4034-a1e7-9720cbd421c2",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "Ordo should become Olyxee’s main workflow execution infrastructure",
+        "condition": "",
+        "action": "Ordo should become Olyxee’s main workflow execution infrastructure.",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Ordo should become Olyxee’s main workflow execution infrastructure.",
+        "_confidence": 0.72,
+        "source": "Ordo should become Olyxee’s main workflow execution infrastructure."
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Ordo should become Olyxee’s main workflow execution infrastructure.",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.512Z"
+    },
+    {
+      "id": "acbb9b7e-4066-45f5-a972-45774d1827d3",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "It should support both general business workflows and vertical solutions",
+        "condition": "",
+        "action": "It should support both general business workflows and vertical solutions",
+        "risk_level": "low",
+        "department": "Support",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "It should support both general business workflows and vertical solutions",
+        "_confidence": 0.72,
+        "source": "It should support both general business workflows and vertical solutions"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "It should support both general business workflows and vertical solutions",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.521Z"
+    },
+    {
+      "id": "328b9f70-4a11-4640-9b37-2889b2453052",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "Togent should support workflows around tools such as:",
+        "condition": "",
+        "action": "Togent should support workflows around tools such as:",
+        "risk_level": "low",
+        "department": "Support",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Togent should support workflows around tools such as:",
+        "_confidence": 0.72,
+        "source": "Togent should support workflows around tools such as:"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Togent should support workflows around tools such as:",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.530Z"
+    },
+    {
+      "id": "f61f2ba6-b0d5-43e7-9d8e-ab3b71db7676",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "Togent should start as a focused tool for AI coding-agent cost and",
+        "condition": "",
+        "action": "Togent should start as a focused tool for AI coding-agent cost and",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Togent should start as a focused tool for AI coding-agent cost and",
+        "_confidence": 0.72,
+        "source": "Togent should start as a focused tool for AI coding-agent cost and"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Togent should start as a focused tool for AI coding-agent cost and",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.540Z"
+    },
+    {
+      "id": "28092f90-6e4a-40b0-9b72-c88a037d3fbc",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "The first version should not be a full enterprise governance platform",
+        "condition": "The first version should not be a full enterprise governance platform.",
+        "action": "The first version should not be a full enterprise governance platform.",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "The first version should not be a full enterprise governance platform.",
+        "_confidence": 0.72,
+        "source": "The first version should not be a full enterprise governance platform."
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "The first version should not be a full enterprise governance platform.",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.550Z"
+    },
+    {
+      "id": "e793a16d-f4d0-4dc6-ac15-81282dea9c14",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "should prove the pain around repeated context, poor memory, and rising",
+        "condition": "",
+        "action": "should prove the pain around repeated context, poor memory, and rising",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "should prove the pain around repeated context, poor memory, and rising",
+        "_confidence": 0.72,
+        "source": "should prove the pain around repeated context, poor memory, and rising"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "should prove the pain around repeated context, poor memory, and rising",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.559Z"
+    },
+    {
+      "id": "b1f0755a-c17c-4a04-8d48-afab3d2719cc",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "Courier Loop should be positioned as a logistics solution powered by",
+        "condition": "",
+        "action": "Courier Loop should be positioned as a logistics solution powered by",
+        "risk_level": "low",
+        "department": "Logistics",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Courier Loop should be positioned as a logistics solution powered by",
+        "_confidence": 0.72,
+        "source": "Courier Loop should be positioned as a logistics solution powered by"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Courier Loop should be positioned as a logistics solution powered by",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.568Z"
+    },
+    {
+      "id": "b61d2eec-463e-4af8-af31-7aa713e699e5",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "Courier Loop should not be treated as a separate core platform for now",
+        "condition": "",
+        "action": "Courier Loop should not be treated as a separate core platform for now.",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Courier Loop should not be treated as a separate core platform for now.",
+        "_confidence": 0.72,
+        "source": "Courier Loop should not be treated as a separate core platform for now."
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Courier Loop should not be treated as a separate core platform for now.",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.576Z"
+    },
+    {
+      "id": "1120d3d4-f424-4cf3-8f6b-fa3c93514b24",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "It should be packaged as a vertical solution powered by Ordo",
+        "condition": "",
+        "action": "It should be packaged as a vertical solution powered by Ordo.",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "It should be packaged as a vertical solution powered by Ordo.",
+        "_confidence": 0.72,
+        "source": "It should be packaged as a vertical solution powered by Ordo."
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "It should be packaged as a vertical solution powered by Ordo.",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.586Z"
+    },
+    {
+      "id": "dce83a42-9b7d-4898-9f2c-c103c5a311e5",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "ODI should be offered as a module/API, not as a separate core product",
+        "condition": "",
+        "action": "ODI should be offered as a module/API, not as a separate core product",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "ODI should be offered as a module/API, not as a separate core product",
+        "_confidence": 0.72,
+        "source": "ODI should be offered as a module/API, not as a separate core product"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "ODI should be offered as a module/API, not as a separate core product",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.596Z"
+    },
+    {
+      "id": "ea5587cc-0e98-420f-a5c0-1e02b51656bb",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "It should strengthen Addup and Ordo by ensuring documents are",
+        "condition": "",
+        "action": "It should strengthen Addup and Ordo by ensuring documents are",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "It should strengthen Addup and Ordo by ensuring documents are",
+        "_confidence": 0.72,
+        "source": "It should strengthen Addup and Ordo by ensuring documents are"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "It should strengthen Addup and Ordo by ensuring documents are",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.605Z"
+    },
+    {
+      "id": "564b48b1-25c0-408c-ad50-66383de8b10e",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "Cortex should remain internal until there is a clear market need to",
+        "condition": "",
+        "action": "Cortex should remain internal until there is a clear market need to",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Cortex should remain internal until there is a clear market need to",
+        "_confidence": 0.72,
+        "source": "Cortex should remain internal until there is a clear market need to"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Cortex should remain internal until there is a clear market need to",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.615Z"
+    },
+    {
+      "id": "8d94b8f9-0952-4188-a3d0-f15a78e38100",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "Olyxee’s product architecture should be understood as follows:",
+        "condition": "",
+        "action": "Olyxee’s product architecture should be understood as follows:",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Olyxee’s product architecture should be understood as follows:",
+        "_confidence": 0.72,
+        "source": "Olyxee’s product architecture should be understood as follows:"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Olyxee’s product architecture should be understood as follows:",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.623Z"
+    },
+    {
+      "id": "5e5a567a-1bb5-4707-83c7-4fda2bd01efd",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "Olyxee should follow this product development path:",
+        "condition": "",
+        "action": "Olyxee should follow this product development path:",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Olyxee should follow this product development path:",
+        "_confidence": 0.72,
+        "source": "Olyxee should follow this product development path:"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Olyxee should follow this product development path:",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.633Z"
+    },
+    {
+      "id": "99ded2d2-e255-48d2-b4ba-2c20e539693d",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "Olyxee should publicly communicate the portfolio as:",
+        "condition": "",
+        "action": "Olyxee should publicly communicate the portfolio as:",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Olyxee should publicly communicate the portfolio as:",
+        "_confidence": 0.72,
+        "source": "Olyxee should publicly communicate the portfolio as:"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Olyxee should publicly communicate the portfolio as:",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.643Z"
+    },
+    {
+      "id": "c637d570-19dd-47b0-be52-509e2b4e9041",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "The company should move forward with three core products:",
+        "condition": "",
+        "action": "The company should move forward with three core products:",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "The company should move forward with three core products:",
+        "_confidence": 0.72,
+        "source": "The company should move forward with three core products:"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "The company should move forward with three core products:",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.652Z"
+    },
+    {
+      "id": "619341d5-5a5f-4089-b0e7-aced0a403ae1",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "rule",
+      "content": {
+        "rule_name": "Cortex should be removed as a standalone product and kept as the",
+        "condition": "",
+        "action": "Cortex should be removed as a standalone product and kept as the",
+        "risk_level": "low",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Cortex should be removed as a standalone product and kept as the",
+        "_confidence": 0.72,
+        "source": "Cortex should be removed as a standalone product and kept as the"
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Olyxee Product Document.pdf",
+      "sourceExcerpt": "Cortex should be removed as a standalone product and kept as the",
+      "confidence": 0.72,
+      "createdAt": "2026-06-23T23:54:37.664Z"
+    },
+    {
+      "id": "6a29581c-12c9-43d3-8c35-591ba91855d0",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "Main problems:",
+        "severity": "low",
+        "reason": "Main problems:",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Main problems:",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.675Z"
+    },
+    {
+      "id": "13bf22d3-33e8-4f8d-a1db-64553d30b1a1",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "researches real problems created by AI adoption and builds practical",
+        "severity": "low",
+        "reason": "researches real problems created by AI adoption and builds practical",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "researches real problems created by AI adoption and builds practical",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.688Z"
+    },
+    {
+      "id": "558c79ea-1e0d-47b4-b45e-c39a6dd8f52b",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "Common problems include:",
+        "severity": "low",
+        "reason": "Common problems include:",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "Common problems include:",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.699Z"
+    },
+    {
+      "id": "0dd47786-c075-42bd-bf01-21eb1090b7fe",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "• missing entries",
+        "severity": "medium",
+        "reason": "• missing entries",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Document the exception path and responsible owner.",
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "• missing entries",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.708Z"
+    },
+    {
+      "id": "174c776e-1f52-4edd-abd1-58d6edd7d6a2",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "These problems affect financial reporting, decision-making, and trust in",
+        "severity": "low",
+        "reason": "These problems affect financial reporting, decision-making, and trust in",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "These problems affect financial reporting, decision-making, and trust in",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.721Z"
+    },
+    {
+      "id": "8ca609a1-2511-4ab7-ba64-833c957154b7",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "produce reconciliation results that can be compared against a manual",
+        "severity": "medium",
+        "reason": "produce reconciliation results that can be compared against a manual",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Standardise or automate this check where possible.",
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "produce reconciliation results that can be compared against a manual",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.734Z"
+    },
+    {
+      "id": "2bea0437-d0dd-4465-8b82-e549d0eba73e",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "• Compare Addup output with manual accountant results",
+        "severity": "medium",
+        "reason": "• Compare Addup output with manual accountant results",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Standardise or automate this check where possible.",
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "• Compare Addup output with manual accountant results",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.749Z"
+    },
+    {
+      "id": "5f55104f-f7ce-4d5b-8a99-788dd8db76fe",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "• Businesses with manual approval and execution processes",
+        "severity": "medium",
+        "reason": "• Businesses with manual approval and execution processes",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Standardise or automate this check where possible.",
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "• Businesses with manual approval and execution processes",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.759Z"
+    },
+    {
+      "id": "cba80837-2dd1-40fa-ae45-4b49ffb8a8e7",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "• manual delivery tracking",
+        "severity": "medium",
+        "reason": "• manual delivery tracking",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Standardise or automate this check where possible.",
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "• manual delivery tracking",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.769Z"
+    },
+    {
+      "id": "5a42c13e-64c6-4e5c-9aef-bfa511a52fdf",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "• unclear task ownership",
+        "severity": "low",
+        "reason": "• unclear task ownership",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "• unclear task ownership",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.781Z"
+    },
+    {
+      "id": "93629fba-2b93-47d9-b790-62d4977ac5e6",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "• delays in status updates",
+        "severity": "low",
+        "reason": "• delays in status updates",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "• delays in status updates",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.794Z"
+    },
+    {
+      "id": "7d0f7bb8-f3f6-4728-b00a-75ca1a1d910c",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "• Missing-field detection",
+        "severity": "medium",
+        "reason": "• Missing-field detection",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Document the exception path and responsible owner.",
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "• Missing-field detection",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.809Z"
+    },
+    {
+      "id": "06e3b358-5e44-49a6-808b-86f8ee516ea0",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+      "type": "risk",
+      "content": {
+        "risk": "explore technical problems and turn validated opportunities into",
+        "severity": "low",
+        "reason": "explore technical problems and turn validated opportunities into",
+        "affected_workflow": "Alert admin when we receive order",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "Olyxee Product Document.pdf",
+        "_sourceExcerpt": "explore technical problems and turn validated opportunities into",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-23T23:54:37.824Z"
     }
   ],
   "conversations": [],
@@ -13018,6 +16244,39 @@
         "docCount": 1
       },
       "createdAt": "2026-06-23T23:28:23.680Z"
+    },
+    {
+      "id": "e6fbb7a6-305b-49fb-9b79-1b010a3b29c7",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "type": "question_asked",
+      "description": "Q: What does this business do?",
+      "meta": {
+        "grounded": true,
+        "sources": 1
+      },
+      "createdAt": "2026-06-23T23:52:46.996Z"
+    },
+    {
+      "id": "26edb23f-2ed8-4e92-9aff-7f37b666d0de",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "type": "action_run",
+      "description": "Action: task_list",
+      "meta": {
+        "type": "task_list"
+      },
+      "createdAt": "2026-06-23T23:52:47.112Z"
+    },
+    {
+      "id": "0248bce4-4ebf-48a9-a652-3826c62b5fb2",
+      "orgId": "e40037e9-9f1f-4bd9-9d2f-0a0d452bd913",
+      "type": "engine_intake_complete",
+      "description": "Knowledge Map built",
+      "meta": {
+        "mapId": "e7541e5b-0499-443c-a570-eff1f3932f32",
+        "version": 5,
+        "docCount": 1
+      },
+      "createdAt": "2026-06-23T23:54:37.838Z"
     }
   ]
 }
