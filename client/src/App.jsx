@@ -5,10 +5,8 @@ import {
   Brain,
   Building2,
   Check,
-  ChevronDown,
   ClipboardList,
   FileText,
-  History,
   Layers3,
   Loader2,
   Map,
@@ -148,7 +146,6 @@ export function App() {
   const [profile, setProfile] = useState(emptyProfile);
   const [actionResult, setActionResult] = useState(null);
   const [actionContext, setActionContext] = useState('');
-  const [expandedWorkflow, setExpandedWorkflow] = useState('');
 
   const currentOrg = useMemo(() => orgs.find((org) => org.id === orgId), [orgs, orgId]);
 
@@ -354,7 +351,7 @@ export function App() {
   ) : (
     <>
       {view === 'documents' && <Documents docs={docs} onUpload={uploadFiles} onDelete={deleteDocument} onIntake={runIntake} />}
-      {view === 'map' && <KnowledgeMap context={context} history={history} expandedWorkflow={expandedWorkflow} setExpandedWorkflow={setExpandedWorkflow} />}
+      {view === 'map' && <KnowledgeMap context={context} />}
       {view === 'validation' && <Validation validation={validation} onReview={reviewFinding} />}
       {view === 'actions' && <Actions actionContext={actionContext} setActionContext={setActionContext} result={actionResult} onRun={runAction} />}
       {view === 'plugins' && <PluginsCatalog onOpen={setView} />}
@@ -405,12 +402,6 @@ export function App() {
       </header>
 
       <main>
-        <header className="topbar">
-          <div>
-            <p className="eyebrow">{currentOrg?.businessType || 'Business intelligence'}</p>
-            <h1>{currentOrg?.name || 'Orgni'}</h1>
-          </div>
-        </header>
         {content}
       </main>
 
@@ -595,93 +586,184 @@ function Documents({ docs, onUpload, onDelete, onIntake }) {
   );
 }
 
-function KnowledgeMap({ context, history, expandedWorkflow, setExpandedWorkflow }) {
-  if (!context) return <EmptyState title="No knowledge map yet" body="Upload source documents, then build the Knowledge Map." />;
-  const workflows = context.workflows || [];
-  const summary = context.summary?.plain_english_summary || context.businessSummary?.plain_english_summary || context.businessSummary || 'No summary generated.';
+function KnowledgeMap({ context }) {
+  const network = useMemo(
+    () => (context ? buildKnowledgeNetwork(context) : { nodes: [], edges: [], nodeMap: new globalThis.Map(), legend: [] }),
+    [context]
+  );
+  const [selectedId, setSelectedId] = useState('business');
+
+  useEffect(() => { setSelectedId('business'); }, [context]);
+
+  if (!context || !network.nodes.length) {
+    return <EmptyState title="No knowledge map yet" body="Upload source documents, then build the Knowledge Map." />;
+  }
+
+  const selected = network.nodeMap.get(selectedId) || network.nodeMap.get('business');
+
   return (
     <section className="view-grid">
-      <div className="panel span-2">
-        <PanelHeader icon={Map} title="Business summary" />
-        <p className="lead">{String(summary)}</p>
-      </div>
-
-      <KnowledgeNetwork context={context} />
-
-      <div className="stats">
-        <Metric label="Confidence" value={pct(context.confidence ?? context.overallConfidence)} />
-        <Metric label="Departments" value={count(context.departments)} />
-        <Metric label="Roles" value={count(context.roles)} />
-        <Metric label="Risk score" value={pct(context.riskScore ?? context.overallRiskScore)} />
-      </div>
-
-      <div className="panel span-2">
-        <PanelHeader icon={Layers3} title="Workflows" />
-        {workflows.length ? workflows.map((workflow, index) => {
-          const id = workflow.workflow_name || workflow.name || `Workflow ${index + 1}`;
-          const open = expandedWorkflow === id;
-          return (
-            <div className="workflow" key={id}>
-              <button onClick={() => setExpandedWorkflow(open ? '' : id)}>
-                <strong>{id}</strong>
-                <span>{count(workflow.steps)} steps</span>
-                <ChevronDown size={16} className={open ? 'rotate' : ''} />
-              </button>
-              {open && <List items={workflow.steps?.map((step) => step.step || step)} fallback="No steps extracted." />}
+      <div className="panel span-2 km-layout">
+        <div className="km-network">
+          <PanelHeader icon={Map} title="Knowledge network" />
+          <p className="network-hint">Your business sits at the centre. Click any node to see its details.</p>
+          <KnowledgeNetwork network={network} selectedId={selected?.id} onSelect={setSelectedId} />
+          {network.legend.length > 0 && (
+            <div className="network-legend">
+              {network.legend.map((item) => <span key={item.type} className={item.type}><i className="dot" />{item.label}</span>)}
             </div>
-          );
-        }) : <EmptyInline message="No workflows extracted." />}
-      </div>
-
-      <div className="panel">
-        <PanelHeader icon={AlertTriangle} title="Risks" />
-        <List items={(context.risks || []).map((risk) => risk.risk || risk.title)} fallback="No risks extracted." />
-      </div>
-
-      <div className="panel">
-        <PanelHeader icon={History} title="Version history" />
-        <List items={history.map((item) => `v${item.version} · ${item.status} · ${pct(item.confidence)} · ${time(item.generatedAt)}`)} fallback="No history yet." />
+          )}
+        </div>
+        <aside className="km-detail">
+          <NodeDetail node={selected} context={context} onSelect={setSelectedId} />
+        </aside>
       </div>
     </section>
   );
 }
 
-function KnowledgeNetwork({ context }) {
-  const network = buildKnowledgeNetwork(context);
+function NodeDetail({ node, context, onSelect }) {
+  if (!node) return null;
+
+  if (node.kind === 'business') {
+    const summary = context.summary?.plain_english_summary || context.businessSummary?.plain_english_summary || context.businessSummary || 'No summary generated yet.';
+    return (
+      <div className="detail-card">
+        <span className="detail-tag business">Business</span>
+        <h3>{node.label}</h3>
+        <p className="detail-summary">{String(summary)}</p>
+        <div className="detail-stats">
+          <Metric label="Confidence" value={pct(context.confidence ?? context.overallConfidence)} />
+          <Metric label="Departments" value={count(context.departments)} />
+          <Metric label="Roles" value={count(context.roles)} />
+          <Metric label="Risk score" value={pct(context.riskScore ?? context.overallRiskScore)} />
+        </div>
+        <p className="detail-hint">Click a branch or note in the map to drill in.</p>
+      </div>
+    );
+  }
+
+  if (node.kind === 'hub') {
+    return (
+      <div className="detail-card">
+        <span className={`detail-tag ${node.type}`}>{node.label}</span>
+        <h3>{node.label}</h3>
+        <p className="detail-summary">{node.count} {node.count === 1 ? 'item' : 'items'} in this branch.</p>
+        <ul className="detail-list">
+          {(node.items || []).map((entry) => (
+            <li key={entry.id}>
+              <button className="detail-jump" onClick={() => onSelect(entry.id)}>{entry.label}</button>
+            </li>
+          ))}
+        </ul>
+        {node.count > (node.items || []).length && (
+          <p className="detail-hint">Showing {(node.items || []).length} of {node.count}.</p>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="detail-card">
+      <span className={`detail-tag ${node.type}`}>{node.hubLabel || node.type}</span>
+      <h3>{node.label}</h3>
+      <DetailFields type={node.type} data={node.data} />
+    </div>
+  );
+}
+
+function DetailFields({ type, data }) {
+  if (!data || typeof data !== 'object') {
+    return <p className="detail-summary">{String(data || 'No additional detail.')}</p>;
+  }
+
+  const fieldMap = {
+    workflow: [
+      { key: 'trigger', label: 'Trigger' },
+      { key: 'owner', label: 'Owner' },
+      { key: 'steps', label: 'Steps', list: true },
+      { key: 'required_documents', label: 'Required documents', list: true },
+      { key: 'decision_points', label: 'Decision points', list: true }
+    ],
+    rule: [
+      { key: 'condition', label: 'Condition' },
+      { key: 'action', label: 'Action' },
+      { key: 'risk_level', label: 'Risk level' }
+    ],
+    risk: [
+      { key: 'severity', label: 'Severity' },
+      { key: 'reason', label: 'Reason' },
+      { key: 'affected_workflow', label: 'Affected workflow' },
+      { key: 'recommendation', label: 'Recommendation' }
+    ],
+    department: [
+      { key: 'functions', label: 'Functions', list: true }
+    ],
+    role: [
+      { key: 'department', label: 'Department' },
+      { key: 'responsibilities', label: 'Responsibilities', list: true }
+    ]
+  };
+
+  const text = (value) => {
+    if (Array.isArray(value)) return value.map(text).filter(Boolean).join(', ');
+    if (value && typeof value === 'object') return formatItem(value);
+    return value == null ? '' : String(value);
+  };
+
+  const fields = (fieldMap[type] || []).map((field) => {
+    const raw = data[field.key];
+    if (field.list) {
+      const items = (Array.isArray(raw) ? raw : raw ? [raw] : []).map((v) => text(v.step || v)).filter(Boolean);
+      return items.length ? { ...field, items } : null;
+    }
+    const value = text(raw).trim();
+    return value ? { ...field, value } : null;
+  }).filter(Boolean);
+
+  if (!fields.length) return <p className="detail-summary">No additional detail extracted.</p>;
+
+  return (
+    <div className="detail-fields">
+      {fields.map((field) => (
+        <div className="detail-field" key={field.key}>
+          <span className="detail-field-label">{field.label}</span>
+          {field.list
+            ? <ul className="detail-bullets">{field.items.map((item, i) => <li key={i}>{item}</li>)}</ul>
+            : <p>{field.value}</p>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function KnowledgeNetwork({ network, selectedId, onSelect }) {
   if (!network.nodes.length) return null;
   return (
-    <div className="panel span-2 network-panel">
-      <PanelHeader icon={Map} title="Knowledge network" />
-      <p className="network-hint">Your business sits at the centre. Each branch groups related knowledge — the small connected notes are the specific items Orgni found.</p>
-      <div className="network-wrap" aria-label="Knowledge map network">
-        <svg className="network-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          {network.edges.map((edge) => {
-            const from = network.nodeMap.get(edge.from);
-            const to = network.nodeMap.get(edge.to);
-            if (!from || !to) return null;
-            return <line key={`${edge.from}-${edge.to}`} className={`edge ${edge.kind} ${edge.type || ''}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} />;
-          })}
-        </svg>
-        {network.nodes.map((node) => (
-          <div
-            className={`network-node ${node.kind} ${node.type}`}
-            key={node.id}
-            style={{ left: `${node.x}%`, top: `${node.y}%` }}
-            title={node.label}
-          >
-            {node.kind !== 'leaf' && <span className="node-dot" aria-hidden="true" />}
-            <strong>{node.label}</strong>
-            {node.count != null && <em>{node.count} {node.count === 1 ? 'item' : 'items'}</em>}
-          </div>
-        ))}
-      </div>
-      {network.legend.length ? (
-        <div className="network-legend">
-          {network.legend.map((item) => <span key={item.type} className={item.type}><i className="dot" />{item.label}</span>)}
-        </div>
-      ) : (
-        <p className="empty-inline">No branches extracted yet — upload more detail and rebuild the map.</p>
-      )}
+    <div className="network-wrap" aria-label="Knowledge map network">
+      <svg className="network-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        {network.edges.map((edge) => {
+          const from = network.nodeMap.get(edge.from);
+          const to = network.nodeMap.get(edge.to);
+          if (!from || !to) return null;
+          const active = selectedId && (edge.from === selectedId || edge.to === selectedId);
+          return <line key={`${edge.from}-${edge.to}`} className={`edge ${edge.kind} ${edge.type || ''} ${active ? 'active' : ''}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} />;
+        })}
+      </svg>
+      {network.nodes.map((node) => (
+        <button
+          type="button"
+          className={`network-node ${node.kind} ${node.type} ${node.id === selectedId ? 'selected' : ''}`}
+          key={node.id}
+          style={{ left: `${node.x}%`, top: `${node.y}%` }}
+          title={node.label}
+          onClick={() => onSelect(node.id)}
+        >
+          {node.kind !== 'leaf' && <span className="node-dot" aria-hidden="true" />}
+          <strong>{node.label}</strong>
+          {node.count != null && <em>{node.count} {node.count === 1 ? 'item' : 'items'}</em>}
+        </button>
+      ))}
     </div>
   );
 }
@@ -701,14 +783,19 @@ function buildKnowledgeNetwork(context) {
   const businessName = trim(context.summary?.business_name || context.orgName || 'Business', 40);
 
   const categories = [
-    { key: 'workflow', label: 'Workflows', items: (context.workflows || []).map((item) => item.workflow_name || item.name || item) },
-    { key: 'role', label: 'Roles', items: (context.roles || []).map((item) => item.role || item.name || item) },
-    { key: 'department', label: 'Departments', items: (context.departments || []).map((item) => item.name || item.department || item) },
-    { key: 'rule', label: 'Rules', items: (context.rules || []).map((item) => item.rule_name || item.rule || item.condition || item) },
-    { key: 'risk', label: 'Risks', items: (context.risks || []).map((item) => item.risk || item.title || item) }
+    { key: 'workflow', label: 'Workflows', raw: context.workflows || [], getLabel: (item) => item.workflow_name || item.name || item },
+    { key: 'role', label: 'Roles', raw: context.roles || [], getLabel: (item) => item.role || item.name || item },
+    { key: 'department', label: 'Departments', raw: context.departments || [], getLabel: (item) => item.name || item.department || item },
+    { key: 'rule', label: 'Rules', raw: context.rules || [], getLabel: (item) => item.rule_name || item.rule || item.condition || item },
+    { key: 'risk', label: 'Risks', raw: context.risks || [], getLabel: (item) => item.risk || item.title || item }
   ]
-    .map((cat) => ({ ...cat, items: cat.items.map(textValue).filter(Boolean) }))
-    .filter((cat) => cat.items.length);
+    .map((cat) => ({
+      ...cat,
+      entries: cat.raw
+        .map((item) => ({ label: textValue(cat.getLabel(item)), data: item }))
+        .filter((entry) => entry.label)
+    }))
+    .filter((cat) => cat.entries.length);
 
   const nodes = [];
   const edges = [];
@@ -727,20 +814,20 @@ function buildKnowledgeNetwork(context) {
     const hx = cx + hubRx * Math.cos(angle);
     const hy = cy + hubRy * Math.sin(angle);
     const hubId = `hub-${cat.key}`;
-    const visible = cat.items.slice(0, 5);
-    nodes.push({ id: hubId, label: cat.label, count: cat.items.length, type: cat.key, kind: 'hub', x: hx, y: hy });
+    const visible = cat.entries.slice(0, 5);
+    const visibleNodes = visible.map((entry, j) => ({ id: `${cat.key}-leaf-${slug(entry.label)}-${j}`, label: trim(entry.label, 48), entry }));
+    nodes.push({ id: hubId, label: cat.label, count: cat.entries.length, type: cat.key, kind: 'hub', x: hx, y: hy, items: visibleNodes.map((v) => ({ id: v.id, label: v.label })) });
     edges.push({ from: 'business', to: hubId, kind: 'trunk', type: cat.key });
 
-    const k = visible.length;
+    const k = visibleNodes.length;
     const spread = k <= 1 ? 0 : Math.min(Math.PI * 0.55, 0.34 * (k - 1));
-    visible.forEach((label, j) => {
+    visibleNodes.forEach((v, j) => {
       const t = k === 1 ? 0 : (j / (k - 1)) - 0.5;
       const childAngle = angle + t * spread;
       const lx = cx + leafRx * Math.cos(childAngle);
       const ly = cy + leafRy * Math.sin(childAngle);
-      const leafId = `${cat.key}-leaf-${slug(label)}-${j}`;
-      nodes.push({ id: leafId, label: trim(label, 48), type: cat.key, kind: 'leaf', x: lx, y: ly });
-      edges.push({ from: hubId, to: leafId, kind: 'branch', type: cat.key });
+      nodes.push({ id: v.id, label: v.label, type: cat.key, kind: 'leaf', x: lx, y: ly, data: v.entry.data, hubLabel: cat.label });
+      edges.push({ from: hubId, to: v.id, kind: 'branch', type: cat.key });
     });
   });
 
