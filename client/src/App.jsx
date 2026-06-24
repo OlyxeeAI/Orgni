@@ -24,12 +24,6 @@ import {
 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  siAirtable,
-  siAsana,
-  siClickup,
-  siGmail,
-  siGooglecalendar,
-  siGoogledrive,
   siHubspot,
   siJira,
   siMake,
@@ -47,6 +41,12 @@ import logoCopilot from './assets/logos/microsoft-copilot.svg';
 import logoSlack from './assets/logos/slack.svg';
 import logoTeams from './assets/logos/microsoft-teams.svg';
 import logoSalesforce from './assets/logos/salesforce.svg';
+import logoGoogleDrive from './assets/logos/google-drive.svg';
+import logoGmail from './assets/logos/gmail.svg';
+import logoGoogleCalendar from './assets/logos/google-calendar.svg';
+import logoAirtable from './assets/logos/airtable.svg';
+import logoAsana from './assets/logos/asana.svg';
+import logoClickup from './assets/logos/clickup.svg';
 
 const navItems = [
   { id: 'documents', label: 'Sources', icon: Database },
@@ -55,11 +55,11 @@ const navItems = [
 ];
 
 const connectSources = [
-  { name: 'Google Drive', iconData: siGoogledrive, detail: 'Sync folders & files' },
+  { name: 'Google Drive', image: logoGoogleDrive, detail: 'Sync folders & files' },
   { name: 'Notion', iconData: siNotion, detail: 'Import internal docs' },
-  { name: 'Gmail', iconData: siGmail, detail: 'Learn from email' },
+  { name: 'Gmail', image: logoGmail, detail: 'Learn from email' },
   { name: 'HubSpot', iconData: siHubspot, detail: 'Connect CRM records' },
-  { name: 'Airtable', iconData: siAirtable, detail: 'Map structured data' },
+  { name: 'Airtable', image: logoAirtable, detail: 'Map structured data' },
   { name: 'Website / URL', glyphIcon: Globe, color: '#0d9488', detail: 'Crawl a public page' }
 ];
 
@@ -73,9 +73,9 @@ const externalPlugins = [
   { name: 'Microsoft Copilot', category: 'AI assistant', image: logoCopilot, use: 'Bring Orgni context into Microsoft 365 work.' },
   { name: 'Slack', category: 'Team chat', image: logoSlack, use: 'Answer operational questions inside channels.' },
   { name: 'Microsoft Teams', category: 'Team chat', image: logoTeams, use: 'Give teams shared business context during work.' },
-  { name: 'Google Drive', category: 'Files', icon: siGoogledrive, use: 'Use Drive folders as business knowledge sources.' },
-  { name: 'Gmail', category: 'Email', icon: siGmail, use: 'Draft replies and classify requests with business context.' },
-  { name: 'Google Calendar', category: 'Calendar', icon: siGooglecalendar, use: 'Connect meetings to workflows, owners, and next steps.' },
+  { name: 'Google Drive', category: 'Files', image: logoGoogleDrive, use: 'Use Drive folders as business knowledge sources.' },
+  { name: 'Gmail', category: 'Email', image: logoGmail, use: 'Draft replies and classify requests with business context.' },
+  { name: 'Google Calendar', category: 'Calendar', image: logoGoogleCalendar, use: 'Connect meetings to workflows, owners, and next steps.' },
   { name: 'Notion', category: 'Docs', icon: siNotion, use: 'Keep internal docs synced with Orgni knowledge.' },
   { name: 'HubSpot', category: 'CRM', icon: siHubspot, use: 'Make customer workflows aware of internal rules.' },
   { name: 'Salesforce', category: 'CRM', image: logoSalesforce, use: 'Give sales and service teams approved context.' },
@@ -83,11 +83,11 @@ const externalPlugins = [
   { name: 'Xero', category: 'Finance', icon: siXero, use: 'Support finance controls with operational context.' },
   { name: 'Zapier', category: 'Automation', icon: siZapier, use: 'Trigger workflows from trusted business context.' },
   { name: 'Make', category: 'Automation', icon: siMake, use: 'Build automations around extracted roles and rules.' },
-  { name: 'Asana', category: 'Work management', icon: siAsana, use: 'Turn gaps and next steps into trackable work.' },
+  { name: 'Asana', category: 'Work management', image: logoAsana, use: 'Turn gaps and next steps into trackable work.' },
   { name: 'Jira', category: 'Work management', icon: siJira, use: 'Route operational findings into delivery queues.' },
   { name: 'Trello', category: 'Work management', icon: siTrello, use: 'Create boards from workflows, risks, and actions.' },
-  { name: 'Airtable', category: 'Database', icon: siAirtable, use: 'Map structured operations data to business memory.' },
-  { name: 'ClickUp', category: 'Work management', icon: siClickup, use: 'Push Orgni tasks into team execution spaces.' }
+  { name: 'Airtable', category: 'Database', image: logoAirtable, use: 'Map structured operations data to business memory.' },
+  { name: 'ClickUp', category: 'Work management', image: logoClickup, use: 'Push Orgni tasks into team execution spaces.' }
 ];
 
 const actionTypes = [
@@ -682,7 +682,7 @@ function Documents({ docs, onUpload, onDelete, onIntake, onConnect }) {
             <div className="source-grid">
               {connectSources.map((src) => (
                 <button type="button" className="source-card" key={src.name} onClick={() => onConnect(src.name)}>
-                  <BrandGlyph icon={src.glyphIcon} iconData={src.iconData} color={src.color} />
+                  <BrandGlyph icon={src.glyphIcon} iconData={src.iconData} image={src.image} color={src.color} />
                   <span className="source-text">
                     <strong>{src.name}</strong>
                     <span>{src.detail}</span>
