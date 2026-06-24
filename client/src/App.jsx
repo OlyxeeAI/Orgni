@@ -13,6 +13,8 @@ import {
   Loader2,
   Map,
   Plus,
+  Minus,
+  Maximize2,
   Plug,
   ShieldCheck,
   Sparkles,
@@ -20,7 +22,7 @@ import {
   UploadCloud,
   X
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   siAirtable,
   siAsana,
@@ -742,7 +744,7 @@ function KnowledgeMap({ context }) {
       <div className="panel span-2 km-layout">
         <div className="km-network">
           <PanelHeader icon={Map} title="Knowledge network" />
-          <p className="network-hint">Your business sits at the centre. Click any node to see its details.</p>
+          <p className="network-hint">Your business sits at the centre. Drag to move the map, scroll or use the buttons to zoom, and click any node to see its details.</p>
           <KnowledgeNetwork network={network} selectedId={selected?.id} onSelect={setSelectedId} />
           {network.legend.length > 0 && (
             <div className="network-legend">
@@ -873,33 +875,122 @@ function DetailFields({ type, data }) {
   );
 }
 
+const ZOOM_MIN = 0.4;
+const ZOOM_MAX = 2.8;
+
 function KnowledgeNetwork({ network, selectedId, onSelect }) {
+  const wrapRef = useRef(null);
+  const dragRef = useRef(null);
+  const movedRef = useRef(false);
+  const [view, setView] = useState({ scale: 1, x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
+
+  const clamp = (s) => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, s));
+
+  const zoomAt = useCallback((factor, px, py) => {
+    setView((v) => {
+      const ns = clamp(v.scale * factor);
+      const ratio = ns / v.scale;
+      return { scale: ns, x: px - (px - v.x) * ratio, y: py - (py - v.y) * ratio };
+    });
+  }, []);
+
+  // Reset framing whenever the underlying map changes.
+  useEffect(() => { setView({ scale: 1, x: 0, y: 0 }); }, [network]);
+
+  // Non-passive wheel listener so we can prevent page scroll while zooming.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return undefined;
+    const onWheel = (e) => {
+      e.preventDefault();
+      const rect = el.getBoundingClientRect();
+      const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+      zoomAt(factor, e.clientX - rect.left, e.clientY - rect.top);
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [zoomAt]);
+
+  const onPointerDown = (e) => {
+    if (e.button !== 0) return;
+    movedRef.current = false;
+    if (e.target.closest('.network-node') || e.target.closest('.network-controls')) return;
+    dragRef.current = { sx: e.clientX, sy: e.clientY, ox: view.x, oy: view.y };
+    setDragging(true);
+    wrapRef.current?.setPointerCapture?.(e.pointerId);
+  };
+
+  const onPointerMove = (e) => {
+    const d = dragRef.current;
+    if (!d) return;
+    const dx = e.clientX - d.sx;
+    const dy = e.clientY - d.sy;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) movedRef.current = true;
+    setView((v) => ({ ...v, x: d.ox + dx, y: d.oy + dy }));
+  };
+
+  const endDrag = (e) => {
+    if (!dragRef.current) return;
+    dragRef.current = null;
+    setDragging(false);
+    wrapRef.current?.releasePointerCapture?.(e.pointerId);
+  };
+
+  const zoomCenter = (factor) => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    zoomAt(factor, rect.width / 2, rect.height / 2);
+  };
+
   if (!network.nodes.length) return null;
+
   return (
-    <div className="network-wrap" aria-label="Knowledge map network">
-      <svg className="network-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        {network.edges.map((edge) => {
-          const from = network.nodeMap.get(edge.from);
-          const to = network.nodeMap.get(edge.to);
-          if (!from || !to) return null;
-          const active = selectedId && (edge.from === selectedId || edge.to === selectedId);
-          return <line key={`${edge.from}-${edge.to}`} className={`edge ${edge.kind} ${edge.type || ''} ${active ? 'active' : ''}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} />;
-        })}
-      </svg>
-      {network.nodes.map((node) => (
-        <button
-          type="button"
-          className={`network-node ${node.kind} ${node.type} ${node.id === selectedId ? 'selected' : ''}`}
-          key={node.id}
-          style={{ left: `${node.x}%`, top: `${node.y}%` }}
-          title={node.label}
-          onClick={() => onSelect(node.id)}
-        >
-          {node.kind !== 'leaf' && <span className="node-dot" aria-hidden="true" />}
-          <strong>{node.label}</strong>
-          {node.count != null && <em>{node.count} {node.count === 1 ? 'item' : 'items'}</em>}
-        </button>
-      ))}
+    <div
+      className={`network-wrap${dragging ? ' grabbing' : ''}`}
+      ref={wrapRef}
+      aria-label="Knowledge map network — drag to pan, scroll to zoom"
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+    >
+      <div
+        className="network-canvas"
+        style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.scale})` }}
+      >
+        <svg className="network-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          {network.edges.map((edge) => {
+            const from = network.nodeMap.get(edge.from);
+            const to = network.nodeMap.get(edge.to);
+            if (!from || !to) return null;
+            const active = selectedId && (edge.from === selectedId || edge.to === selectedId);
+            return <line key={`${edge.from}-${edge.to}`} className={`edge ${edge.kind} ${edge.type || ''} ${active ? 'active' : ''}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} />;
+          })}
+        </svg>
+        {network.nodes.map((node) => (
+          <button
+            type="button"
+            className={`network-node ${node.kind} ${node.type} ${node.id === selectedId ? 'selected' : ''}`}
+            key={node.id}
+            style={{ left: `${node.x}%`, top: `${node.y}%` }}
+            title={node.label}
+            onClick={() => { if (!movedRef.current) onSelect(node.id); }}
+          >
+            {node.kind !== 'leaf' && <span className="node-dot" aria-hidden="true" />}
+            <strong>{node.label}</strong>
+            {node.count != null && <em>{node.count} {node.count === 1 ? 'item' : 'items'}</em>}
+          </button>
+        ))}
+      </div>
+
+      <div className="network-controls">
+        <button type="button" onClick={() => zoomCenter(1.2)} title="Zoom in" aria-label="Zoom in"><Plus size={16} /></button>
+        <span className="network-zoom-level">{Math.round(view.scale * 100)}%</span>
+        <button type="button" onClick={() => zoomCenter(1 / 1.2)} title="Zoom out" aria-label="Zoom out"><Minus size={16} /></button>
+        <button type="button" onClick={() => setView({ scale: 1, x: 0, y: 0 })} title="Reset view" aria-label="Reset view"><Maximize2 size={16} /></button>
+      </div>
     </div>
   );
 }
