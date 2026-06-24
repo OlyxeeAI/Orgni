@@ -445,31 +445,33 @@ export function App() {
           <strong>Orgni</strong>
         </div>
 
-        <nav className="chrome-nav" aria-label="Primary">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <button key={item.id} className={view === item.id ? 'active' : ''} onClick={() => setView(item.id)}>
-                <Icon size={17} />
+        <div className="chrome-center">
+          <nav className="chrome-nav" aria-label="Primary">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button key={item.id} className={view === item.id ? 'active' : ''} onClick={() => setView(item.id)}>
+                  <Icon size={17} />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          <p className="chrome-section-label">Plugins</p>
+          <nav className="chrome-plugins" aria-label="Plugins">
+            {pluginItems.map((item) => (
+              <button key={item.id} className={view === item.id ? 'active plugin-active' : 'plugin-link'} onClick={() => setView(item.id)}>
+                <img className="plugin-logo" src={item.image} alt="" />
                 <span>{item.label}</span>
               </button>
-            );
-          })}
-        </nav>
-
-        <p className="chrome-section-label">Plugins</p>
-        <nav className="chrome-plugins" aria-label="Plugins">
-          {pluginItems.map((item) => (
-            <button key={item.id} className={view === item.id ? 'active plugin-active' : 'plugin-link'} onClick={() => setView(item.id)}>
-              <img className="plugin-logo" src={item.image} alt="" />
-              <span>{item.label}</span>
-            </button>
-          ))}
-        </nav>
+            ))}
+          </nav>
+        </div>
 
         <button className={`profile-link sidebar-profile ${view === 'profile' ? 'active' : ''}`} onClick={() => setView('profile')}>
           <Building2 size={16} />
-          Profile
+          <span>Profile</span>
         </button>
       </aside>
 

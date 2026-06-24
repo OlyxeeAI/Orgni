@@ -1515,33 +1515,101 @@ label {
 }
 
 .shell {
+  --rail-w: 78px;
+  --rail-expanded: 250px;
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 248px minmax(0, 1fr);
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+}
+
+.shell > main {
+  grid-column: 2;
 }
 
 .workspace-chrome {
-  position: sticky;
+  position: fixed;
   top: 0;
-  align-self: start;
-  z-index: 10;
+  left: 0;
+  z-index: 60;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
   height: 100vh;
-  padding: 20px 16px;
+  width: var(--rail-w);
+  padding: 20px 14px;
   background: var(--glass-strong);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   border-right: 1px solid var(--line);
+  overflow-x: hidden;
   overflow-y: auto;
+  transition: width var(--t-med, 0.28s) var(--ease), box-shadow var(--t-med, 0.28s) var(--ease);
+}
+
+.workspace-chrome::-webkit-scrollbar {
+  width: 0;
+}
+
+.workspace-chrome:hover,
+.workspace-chrome:focus-within {
+  width: var(--rail-expanded);
+  box-shadow: 24px 0 48px -28px rgba(15, 23, 42, 0.28);
+}
+
+/* Vertically centered nav block between brand (top) and profile (bottom) */
+.chrome-center {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+}
+
+/* Collapsed state: hide all text labels, keep icons */
+.chrome-brand strong,
+.chrome-section-label,
+.chrome-nav button span,
+.chrome-plugins button span,
+.profile-link span {
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+.workspace-chrome:hover .chrome-brand strong,
+.workspace-chrome:hover .chrome-section-label,
+.workspace-chrome:hover .chrome-nav button span,
+.workspace-chrome:hover .chrome-plugins button span,
+.workspace-chrome:hover .profile-link span,
+.workspace-chrome:focus-within .chrome-brand strong,
+.workspace-chrome:focus-within .chrome-section-label,
+.workspace-chrome:focus-within .chrome-nav button span,
+.workspace-chrome:focus-within .chrome-plugins button span,
+.workspace-chrome:focus-within .profile-link span {
+  opacity: 1;
+  transform: none;
+}
+
+/* Collapse the section label's height so it doesn't push icons when hidden */
+.chrome-section-label {
+  height: 0;
+  margin: 0;
+  padding: 0 6px;
+  overflow: hidden;
+}
+
+.workspace-chrome:hover .chrome-section-label,
+.workspace-chrome:focus-within .chrome-section-label {
+  height: auto;
+  margin: 6px 0 -4px;
 }
 
 .chrome-brand {
   display: flex;
   align-items: center;
   gap: 12px;
-  min-width: 130px;
+  min-width: 0;
 }
 
 .chrome-brand .mark {
@@ -1725,6 +1793,52 @@ label {
   font-weight: 650;
 }
 
+/* Collapsed rail: center icons, drop label width so centering is true */
+.chrome-brand {
+  justify-content: center;
+}
+
+.chrome-nav button,
+.chrome-plugins button,
+.profile-link {
+  justify-content: center;
+  gap: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.chrome-nav button span,
+.chrome-plugins button span,
+.profile-link span {
+  max-width: 0;
+}
+
+.workspace-chrome:hover .chrome-brand,
+.workspace-chrome:focus-within .chrome-brand {
+  justify-content: flex-start;
+}
+
+.workspace-chrome:hover .chrome-nav button,
+.workspace-chrome:hover .chrome-plugins button,
+.workspace-chrome:hover .profile-link,
+.workspace-chrome:focus-within .chrome-nav button,
+.workspace-chrome:focus-within .chrome-plugins button,
+.workspace-chrome:focus-within .profile-link {
+  justify-content: flex-start;
+  gap: 11px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.workspace-chrome:hover .chrome-nav button span,
+.workspace-chrome:hover .chrome-plugins button span,
+.workspace-chrome:hover .profile-link span,
+.workspace-chrome:focus-within .chrome-nav button span,
+.workspace-chrome:focus-within .chrome-plugins button span,
+.workspace-chrome:focus-within .profile-link span {
+  max-width: 170px;
+}
+
 main {
   margin: 0 auto;
 }
@@ -1734,18 +1848,60 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .workspace-chrome {
+  .shell > main {
+    grid-column: auto;
+  }
+
+  .workspace-chrome,
+  .workspace-chrome:hover,
+  .workspace-chrome:focus-within {
     position: static;
+    width: auto;
     height: auto;
     overflow: visible;
     gap: 12px;
     padding: 18px;
     border-right: none;
     border-bottom: 1px solid var(--line);
+    box-shadow: none;
   }
 
-  .chrome-brand {
+  .chrome-center {
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .chrome-brand,
+  .chrome-nav button,
+  .chrome-plugins button,
+  .profile-link {
+    justify-content: flex-start;
     min-width: 0;
+  }
+
+  .chrome-nav button,
+  .chrome-plugins button,
+  .profile-link {
+    gap: 11px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  /* Always show labels on mobile (no hover-to-expand) */
+  .chrome-brand strong,
+  .chrome-section-label,
+  .chrome-nav button span,
+  .chrome-plugins button span,
+  .profile-link span {
+    opacity: 1;
+    transform: none;
+    max-width: none;
+  }
+
+  .chrome-section-label {
+    height: auto;
+    margin: 6px 0 -4px;
   }
 
   .chrome-nav {
@@ -1829,3 +1985,5 @@ main {
     scroll-behavior: auto !important;
   }
 }
+
+
