@@ -1515,35 +1515,42 @@ label {
 }
 
 .shell {
-  --rail-w: 78px;
+  --rail-w: 76px;
   --rail-expanded: 250px;
+  --rail-gutter: 108px;
   min-height: 100vh;
   display: grid;
-  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  grid-template-columns: var(--rail-gutter) minmax(0, 1fr);
 }
 
 .shell > main {
   grid-column: 2;
 }
 
+/* Floating, vertically-centered island (Dynamic Island style) */
 .workspace-chrome {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
   z-index: 60;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  height: 100vh;
+  gap: 12px;
   width: var(--rail-w);
-  padding: 20px 14px;
+  height: auto;
+  max-height: calc(100vh - 32px);
+  padding: 16px 14px;
   background: var(--glass-strong);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  border-right: 1px solid var(--line);
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  box-shadow: 0 22px 56px -22px rgba(15, 23, 42, 0.30), 0 4px 12px -4px rgba(15, 23, 42, 0.08);
   overflow-x: hidden;
   overflow-y: auto;
-  transition: width var(--t-med, 0.28s) var(--ease), box-shadow var(--t-med, 0.28s) var(--ease);
+  transition: width var(--t-med, 0.28s) var(--ease), box-shadow var(--t-med, 0.28s) var(--ease),
+    border-radius var(--t-med, 0.28s) var(--ease);
 }
 
 .workspace-chrome::-webkit-scrollbar {
@@ -1553,16 +1560,16 @@ label {
 .workspace-chrome:hover,
 .workspace-chrome:focus-within {
   width: var(--rail-expanded);
-  box-shadow: 24px 0 48px -28px rgba(15, 23, 42, 0.28);
+  border-radius: 26px;
+  box-shadow: 0 30px 70px -24px rgba(15, 23, 42, 0.38), 0 6px 16px -6px rgba(15, 23, 42, 0.1);
 }
 
-/* Vertically centered nav block between brand (top) and profile (bottom) */
+/* Nav block — compact within the floating island */
 .chrome-center {
   display: flex;
-  flex: 1 1 auto;
   flex-direction: column;
   justify-content: center;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
 }
 
@@ -1856,13 +1863,16 @@ main {
   .workspace-chrome:hover,
   .workspace-chrome:focus-within {
     position: static;
+    transform: none;
     width: auto;
     height: auto;
+    max-height: none;
     overflow: visible;
     gap: 12px;
     padding: 18px;
-    border-right: none;
+    border: none;
     border-bottom: 1px solid var(--line);
+    border-radius: 0;
     box-shadow: none;
   }
 
@@ -1985,5 +1995,6 @@ main {
     scroll-behavior: auto !important;
   }
 }
+
 
 
