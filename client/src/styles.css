@@ -393,25 +393,6 @@ nav button.plugin-link:hover {
   color: white;
 }
 
-.profile-link {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-height: 38px;
-  border-radius: 10px;
-  padding: 0 11px;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  font-weight: 550;
-  letter-spacing: -0.005em;
-}
-
-.profile-link:hover {
-  color: var(--ink);
-  background: #fff2e8;
-}
-
 main {
   width: min(1180px, 100%);
   padding: 28px;
@@ -1561,11 +1542,18 @@ label {
 .chrome-brand .mark {
   width: 42px;
   height: 42px;
-  border-radius: 12px;
+  border-radius: 13px;
   display: grid;
   place-items: center;
   background: var(--accent);
   overflow: hidden;
+  box-shadow: 0 6px 16px -6px rgba(242, 106, 27, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+
+.chrome-brand:hover .mark {
+  transform: translateY(-1px) rotate(-2deg);
+  box-shadow: 0 10px 22px -7px rgba(242, 106, 27, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .chrome-brand .mark img {
@@ -1638,22 +1626,31 @@ label {
 .chrome-nav button,
 .chrome-plugins button,
 .profile-link {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 11px;
   width: 100%;
   min-height: 42px;
   border-radius: var(--r-sm);
   padding: 0 12px;
   background: transparent;
-  color: var(--muted);
+  color: var(--ink-2);
   text-align: left;
   cursor: pointer;
   font-weight: 550;
   letter-spacing: -0.005em;
   white-space: nowrap;
-  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+
+.chrome-nav button svg,
+.profile-link svg {
+  flex-shrink: 0;
+  color: var(--muted);
+  transition: color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
 }
 
 .chrome-nav button:active,
@@ -1662,26 +1659,93 @@ label {
   transform: scale(0.98);
 }
 
-.chrome-nav button:hover,
-.chrome-nav button.active,
-.chrome-plugins button:hover,
-.chrome-plugins button.active,
-.profile-link:hover,
-.profile-link.active {
-  background: var(--accent-soft);
+/* Primary nav — flat ghost rows */
+.chrome-nav button:hover {
+  background: var(--soft);
   color: var(--ink);
 }
 
+.chrome-nav button:hover svg {
+  color: var(--ink);
+  transform: scale(1.08);
+}
+
 .chrome-nav button.active {
+  background: var(--accent-soft);
   color: var(--accent-2);
   font-weight: 700;
 }
 
-.chrome-plugins button,
+.chrome-nav button.active svg {
+  color: var(--accent-2);
+}
+
+.chrome-nav button.active::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  height: 17px;
+  width: 3px;
+  transform: translateY(-50%);
+  border-radius: var(--r-pill);
+  background: var(--accent);
+}
+
+/* Plugin rows — light, lift on hover */
+.chrome-plugins button {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ink-2);
+}
+
+.chrome-plugins button:hover:not(:active) {
+  background: #fff;
+  border-color: var(--line);
+  box-shadow: var(--shadow-xs);
+  transform: translateY(-1px);
+}
+
+.chrome-plugins button.active {
+  background: #fff;
+  border-color: var(--line);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.chrome-plugins button.active .plugin-logo {
+  transform: scale(1.05);
+}
+
+.plugin-logo {
+  transition: transform var(--t-fast) var(--ease);
+}
+
+/* Profile — distinct card pinned to the bottom */
 .profile-link {
   border: 1px solid var(--line);
-  background: #ffffff;
+  background: #fff;
   color: var(--ink);
+  box-shadow: var(--shadow-xs);
+}
+
+.profile-link:hover:not(:active) {
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.profile-link:hover svg,
+.profile-link.active svg {
+  color: var(--accent-2);
+}
+
+.profile-link.active {
+  border-color: #f4d5c2;
+  background: var(--accent-soft);
+  color: var(--accent-2);
+  font-weight: 650;
 }
 
 main {
