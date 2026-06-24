@@ -437,7 +437,7 @@ export function App() {
 
   return (
     <div className="shell">
-      <header className="workspace-chrome">
+      <aside className="workspace-chrome" aria-label="Sidebar">
         <div className="chrome-brand">
           <span className="mark"><img src={orgniLogo} alt="Orgni logo" /></span>
           <strong>Orgni</strong>
@@ -460,6 +460,7 @@ export function App() {
           })}
         </nav>
 
+        <p className="chrome-section-label">Plugins</p>
         <nav className="chrome-plugins" aria-label="Plugins">
           {pluginItems.map((item) => (
             <button key={item.id} className={view === item.id ? 'active plugin-active' : 'plugin-link'} onClick={() => setView(item.id)}>
@@ -469,11 +470,11 @@ export function App() {
           ))}
         </nav>
 
-        <button className={`profile-link ${view === 'profile' ? 'active' : ''}`} onClick={() => setView('profile')}>
+        <button className={`profile-link sidebar-profile ${view === 'profile' ? 'active' : ''}`} onClick={() => setView('profile')}>
           <Building2 size={16} />
           Profile
         </button>
-      </header>
+      </aside>
 
       <main>
         {content}

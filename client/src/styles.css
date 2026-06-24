@@ -43,12 +43,6 @@ button {
   border: 0;
 }
 
-.shell {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
-}
-
 .doc-row span,
 .answer span {
   display: block;
@@ -101,15 +95,6 @@ nav button.active {
   color: var(--ink);
 }
 
-.nav-label {
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.035em;
-  margin: 4px 4px -6px;
-}
-
 nav button.plugin-link {
   color: var(--ink);
 }
@@ -119,19 +104,6 @@ nav button.plugin-link:hover {
   background: #fff2e8;
   color: var(--ink);
   border-color: rgba(242, 106, 27, 0.35);
-}
-
-.nav-label + nav {
-  grid-template-columns: 1fr;
-}
-
-.nav-label + nav button {
-  min-height: 46px;
-  padding: 6px 8px;
-  border: 1px solid var(--line);
-  background: #ffffff;
-  color: var(--ink);
-  box-shadow: none;
 }
 
 .plugin-mark {
@@ -1338,21 +1310,24 @@ label {
 }
 
 .shell {
-  display: block;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
 }
 
 .workspace-chrome {
   position: sticky;
   top: 0;
+  align-self: start;
   z-index: 10;
-  display: grid;
-  grid-template-columns: auto minmax(150px, 220px) minmax(340px, 1fr) auto auto;
-  align-items: center;
-  gap: 12px;
-  min-height: 76px;
-  padding: 14px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100vh;
+  padding: 20px 16px;
   background: #ffffff;
-  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  overflow-y: auto;
 }
 
 .chrome-brand {
@@ -1414,18 +1389,29 @@ label {
 }
 
 .chrome-nav {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 5px;
-  padding: 5px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: #f9f9f7;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .chrome-plugins {
   display: flex;
+  flex-direction: column;
   gap: 6px;
+}
+
+.chrome-section-label {
+  margin: 6px 0 -4px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.sidebar-profile {
+  margin-top: auto;
 }
 
 .chrome-nav button,
@@ -1433,14 +1419,15 @@ label {
 .profile-link {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 9px;
-  min-height: 40px;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  min-height: 42px;
   border-radius: 12px;
   padding: 0 12px;
   background: transparent;
   color: var(--muted);
-  text-align: center;
+  text-align: left;
   cursor: pointer;
   font-weight: 550;
   letter-spacing: -0.005em;
@@ -1475,9 +1462,12 @@ main {
 
   .workspace-chrome {
     position: static;
-    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
     gap: 12px;
     padding: 18px;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
   }
 
   .chrome-brand {
@@ -1489,6 +1479,7 @@ main {
   }
 
   .chrome-nav {
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
   }
@@ -1497,6 +1488,10 @@ main {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
+  }
+
+  .sidebar-profile {
+    margin-top: 0;
   }
 
   .profile-link {
