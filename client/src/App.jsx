@@ -445,11 +445,6 @@ export function App() {
           <strong>Orgni</strong>
         </div>
 
-        <div className="chrome-business">
-          <span>{currentOrg?.businessType || 'Business'}</span>
-          <strong>{currentOrg?.name || 'Set up business'}</strong>
-        </div>
-
         <nav className="chrome-nav" aria-label="Primary">
           {navItems.map((item) => {
             const Icon = item.icon;
