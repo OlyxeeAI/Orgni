@@ -824,9 +824,6 @@ button:disabled:active {
   text-align: center;
   width: 150px;
   padding: 16px 16px;
-  border-color: rgba(242, 106, 27, 0.55);
-  background: linear-gradient(160deg, #fff4eb, #ffffff);
-  box-shadow: 0 12px 34px rgba(242, 106, 27, 0.18);
 }
 
 .network-node.business .node-dot {
@@ -847,8 +844,6 @@ button:disabled:active {
   z-index: 2;
   width: 132px;
   padding: 11px 13px;
-  border-width: 1px;
-  border-left: 4px solid var(--node-color);
 }
 
 .network-node.hub strong {
