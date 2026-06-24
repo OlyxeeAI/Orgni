@@ -40,6 +40,11 @@ import {
 import orgniLogo from './assets/orgni-logo.png';
 import orgniWorkflowLogo from './assets/orgni-workflow.png';
 import orgniFinanceLogo from './assets/orgni-finance.png';
+import logoOpenai from './assets/logos/openai.svg';
+import logoCopilot from './assets/logos/microsoft-copilot.svg';
+import logoSlack from './assets/logos/slack.svg';
+import logoTeams from './assets/logos/microsoft-teams.svg';
+import logoSalesforce from './assets/logos/salesforce.svg';
 
 const navItems = [
   { id: 'documents', label: 'Sources', icon: Database },
@@ -62,16 +67,16 @@ const pluginItems = [
 ];
 
 const externalPlugins = [
-  { name: 'ChatGPT', category: 'AI assistant', mark: 'GPT', color: '#10a37f', use: 'Ground answers, actions, and planning in company documents.' },
-  { name: 'Microsoft Copilot', category: 'AI assistant', mark: 'Co', color: '#2563eb', use: 'Bring Orgni context into Microsoft 365 work.' },
-  { name: 'Slack', category: 'Team chat', mark: 'S', color: '#4a154b', use: 'Answer operational questions inside channels.' },
-  { name: 'Microsoft Teams', category: 'Team chat', mark: 'T', color: '#6264a7', use: 'Give teams shared business context during work.' },
+  { name: 'ChatGPT', category: 'AI assistant', image: logoOpenai, use: 'Ground answers, actions, and planning in company documents.' },
+  { name: 'Microsoft Copilot', category: 'AI assistant', image: logoCopilot, use: 'Bring Orgni context into Microsoft 365 work.' },
+  { name: 'Slack', category: 'Team chat', image: logoSlack, use: 'Answer operational questions inside channels.' },
+  { name: 'Microsoft Teams', category: 'Team chat', image: logoTeams, use: 'Give teams shared business context during work.' },
   { name: 'Google Drive', category: 'Files', icon: siGoogledrive, use: 'Use Drive folders as business knowledge sources.' },
   { name: 'Gmail', category: 'Email', icon: siGmail, use: 'Draft replies and classify requests with business context.' },
   { name: 'Google Calendar', category: 'Calendar', icon: siGooglecalendar, use: 'Connect meetings to workflows, owners, and next steps.' },
   { name: 'Notion', category: 'Docs', icon: siNotion, use: 'Keep internal docs synced with Orgni knowledge.' },
   { name: 'HubSpot', category: 'CRM', icon: siHubspot, use: 'Make customer workflows aware of internal rules.' },
-  { name: 'Salesforce', category: 'CRM', mark: 'SF', color: '#00a1e0', use: 'Give sales and service teams approved context.' },
+  { name: 'Salesforce', category: 'CRM', image: logoSalesforce, use: 'Give sales and service teams approved context.' },
   { name: 'QuickBooks', category: 'Finance', icon: siQuickbooks, use: 'Connect finance rules, approvals, and exceptions.' },
   { name: 'Xero', category: 'Finance', icon: siXero, use: 'Support finance controls with operational context.' },
   { name: 'Zapier', category: 'Automation', icon: siZapier, use: 'Trigger workflows from trusted business context.' },
@@ -90,6 +95,64 @@ const actionTypes = [
   { type: 'next_step', label: 'Next step', icon: ArrowRight },
   { type: 'draft_message', label: 'Team update', icon: FileText }
 ];
+
+// Concrete examples of the business context Orgni serves to each native product.
+// Field names match the real /engine/context/:domain responses.
+const productExposes = {
+  workflow: {
+    endpoint: 'GET /api/orgs/:orgId/engine/context/workflow',
+    fields: [
+      ['workflows', 'Name, trigger, steps, owner, decision & approval points'],
+      ['roles', 'Who does what, plus decision and approval authority'],
+      ['dependencies', 'Where people and processes depend on each other'],
+      ['bottlenecks', 'Friction points that slow work down'],
+      ['blueprint', 'AI execution boundaries and required human approvals']
+    ],
+    example: `{
+  "orgId": "org_clover",
+  "domain": "workflow",
+  "context": {
+    "workflows": [{
+      "workflow_name": "Invoice Approval",
+      "trigger": "Supplier invoice received",
+      "steps": ["Match invoice to delivery record", "Route by amount", "Approve"],
+      "owner": "Finance Assistant",
+      "approval_points": ["Finance Manager approval over R5,000"]
+    }],
+    "roles": [{ "role": "Finance Manager", "approval_authority": ["Up to R50,000"] }],
+    "bottlenecks": ["Manual invoice matching"]
+  },
+  "confidence": 0.85,
+  "version": 5
+}`
+  },
+  finance: {
+    endpoint: 'GET /api/orgs/:orgId/engine/context/finance',
+    fields: [
+      ['rules', 'Condition \u2192 action, with a risk level'],
+      ['approvals', 'Trigger, approver, and threshold'],
+      ['exceptions', 'Documented deviations from the rules'],
+      ['risks', 'Control weaknesses Orgni detected'],
+      ['gaps', 'Missing controls or undocumented steps']
+    ],
+    example: `{
+  "orgId": "org_clover",
+  "domain": "finance",
+  "context": {
+    "rules": [{
+      "rule_name": "High-value payment approval",
+      "condition": "amount > 5000",
+      "action": "require_manager_approval",
+      "risk_level": "medium"
+    }],
+    "approvals": [{ "trigger": "Refund", "approver": "Store Manager", "threshold": "R2,000" }],
+    "risks": [{ "risk": "Manual invoice matching may miss discrepancies", "severity": "medium" }]
+  },
+  "confidence": 0.85,
+  "version": 5
+}`
+  }
+};
 
 async function api(path, options = {}) {
   const isForm = options.body instanceof FormData;
@@ -423,8 +486,26 @@ export function App() {
   );
 }
 
+function ExposesPanel({ title, intro, data }) {
+  return (
+    <div className="panel span-2 exposes-panel">
+      <PanelHeader icon={Sparkles} title={title} />
+      <p className="lead">{intro}</p>
+      <dl className="exposes-fields">
+        {data.fields.map(([key, desc]) => (
+          <div key={key}>
+            <dt>{key}</dt>
+            <dd>{desc}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="exposes-endpoint">{data.endpoint}</p>
+      <pre className="exposes-example">{data.example}</pre>
+    </div>
+  );
+}
+
 function WorkflowPlugin({ context, onSource }) {
-  if (!context) return <PluginEmpty title="Workflow plugin" body="Workflow needs a knowledge map before it can show business process context." onSource={onSource} />;
   return (
     <section className="view-grid">
       <div className="panel hero-panel">
@@ -435,30 +516,46 @@ function WorkflowPlugin({ context, onSource }) {
         </div>
         <img className="hero-logo" src={orgniWorkflowLogo} alt="Orgni Workflow" />
       </div>
-      <div className="stats">
-        <Metric label="Workflows" value={count(context.workflows)} />
-        <Metric label="Roles" value={count(context.roles)} />
-        <Metric label="Dependencies" value={count(context.dependencies)} />
-        <Metric label="Bottlenecks" value={count(context.bottlenecks)} />
-      </div>
-      <div className="panel span-2">
-        <PanelHeader icon={Layers3} title="Workflow context" />
-        <List items={(context.workflows || []).map((item) => item.workflow_name || item.name)} fallback="No workflows extracted yet." />
-      </div>
-      <div className="panel">
-        <PanelHeader icon={AlertTriangle} title="Bottlenecks" />
-        <List items={(context.bottlenecks || []).map((item) => item.bottleneck || item)} fallback="No bottlenecks extracted yet." />
-      </div>
-      <div className="panel">
-        <PanelHeader icon={Map} title="Missing information" />
-        <List items={(context.missingInformation || []).map((item) => item.item || item.gap || item)} fallback="No missing workflow information flagged." />
-      </div>
+
+      <ExposesPanel
+        title="What Orgni exposes to Workflow"
+        intro="Orgni serves this business context to the Workflow product through one read-only endpoint. The fields below live inside the response's context object — here is the full shape with a real example."
+        data={productExposes.workflow}
+      />
+
+      {context ? (
+        <>
+          <div className="stats">
+            <Metric label="Workflows" value={count(context.workflows)} />
+            <Metric label="Roles" value={count(context.roles)} />
+            <Metric label="Dependencies" value={count(context.dependencies)} />
+            <Metric label="Bottlenecks" value={count(context.bottlenecks)} />
+          </div>
+          <div className="panel span-2">
+            <PanelHeader icon={Layers3} title="Live workflow context" />
+            <List items={(context.workflows || []).map((item) => item.workflow_name || item.name)} fallback="No workflows extracted yet." />
+          </div>
+          <div className="panel">
+            <PanelHeader icon={AlertTriangle} title="Bottlenecks" />
+            <List items={(context.bottlenecks || []).map((item) => item.bottleneck || item)} fallback="No bottlenecks extracted yet." />
+          </div>
+          <div className="panel">
+            <PanelHeader icon={Map} title="Missing information" />
+            <List items={(context.missingInformation || []).map((item) => item.item || item.gap || item)} fallback="No missing workflow information flagged." />
+          </div>
+        </>
+      ) : (
+        <div className="panel span-2">
+          <PanelHeader icon={UploadCloud} title="No live context yet" />
+          <p className="lead">Build a knowledge map and Workflow will show your real workflows, roles, and bottlenecks here.</p>
+          <button className="primary" onClick={onSource}><UploadCloud size={16} /> Add documents</button>
+        </div>
+      )}
     </section>
   );
 }
 
 function FinancePlugin({ context, onSource }) {
-  if (!context) return <PluginEmpty title="Finance plugin" body="Finance needs a knowledge map before it can show rules, approvals, exceptions, and risk context." onSource={onSource} />;
   return (
     <section className="view-grid">
       <div className="panel hero-panel">
@@ -469,35 +566,42 @@ function FinancePlugin({ context, onSource }) {
         </div>
         <img className="hero-logo" src={orgniFinanceLogo} alt="Orgni Finance" />
       </div>
-      <div className="stats">
-        <Metric label="Rules" value={count(context.rules)} />
-        <Metric label="Approvals" value={count(context.approvals)} />
-        <Metric label="Exceptions" value={count(context.exceptions)} />
-        <Metric label="Risks" value={count(context.risks)} />
-      </div>
-      <div className="panel">
-        <PanelHeader icon={Check} title="Rules" />
-        <List items={(context.rules || []).map((item) => item.rule || item)} fallback="No finance rules extracted yet." />
-      </div>
-      <div className="panel">
-        <PanelHeader icon={ShieldCheck} title="Approvals" />
-        <List items={(context.approvals || []).map((item) => item.approval || item.rule || item)} fallback="No approvals extracted yet." />
-      </div>
-      <div className="panel span-2">
-        <PanelHeader icon={AlertTriangle} title="Risks and gaps" />
-        <List items={[...(context.risks || []).map((item) => item.risk || item), ...(context.gaps || []).map((item) => item.gap || item)]} fallback="No finance risks or gaps extracted yet." />
-      </div>
-    </section>
-  );
-}
 
-function PluginEmpty({ title, body, onSource }) {
-  return (
-    <EmptyState
-      title={title}
-      body={body}
-      action={<button className="primary" onClick={onSource}><UploadCloud size={16} /> Add documents</button>}
-    />
+      <ExposesPanel
+        title="What Orgni exposes to Finance"
+        intro="Orgni serves this financial control context to the Finance product through one read-only endpoint. The fields below live inside the response's context object — here is the full shape with a real example."
+        data={productExposes.finance}
+      />
+
+      {context ? (
+        <>
+          <div className="stats">
+            <Metric label="Rules" value={count(context.rules)} />
+            <Metric label="Approvals" value={count(context.approvals)} />
+            <Metric label="Exceptions" value={count(context.exceptions)} />
+            <Metric label="Risks" value={count(context.risks)} />
+          </div>
+          <div className="panel">
+            <PanelHeader icon={Check} title="Live rules" />
+            <List items={(context.rules || []).map((item) => item.rule || item)} fallback="No finance rules extracted yet." />
+          </div>
+          <div className="panel">
+            <PanelHeader icon={ShieldCheck} title="Approvals" />
+            <List items={(context.approvals || []).map((item) => item.approval || item.rule || item)} fallback="No approvals extracted yet." />
+          </div>
+          <div className="panel span-2">
+            <PanelHeader icon={AlertTriangle} title="Risks and gaps" />
+            <List items={[...(context.risks || []).map((item) => item.risk || item), ...(context.gaps || []).map((item) => item.gap || item)]} fallback="No finance risks or gaps extracted yet." />
+          </div>
+        </>
+      ) : (
+        <div className="panel span-2">
+          <PanelHeader icon={UploadCloud} title="No live context yet" />
+          <p className="lead">Build a knowledge map and Finance will show your real rules, approvals, and risks here.</p>
+          <button className="primary" onClick={onSource}><UploadCloud size={16} /> Add documents</button>
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -530,7 +634,7 @@ function PluginsCatalog({ onOpen }) {
         <div className="integration-grid">
           {externalPlugins.map((plugin) => (
             <div className="integration-card" key={plugin.name}>
-              <BrandGlyph iconData={plugin.icon} mark={plugin.mark} color={plugin.color} />
+              <BrandGlyph image={plugin.image} iconData={plugin.icon} mark={plugin.mark} color={plugin.color} />
               <div>
                 <strong>{plugin.name}</strong>
                 <span>{plugin.category}</span>

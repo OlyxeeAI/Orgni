@@ -1,0 +1,1 @@
+- [Brand logos for plugins](brand-logos.md) — some brands (OpenAI, Slack, Salesforce, all Microsoft) absent from simple-icons; use local svgl SVGs, never letter marks.
