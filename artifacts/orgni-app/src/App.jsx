@@ -11,6 +11,7 @@ import {
   Globe,
   Layers3,
   Loader2,
+  LogOut,
   Map,
   Plus,
   Minus,
@@ -325,6 +326,10 @@ export function App() {
     }
   }
 
+  function logout() {
+    window.location.href = '/';
+  }
+
   async function saveProfile(event) {
     event.preventDefault();
     const body = {
@@ -433,7 +438,7 @@ export function App() {
       {view === 'plugins' && <PluginsCatalog onOpen={setView} />}
       {view === 'workflowPlugin' && <WorkflowPlugin context={workflowContext} onSource={() => setView('documents')} />}
       {view === 'financePlugin' && <FinancePlugin context={financeContext} onSource={() => setView('documents')} />}
-      {view === 'profile' && <Profile profile={profile} setProfile={setProfile} onSave={saveProfile} />}
+      {view === 'profile' && <Profile profile={profile} setProfile={setProfile} onSave={saveProfile} currentOrg={currentOrg} onLogout={logout} />}
     </>
   );
 
@@ -1114,19 +1119,36 @@ function Actions({ actionContext, setActionContext, result, onRun }) {
   );
 }
 
-function Profile({ profile, setProfile, onSave }) {
+function Profile({ profile, setProfile, onSave, currentOrg, onLogout }) {
   const update = (key) => (event) => setProfile((value) => ({ ...value, [key]: event.target.value }));
+  const displayName = (profile.name || currentOrg?.name || 'Your business').trim();
+  const initial = displayName.charAt(0).toUpperCase() || 'O';
   return (
-    <form className="panel form-panel" onSubmit={onSave}>
-      <PanelHeader icon={Building2} title="Business profile" />
-      <label>Company name<input value={profile.name} onChange={update('name')} /></label>
-      <label>Business type<input value={profile.businessType} onChange={update('businessType')} /></label>
-      <label>Departments<textarea value={profile.departmentsText} onChange={update('departmentsText')} /></label>
-      <label>Key workflows<textarea value={profile.workflowsText} onChange={update('workflowsText')} /></label>
-      <label>Current tools<textarea value={profile.toolsText} onChange={update('toolsText')} /></label>
-      <label>Main problems<textarea value={profile.problemsText} onChange={update('problemsText')} /></label>
-      <button className="primary"><Check size={16} /> Save profile</button>
-    </form>
+    <div className="profile-view">
+      <section className="panel account-card">
+        <div className="account-identity">
+          <span className="account-avatar" aria-hidden="true">{initial}</span>
+          <div className="account-meta">
+            <strong>{displayName}</strong>
+            <span>{profile.businessType?.trim() || 'No business type set'}</span>
+          </div>
+        </div>
+        <button type="button" className="danger-button" onClick={onLogout}>
+          <LogOut size={16} /> Log out
+        </button>
+      </section>
+
+      <form className="panel form-panel" onSubmit={onSave}>
+        <PanelHeader icon={Building2} title="Business profile" />
+        <label>Company name<input value={profile.name} onChange={update('name')} /></label>
+        <label>Business type<input value={profile.businessType} onChange={update('businessType')} /></label>
+        <label>Departments<textarea value={profile.departmentsText} onChange={update('departmentsText')} /></label>
+        <label>Key workflows<textarea value={profile.workflowsText} onChange={update('workflowsText')} /></label>
+        <label>Current tools<textarea value={profile.toolsText} onChange={update('toolsText')} /></label>
+        <label>Main problems<textarea value={profile.problemsText} onChange={update('problemsText')} /></label>
+        <button className="primary"><Check size={16} /> Save profile</button>
+      </form>
+    </div>
   );
 }
 
