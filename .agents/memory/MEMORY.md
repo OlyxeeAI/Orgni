@@ -1,0 +1,1 @@
+- [CJS engine in ESM api-server](cjs-engine-in-esm-apiserver.md) — embed CommonJS sub-app under the type:module esbuild api-server via a nested package.json + externalized deps + storage bootstrap.

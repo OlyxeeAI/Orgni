@@ -1,7 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "PORT=3000 BASE_PATH=/ pnpm --filter @workspace/orgni run build",
-  "outputDirectory": "artifacts/orgni/dist/public",
-  "installCommand": "pnpm install --no-frozen-lockfile",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-}

@@ -1,0 +1,463 @@
+{
+  "organizations": [
+    {
+      "id": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "name": "Acme Co",
+      "businessType": "Logistics",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "empty",
+      "createdAt": "2026-06-25T00:57:14.877Z",
+      "updatedAt": "2026-06-25T00:57:14.877Z"
+    },
+    {
+      "id": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "name": "Smoke Test Org",
+      "businessType": "Logistics",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "ready",
+      "createdAt": "2026-06-25T00:57:26.004Z",
+      "updatedAt": "2026-06-25T00:57:26.406Z"
+    }
+  ],
+  "documents": [
+    {
+      "id": "be7968ba-5db4-46cd-8c5f-8874c9a33853",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "filename": "1782349046102-sop.txt",
+      "originalName": "sop.txt",
+      "fileType": ".txt",
+      "filePath": "/home/runner/workspace/artifacts/api-server/storage/uploads/616d3fab-c739-4e65-a35c-ea0d3dfc72fb/1782349046102-sop.txt",
+      "fileSize": 132,
+      "content": "Standard Operating Procedure\nPayments over R5,000 require manager approval.\nFinance Assistant matches invoices to delivery records.",
+      "wordCount": 16,
+      "status": "parsed",
+      "parseError": null,
+      "uploadedAt": "2026-06-25T00:57:26.104Z",
+      "parsedAt": "2026-06-25T00:57:26.106Z",
+      "updatedAt": "2026-06-25T00:57:26.106Z"
+    }
+  ],
+  "businessMaps": [],
+  "knowledgeMaps": [
+    {
+      "id": "bd2a27aa-e29c-42b4-b12b-caed6f48fde0",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "version": 1,
+      "status": "active",
+      "businessSummary": {
+        "business_name": "Smoke Test Org",
+        "business_type": "Logistics",
+        "plain_english_summary": "Smoke Test Org is a Logistics with 3 documented workflows and 0 extracted rules. The map was built deterministically from profile data and parsed source documents.",
+        "core_function": "Logistics",
+        "key_operational_facts": [
+          "Workflow: Key workflows:",
+          "Workflow: Standard Operating Procedure",
+          "Workflow: Payments over R5,000 require manager approval."
+        ],
+        "systems_in_use": [],
+        "document_types_in_use": [
+          "txt"
+        ],
+        "confidence": 0.55,
+        "confidence_reason": "Confidence is rule-based: higher when source text contains explicit workflow steps, approval rules, and source excerpts.",
+        "missing_information": []
+      },
+      "departments": [
+        {
+          "name": "Logistics",
+          "functions": [
+            "Delivery operations"
+          ]
+        },
+        {
+          "name": "Finance",
+          "functions": [
+            "Approvals",
+            "Payments",
+            "Invoice processing"
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "role": "Finance Assistant",
+          "department": "Finance",
+          "tasks": [
+            "Finance Assistant matches invoices to delivery records"
+          ],
+          "decision_authority": [],
+          "approval_authority": [],
+          "depends_on": [],
+          "unclear_responsibilities": [],
+          "_sourceDocName": "sop.txt",
+          "_sourceExcerpt": "Standard Operating Procedure Payments over R5,000 require manager approval. Finance Assistant matches invoices to delivery records.",
+          "_confidence": 0.72
+        }
+      ],
+      "workflows": [
+        {
+          "workflow_name": "Key workflows:",
+          "trigger": "",
+          "steps": [],
+          "owner": "",
+          "required_documents": [],
+          "decision_points": [],
+          "approval_points": [],
+          "dependencies": [],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Business: Smoke Test Org\nType: Logistics\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+          "_confidence": 0.58,
+          "_supported": true
+        },
+        {
+          "workflow_name": "Standard Operating Procedure",
+          "trigger": "Finance Assistant matches invoices to delivery records.",
+          "steps": [
+            "Finance Assistant matches invoices to delivery records."
+          ],
+          "owner": "Finance Assistant",
+          "required_documents": [
+            "Invoice",
+            "Delivery Record"
+          ],
+          "decision_points": [
+            "Finance Assistant matches invoices to delivery records."
+          ],
+          "approval_points": [],
+          "dependencies": [],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "sop.txt",
+          "_sourceExcerpt": "Finance Assistant matches invoices to delivery records.",
+          "_confidence": 0.58,
+          "_supported": true
+        },
+        {
+          "workflow_name": "Payments over R5,000 require manager approval.",
+          "trigger": "Finance Assistant matches invoices to delivery records.",
+          "steps": [
+            "Finance Assistant matches invoices to delivery records."
+          ],
+          "owner": "Finance Assistant",
+          "required_documents": [
+            "Invoice",
+            "Delivery Record"
+          ],
+          "decision_points": [
+            "Finance Assistant matches invoices to delivery records."
+          ],
+          "approval_points": [],
+          "dependencies": [],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "sop.txt",
+          "_sourceExcerpt": "Finance Assistant matches invoices to delivery records.",
+          "_confidence": 0.58,
+          "_supported": true
+        }
+      ],
+      "rules": [],
+      "approvals": [],
+      "exceptions": [],
+      "risks": [
+        {
+          "risk": "Main problems:",
+          "severity": "low",
+          "reason": "Main problems:",
+          "affected_workflow": "Key workflows:",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Main problems:",
+          "_confidence": 0.68
+        }
+      ],
+      "bottlenecks": [],
+      "gaps": [],
+      "dependencies": [],
+      "aiOpportunities": [],
+      "readiness": [
+        {
+          "workflow": "Key workflows:",
+          "readiness_score": 35,
+          "reason": "Readiness is based on documented steps and rules, not AI interpretation.",
+          "blockers": [],
+          "required_integrations": []
+        }
+      ],
+      "blueprint": {
+        "blueprints": []
+      },
+      "missingInformation": [
+        "Business departments are not listed in the profile.",
+        "Approval rules are not clearly documented."
+      ],
+      "overallConfidence": 0.55,
+      "overallRiskScore": 0.28,
+      "sourceDocuments": [
+        {
+          "id": "be7968ba-5db4-46cd-8c5f-8874c9a33853",
+          "name": "sop.txt"
+        }
+      ],
+      "recommendedNextSteps": [
+        "Review workflow: Key workflows: — Most clearly documented workflow."
+      ],
+      "generatedAt": "2026-06-25T00:57:26.400Z",
+      "updatedAt": "2026-06-25T00:57:26.400Z"
+    }
+  ],
+  "validations": [
+    {
+      "id": "84926933-6524-4bb8-a907-4aca24245016",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "mapId": "bd2a27aa-e29c-42b4-b12b-caed6f48fde0",
+      "insightType": "workflow",
+      "claim": "Workflow: Key workflows:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Business: Smoke Test Org\nType: Logistics\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+      "confidence": 0.58,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Extracted from Business profile",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-25T00:57:26.401Z"
+    },
+    {
+      "id": "c910ff25-101c-403e-a4d7-2ea60d1e978e",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "mapId": "bd2a27aa-e29c-42b4-b12b-caed6f48fde0",
+      "insightType": "workflow",
+      "claim": "Workflow: Standard Operating Procedure",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "sop.txt",
+      "sourceExcerpt": "Finance Assistant matches invoices to delivery records.",
+      "confidence": 0.58,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Extracted from sop.txt",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-25T00:57:26.402Z"
+    },
+    {
+      "id": "8f18146c-ee84-4cf5-954c-1906857297c6",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "mapId": "bd2a27aa-e29c-42b4-b12b-caed6f48fde0",
+      "insightType": "workflow",
+      "claim": "Workflow: Payments over R5,000 require manager approval.",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "sop.txt",
+      "sourceExcerpt": "Finance Assistant matches invoices to delivery records.",
+      "confidence": 0.58,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Extracted from sop.txt",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-25T00:57:26.404Z"
+    },
+    {
+      "id": "59e83475-c0f1-4f5a-b1c3-143dff6ec97d",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "mapId": "bd2a27aa-e29c-42b4-b12b-caed6f48fde0",
+      "insightType": "risk",
+      "claim": "Risk: Main problems:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Main problems:",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-25T00:57:26.405Z"
+    }
+  ],
+  "insights": [
+    {
+      "id": "ccf21e90-cf1d-404f-89b7-8365d8ffc10d",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "mapId": "bd2a27aa-e29c-42b4-b12b-caed6f48fde0",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Key workflows:",
+        "trigger": "",
+        "steps": [],
+        "owner": "",
+        "required_documents": [],
+        "decision_points": [],
+        "approval_points": [],
+        "dependencies": [],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Business: Smoke Test Org\nType: Logistics\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+        "_confidence": 0.58,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Business: Smoke Test Org\nType: Logistics\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+      "confidence": 0.58,
+      "createdAt": "2026-06-25T00:57:26.400Z"
+    },
+    {
+      "id": "5250a781-62a0-43de-93ae-028f84e90a4b",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "mapId": "bd2a27aa-e29c-42b4-b12b-caed6f48fde0",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Standard Operating Procedure",
+        "trigger": "Finance Assistant matches invoices to delivery records.",
+        "steps": [
+          "Finance Assistant matches invoices to delivery records."
+        ],
+        "owner": "Finance Assistant",
+        "required_documents": [
+          "Invoice",
+          "Delivery Record"
+        ],
+        "decision_points": [
+          "Finance Assistant matches invoices to delivery records."
+        ],
+        "approval_points": [],
+        "dependencies": [],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "sop.txt",
+        "_sourceExcerpt": "Finance Assistant matches invoices to delivery records.",
+        "_confidence": 0.58,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "sop.txt",
+      "sourceExcerpt": "Finance Assistant matches invoices to delivery records.",
+      "confidence": 0.58,
+      "createdAt": "2026-06-25T00:57:26.402Z"
+    },
+    {
+      "id": "19c544c1-9f38-4e02-a838-46f3baf0575f",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "mapId": "bd2a27aa-e29c-42b4-b12b-caed6f48fde0",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Payments over R5,000 require manager approval.",
+        "trigger": "Finance Assistant matches invoices to delivery records.",
+        "steps": [
+          "Finance Assistant matches invoices to delivery records."
+        ],
+        "owner": "Finance Assistant",
+        "required_documents": [
+          "Invoice",
+          "Delivery Record"
+        ],
+        "decision_points": [
+          "Finance Assistant matches invoices to delivery records."
+        ],
+        "approval_points": [],
+        "dependencies": [],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "sop.txt",
+        "_sourceExcerpt": "Finance Assistant matches invoices to delivery records.",
+        "_confidence": 0.58,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "sop.txt",
+      "sourceExcerpt": "Finance Assistant matches invoices to delivery records.",
+      "confidence": 0.58,
+      "createdAt": "2026-06-25T00:57:26.403Z"
+    },
+    {
+      "id": "2641c8f8-0497-41aa-8f7a-affd92378bbb",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "mapId": "bd2a27aa-e29c-42b4-b12b-caed6f48fde0",
+      "type": "risk",
+      "content": {
+        "risk": "Main problems:",
+        "severity": "low",
+        "reason": "Main problems:",
+        "affected_workflow": "Key workflows:",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Main problems:",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-25T00:57:26.404Z"
+    }
+  ],
+  "conversations": [],
+  "actions": [],
+  "activity": [
+    {
+      "id": "006cd9c8-edb0-4640-84ab-26ba6fa7974c",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "type": "org_created",
+      "description": "Organization \"Acme Co\" created",
+      "meta": {},
+      "createdAt": "2026-06-25T00:57:14.878Z"
+    },
+    {
+      "id": "b2619736-38b4-4e00-8f74-3e28cdc20487",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "type": "org_created",
+      "description": "Organization \"Smoke Test Org\" created",
+      "meta": {},
+      "createdAt": "2026-06-25T00:57:26.005Z"
+    },
+    {
+      "id": "189a69ef-577c-4dac-b7f0-6ac68917552e",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "type": "document_uploaded",
+      "description": "Uploaded \"sop.txt\"",
+      "meta": {
+        "docId": "be7968ba-5db4-46cd-8c5f-8874c9a33853"
+      },
+      "createdAt": "2026-06-25T00:57:26.105Z"
+    },
+    {
+      "id": "bba256cd-a127-463e-a615-b2691ac26c25",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "type": "engine_intake_complete",
+      "description": "Knowledge Map built",
+      "meta": {
+        "mapId": "bd2a27aa-e29c-42b4-b12b-caed6f48fde0",
+        "version": 1,
+        "docCount": 1
+      },
+      "createdAt": "2026-06-25T00:57:26.407Z"
+    }
+  ]
+}
