@@ -1,0 +1,178 @@
+Create a premium landing page for **Orgni**, an AI infrastructure platform by Olyxee.
+
+Orgni is not a chatbot, not an AI agent, and not a generic automation tool. Orgni is the business-context layer that learns how a company operates, then powers real workflows, finance operations, and future AI tools with context, control, and a clear trail.
+
+The website must feel unique, simple, and enterprise-ready. It should be easy to understand without long reading.
+
+Main goal:
+Show that Orgni helps businesses move from scattered information to AI-enabled execution.
+
+Core message:
+**Orgni learns how your business works, then turns that understanding into usable infrastructure for workflows and finance.**
+
+Design direction:
+
+* Clean white background.
+* Premium but simple.
+* No clutter.
+* No long text sections.
+* No generic AI gradients.
+* No chatbot-style UI.
+* Use a strong sidebar or command-center inspired visual language.
+* Make the page feel like a real product, not a demo.
+* Use motion meaningfully, not decoratively.
+
+Hero section:
+
+* Big headline: **Business context for AI execution.**
+* Short subtext: **Orgni learns your processes, rules, roles, documents, and exceptions so AI can support real business work.**
+* Primary CTA: **Explore Orgni**
+* Secondary CTA: **See how it works**
+* Hero visual should show a live operating map: documents, roles, workflows, finance exceptions, approvals, and actions connecting into one Orgni core.
+
+Interactive scrolling idea:
+As the user scrolls, show Orgni “coming alive” step by step:
+
+1. **Input**
+   Show documents, spreadsheets, policies, voice notes, emails, and business descriptions entering Orgni.
+
+2. **Understanding**
+   Orgni extracts:
+
+   * departments
+   * roles
+   * rules
+   * workflows
+   * source documents
+   * approval paths
+   * exceptions
+   * missing information
+
+3. **Business Map**
+   Show a clean animated map of how the business operates.
+
+4. **Orgni Workflows**
+   Show operational workflows becoming active:
+
+   * tasks
+   * approvals
+   * handovers
+   * escalations
+   * status updates
+   * next actions
+
+5. **Orgni Finance**
+   Show finance intelligence:
+
+   * bank statement
+   * ledger
+   * invoice
+   * reconciliation
+   * matched items
+   * exceptions needing review
+   * audit trail
+
+6. **Execution**
+   Show Orgni pushing clean context into workflows, finance tools, dashboards, and AI agents.
+
+Landing page structure:
+
+Section 1: Hero
+Headline, short explanation, product visual.
+
+Section 2: The Problem
+Use short cards:
+
+* Business knowledge is scattered.
+* AI lacks operational context.
+* Workflows depend on people’s memory.
+* Finance exceptions take too long to resolve.
+* Legacy systems are hard to connect.
+
+Section 3: What Orgni Does
+Keep it very simple:
+**Orgni reads how your business works and turns it into structured intelligence.**
+
+Show 4 outputs:
+
+* Business map
+* Workflow logic
+* Finance context
+* Audit trail
+
+Section 4: How It Works
+Use a horizontal or scroll-based animated flow:
+
+Business inputs → Orgni understanding → Business map → Workflows + Finance → Clear execution
+
+Section 5: Orgni Workflows
+Show a live workflow panel:
+
+* New request received
+* Department identified
+* Approval rule found
+* Task assigned
+* Escalation path ready
+* Status updated
+
+Section 6: Orgni Finance
+Show a finance panel:
+
+* Statement uploaded
+* Ledger compared
+* Matches confirmed
+* Exceptions flagged
+* Source evidence linked
+* Review queue created
+
+Section 7: Why Orgni Is Different
+Short comparison:
+
+* Not just search.
+* Not just automation.
+* Not just dashboards.
+* Not just agents.
+* Orgni gives AI the business context it needs to act safely.
+
+Section 8: Built For
+Show simple audience cards:
+
+* Businesses adopting AI
+* Finance teams
+* Operations teams
+* Companies on old systems
+* Teams with scattered documents and processes
+
+Section 9: Final CTA
+Headline:
+**Turn business knowledge into execution infrastructure.**
+
+Buttons:
+
+* **Start with Orgni**
+* **View product flow**
+
+Visual requirements:
+
+* Use real product-like UI components.
+* Use concise panels, not long paragraphs.
+* Include micro-animations where data flows into Orgni.
+* The scroll should feel like the system is waking up.
+* Use clear labels, strong spacing, and restrained colors.
+* Avoid fake metrics unless clearly illustrative.
+* Make the page understandable in under 30 seconds.
+
+Tone:
+Clear, confident, minimal, enterprise-grade.
+
+Do not use:
+
+* Chatbot bubbles as the main visual.
+* Overused AI brain imagery.
+* Long marketing paragraphs.
+* Purple/blue generic SaaS gradients.
+* Buzzwords without showing what they mean.
+* “AI agent platform” as the main positioning.
+
+Final feeling:
+The user should immediately understand that Orgni is the operating context layer for AI-enabled business execution.

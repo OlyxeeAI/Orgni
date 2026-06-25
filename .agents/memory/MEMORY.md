@@ -1,0 +1,1 @@
+- [api-client ApiError export](api-client-error-handling.md) — generated client throws ApiError but it's NOT in the package barrel; add it to inspect err.status (e.g. 409).
