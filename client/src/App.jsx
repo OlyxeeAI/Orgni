@@ -5,15 +5,16 @@ import {
   Brain,
   Building2,
   Check,
-  ChevronDown,
-  CircleDollarSign,
   ClipboardList,
+  Database,
   FileText,
-  History,
+  Globe,
   Layers3,
   Loader2,
   Map,
   Plus,
+  Minus,
+  Maximize2,
   Plug,
   ShieldCheck,
   Sparkles,
@@ -21,14 +22,8 @@ import {
   UploadCloud,
   X
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  siAirtable,
-  siAsana,
-  siClickup,
-  siGmail,
-  siGooglecalendar,
-  siGoogledrive,
   siHubspot,
   siJira,
   siMake,
@@ -39,38 +34,60 @@ import {
   siZapier
 } from 'simple-icons';
 import orgniLogo from './assets/orgni-logo.png';
+import orgniWorkflowLogo from './assets/orgni-workflow.png';
+import orgniFinanceLogo from './assets/orgni-finance.png';
+import logoOpenai from './assets/logos/openai.svg';
+import logoCopilot from './assets/logos/microsoft-copilot.svg';
+import logoSlack from './assets/logos/slack.svg';
+import logoTeams from './assets/logos/microsoft-teams.svg';
+import logoSalesforce from './assets/logos/salesforce.svg';
+import logoGoogleDrive from './assets/logos/google-drive.svg';
+import logoGmail from './assets/logos/gmail.svg';
+import logoGoogleCalendar from './assets/logos/google-calendar.svg';
+import logoAirtable from './assets/logos/airtable.svg';
+import logoAsana from './assets/logos/asana.svg';
+import logoClickup from './assets/logos/clickup.svg';
 
 const navItems = [
-  { id: 'documents', label: 'Documents', icon: FileText },
+  { id: 'documents', label: 'Sources', icon: Database },
   { id: 'map', label: 'Knowledge', icon: Map },
   { id: 'plugins', label: 'Plugins', icon: Plug }
 ];
 
+const connectSources = [
+  { name: 'Google Drive', image: logoGoogleDrive, detail: 'Sync folders & files' },
+  { name: 'Notion', iconData: siNotion, detail: 'Import internal docs' },
+  { name: 'Gmail', image: logoGmail, detail: 'Learn from email' },
+  { name: 'HubSpot', iconData: siHubspot, detail: 'Connect CRM records' },
+  { name: 'Airtable', image: logoAirtable, detail: 'Map structured data' },
+  { name: 'Website / URL', glyphIcon: Globe, color: '#0d9488', detail: 'Crawl a public page' }
+];
+
 const pluginItems = [
-  { id: 'workflowPlugin', label: 'Workflow', icon: Layers3 },
-  { id: 'financePlugin', label: 'Finance', icon: CircleDollarSign }
+  { id: 'workflowPlugin', label: 'Workflow', image: orgniWorkflowLogo },
+  { id: 'financePlugin', label: 'Finance', image: orgniFinanceLogo }
 ];
 
 const externalPlugins = [
-  { name: 'ChatGPT', category: 'AI assistant', mark: 'GPT', color: '#10a37f', use: 'Ground answers, actions, and planning in company documents.' },
-  { name: 'Microsoft Copilot', category: 'AI assistant', mark: 'Co', color: '#2563eb', use: 'Bring Orgni context into Microsoft 365 work.' },
-  { name: 'Slack', category: 'Team chat', mark: 'S', color: '#4a154b', use: 'Answer operational questions inside channels.' },
-  { name: 'Microsoft Teams', category: 'Team chat', mark: 'T', color: '#6264a7', use: 'Give teams shared business context during work.' },
-  { name: 'Google Drive', category: 'Files', icon: siGoogledrive, use: 'Use Drive folders as business knowledge sources.' },
-  { name: 'Gmail', category: 'Email', icon: siGmail, use: 'Draft replies and classify requests with business context.' },
-  { name: 'Google Calendar', category: 'Calendar', icon: siGooglecalendar, use: 'Connect meetings to workflows, owners, and next steps.' },
+  { name: 'ChatGPT', category: 'AI assistant', image: logoOpenai, use: 'Ground answers, actions, and planning in company documents.' },
+  { name: 'Microsoft Copilot', category: 'AI assistant', image: logoCopilot, use: 'Bring Orgni context into Microsoft 365 work.' },
+  { name: 'Slack', category: 'Team chat', image: logoSlack, use: 'Answer operational questions inside channels.' },
+  { name: 'Microsoft Teams', category: 'Team chat', image: logoTeams, use: 'Give teams shared business context during work.' },
+  { name: 'Google Drive', category: 'Files', image: logoGoogleDrive, use: 'Use Drive folders as business knowledge sources.' },
+  { name: 'Gmail', category: 'Email', image: logoGmail, use: 'Draft replies and classify requests with business context.' },
+  { name: 'Google Calendar', category: 'Calendar', image: logoGoogleCalendar, use: 'Connect meetings to workflows, owners, and next steps.' },
   { name: 'Notion', category: 'Docs', icon: siNotion, use: 'Keep internal docs synced with Orgni knowledge.' },
   { name: 'HubSpot', category: 'CRM', icon: siHubspot, use: 'Make customer workflows aware of internal rules.' },
-  { name: 'Salesforce', category: 'CRM', mark: 'SF', color: '#00a1e0', use: 'Give sales and service teams approved context.' },
+  { name: 'Salesforce', category: 'CRM', image: logoSalesforce, use: 'Give sales and service teams approved context.' },
   { name: 'QuickBooks', category: 'Finance', icon: siQuickbooks, use: 'Connect finance rules, approvals, and exceptions.' },
   { name: 'Xero', category: 'Finance', icon: siXero, use: 'Support finance controls with operational context.' },
   { name: 'Zapier', category: 'Automation', icon: siZapier, use: 'Trigger workflows from trusted business context.' },
   { name: 'Make', category: 'Automation', icon: siMake, use: 'Build automations around extracted roles and rules.' },
-  { name: 'Asana', category: 'Work management', icon: siAsana, use: 'Turn gaps and next steps into trackable work.' },
+  { name: 'Asana', category: 'Work management', image: logoAsana, use: 'Turn gaps and next steps into trackable work.' },
   { name: 'Jira', category: 'Work management', icon: siJira, use: 'Route operational findings into delivery queues.' },
   { name: 'Trello', category: 'Work management', icon: siTrello, use: 'Create boards from workflows, risks, and actions.' },
-  { name: 'Airtable', category: 'Database', icon: siAirtable, use: 'Map structured operations data to business memory.' },
-  { name: 'ClickUp', category: 'Work management', icon: siClickup, use: 'Push Orgni tasks into team execution spaces.' }
+  { name: 'Airtable', category: 'Database', image: logoAirtable, use: 'Map structured operations data to business memory.' },
+  { name: 'ClickUp', category: 'Work management', image: logoClickup, use: 'Push Orgni tasks into team execution spaces.' }
 ];
 
 const actionTypes = [
@@ -80,6 +97,64 @@ const actionTypes = [
   { type: 'next_step', label: 'Next step', icon: ArrowRight },
   { type: 'draft_message', label: 'Team update', icon: FileText }
 ];
+
+// Concrete examples of the business context Orgni serves to each native product.
+// Field names match the real /engine/context/:domain responses.
+const productExposes = {
+  workflow: {
+    endpoint: 'GET /api/orgs/:orgId/engine/context/workflow',
+    fields: [
+      ['workflows', 'Name, trigger, steps, owner, decision & approval points'],
+      ['roles', 'Who does what, plus decision and approval authority'],
+      ['dependencies', 'Where people and processes depend on each other'],
+      ['bottlenecks', 'Friction points that slow work down'],
+      ['blueprint', 'AI execution boundaries and required human approvals']
+    ],
+    example: `{
+  "orgId": "org_clover",
+  "domain": "workflow",
+  "context": {
+    "workflows": [{
+      "workflow_name": "Invoice Approval",
+      "trigger": "Supplier invoice received",
+      "steps": ["Match invoice to delivery record", "Route by amount", "Approve"],
+      "owner": "Finance Assistant",
+      "approval_points": ["Finance Manager approval over R5,000"]
+    }],
+    "roles": [{ "role": "Finance Manager", "approval_authority": ["Up to R50,000"] }],
+    "bottlenecks": ["Manual invoice matching"]
+  },
+  "confidence": 0.85,
+  "version": 5
+}`
+  },
+  finance: {
+    endpoint: 'GET /api/orgs/:orgId/engine/context/finance',
+    fields: [
+      ['rules', 'Condition \u2192 action, with a risk level'],
+      ['approvals', 'Trigger, approver, and threshold'],
+      ['exceptions', 'Documented deviations from the rules'],
+      ['risks', 'Control weaknesses Orgni detected'],
+      ['gaps', 'Missing controls or undocumented steps']
+    ],
+    example: `{
+  "orgId": "org_clover",
+  "domain": "finance",
+  "context": {
+    "rules": [{
+      "rule_name": "High-value payment approval",
+      "condition": "amount > 5000",
+      "action": "require_manager_approval",
+      "risk_level": "medium"
+    }],
+    "approvals": [{ "trigger": "Refund", "approver": "Store Manager", "threshold": "R2,000" }],
+    "risks": [{ "risk": "Manual invoice matching may miss discrepancies", "severity": "medium" }]
+  },
+  "confidence": 0.85,
+  "version": 5
+}`
+  }
+};
 
 async function api(path, options = {}) {
   const isForm = options.body instanceof FormData;
@@ -147,7 +222,6 @@ export function App() {
   const [profile, setProfile] = useState(emptyProfile);
   const [actionResult, setActionResult] = useState(null);
   const [actionContext, setActionContext] = useState('');
-  const [expandedWorkflow, setExpandedWorkflow] = useState('');
 
   const currentOrg = useMemo(() => orgs.find((org) => org.id === orgId), [orgs, orgId]);
 
@@ -352,8 +426,8 @@ export function App() {
     <EmptyState title="Create your business" body="Orgni needs one business profile before documents can be mapped." action={<button className="primary" onClick={() => setShowCreate(true)}><Plus size={16} /> New business</button>} />
   ) : (
     <>
-      {view === 'documents' && <Documents docs={docs} onUpload={uploadFiles} onDelete={deleteDocument} onIntake={runIntake} />}
-      {view === 'map' && <KnowledgeMap context={context} history={history} expandedWorkflow={expandedWorkflow} setExpandedWorkflow={setExpandedWorkflow} />}
+      {view === 'documents' && <Documents docs={docs} onUpload={uploadFiles} onDelete={deleteDocument} onIntake={runIntake} onConnect={(name) => toast(`${name} connections are coming soon — upload files for now.`, 'info')} />}
+      {view === 'map' && <KnowledgeMap context={context} />}
       {view === 'validation' && <Validation validation={validation} onReview={reviewFinding} />}
       {view === 'actions' && <Actions actionContext={actionContext} setActionContext={setActionContext} result={actionResult} onRun={runAction} />}
       {view === 'plugins' && <PluginsCatalog onOpen={setView} />}
@@ -365,54 +439,43 @@ export function App() {
 
   return (
     <div className="shell">
-      <header className="workspace-chrome">
+      <aside className="workspace-chrome" aria-label="Sidebar">
         <div className="chrome-brand">
           <span className="mark"><img src={orgniLogo} alt="Orgni logo" /></span>
           <strong>Orgni</strong>
         </div>
 
-        <div className="chrome-business">
-          <span>{currentOrg?.businessType || 'Business'}</span>
-          <strong>{currentOrg?.name || 'Set up business'}</strong>
+        <div className="chrome-center">
+          <nav className="chrome-nav" aria-label="Primary">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button key={item.id} className={view === item.id ? 'active' : ''} onClick={() => setView(item.id)}>
+                  <Icon size={17} />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          <p className="chrome-section-label">Plugins</p>
+          <nav className="chrome-plugins" aria-label="Plugins">
+            {pluginItems.map((item) => (
+              <button key={item.id} className={view === item.id ? 'active plugin-active' : 'plugin-link'} onClick={() => setView(item.id)}>
+                <img className="plugin-logo" src={item.image} alt="" />
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </nav>
         </div>
 
-        <nav className="chrome-nav" aria-label="Primary">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <button key={item.id} className={view === item.id ? 'active' : ''} onClick={() => setView(item.id)}>
-                <Icon size={17} />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        <nav className="chrome-plugins" aria-label="Plugins">
-          {pluginItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <button key={item.id} className={view === item.id ? 'active plugin-active' : 'plugin-link'} onClick={() => setView(item.id)}>
-                <Icon size={16} />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        <button className={`profile-link ${view === 'profile' ? 'active' : ''}`} onClick={() => setView('profile')}>
+        <button className={`profile-link sidebar-profile ${view === 'profile' ? 'active' : ''}`} onClick={() => setView('profile')}>
           <Building2 size={16} />
-          Profile
+          <span>Profile</span>
         </button>
-      </header>
+      </aside>
 
       <main>
-        <header className="topbar">
-          <div>
-            <p className="eyebrow">{currentOrg?.businessType || 'Business intelligence'}</p>
-            <h1>{currentOrg?.name || 'Orgni'}</h1>
-          </div>
-        </header>
         {content}
       </main>
 
@@ -423,8 +486,26 @@ export function App() {
   );
 }
 
+function ExposesPanel({ title, intro, data }) {
+  return (
+    <div className="panel span-2 exposes-panel">
+      <PanelHeader icon={Sparkles} title={title} />
+      <p className="lead">{intro}</p>
+      <dl className="exposes-fields">
+        {data.fields.map(([key, desc]) => (
+          <div key={key}>
+            <dt>{key}</dt>
+            <dd>{desc}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="exposes-endpoint">{data.endpoint}</p>
+      <pre className="exposes-example">{data.example}</pre>
+    </div>
+  );
+}
+
 function WorkflowPlugin({ context, onSource }) {
-  if (!context) return <PluginEmpty title="Workflow plugin" body="Workflow needs a knowledge map before it can show business process context." onSource={onSource} />;
   return (
     <section className="view-grid">
       <div className="panel hero-panel">
@@ -433,32 +514,48 @@ function WorkflowPlugin({ context, onSource }) {
           <h2>Workflow</h2>
           <p>Operational context for process design: workflows, roles, dependencies, bottlenecks, and AI execution boundaries.</p>
         </div>
-        <Layers3 size={56} />
+        <img className="hero-logo" src={orgniWorkflowLogo} alt="Orgni Workflow" />
       </div>
-      <div className="stats">
-        <Metric label="Workflows" value={count(context.workflows)} />
-        <Metric label="Roles" value={count(context.roles)} />
-        <Metric label="Dependencies" value={count(context.dependencies)} />
-        <Metric label="Bottlenecks" value={count(context.bottlenecks)} />
-      </div>
-      <div className="panel span-2">
-        <PanelHeader icon={Layers3} title="Workflow context" />
-        <List items={(context.workflows || []).map((item) => item.workflow_name || item.name)} fallback="No workflows extracted yet." />
-      </div>
-      <div className="panel">
-        <PanelHeader icon={AlertTriangle} title="Bottlenecks" />
-        <List items={(context.bottlenecks || []).map((item) => item.bottleneck || item)} fallback="No bottlenecks extracted yet." />
-      </div>
-      <div className="panel">
-        <PanelHeader icon={Map} title="Missing information" />
-        <List items={(context.missingInformation || []).map((item) => item.item || item.gap || item)} fallback="No missing workflow information flagged." />
-      </div>
+
+      <ExposesPanel
+        title="What Orgni exposes to Workflow"
+        intro="Orgni serves this business context to the Workflow product through one read-only endpoint. The fields below live inside the response's context object — here is the full shape with a real example."
+        data={productExposes.workflow}
+      />
+
+      {context ? (
+        <>
+          <div className="stats">
+            <Metric label="Workflows" value={count(context.workflows)} />
+            <Metric label="Roles" value={count(context.roles)} />
+            <Metric label="Dependencies" value={count(context.dependencies)} />
+            <Metric label="Bottlenecks" value={count(context.bottlenecks)} />
+          </div>
+          <div className="panel span-2">
+            <PanelHeader icon={Layers3} title="Live workflow context" />
+            <List items={(context.workflows || []).map((item) => item.workflow_name || item.name)} fallback="No workflows extracted yet." />
+          </div>
+          <div className="panel">
+            <PanelHeader icon={AlertTriangle} title="Bottlenecks" />
+            <List items={(context.bottlenecks || []).map((item) => item.bottleneck || item)} fallback="No bottlenecks extracted yet." />
+          </div>
+          <div className="panel">
+            <PanelHeader icon={Map} title="Missing information" />
+            <List items={(context.missingInformation || []).map((item) => item.item || item.gap || item)} fallback="No missing workflow information flagged." />
+          </div>
+        </>
+      ) : (
+        <div className="panel span-2">
+          <PanelHeader icon={UploadCloud} title="No live context yet" />
+          <p className="lead">Build a knowledge map and Workflow will show your real workflows, roles, and bottlenecks here.</p>
+          <button className="primary" onClick={onSource}><UploadCloud size={16} /> Add documents</button>
+        </div>
+      )}
     </section>
   );
 }
 
 function FinancePlugin({ context, onSource }) {
-  if (!context) return <PluginEmpty title="Finance plugin" body="Finance needs a knowledge map before it can show rules, approvals, exceptions, and risk context." onSource={onSource} />;
   return (
     <section className="view-grid">
       <div className="panel hero-panel">
@@ -467,37 +564,44 @@ function FinancePlugin({ context, onSource }) {
           <h2>Finance</h2>
           <p>Financial operating context for controls: business rules, approvals, exceptions, risks, and gaps.</p>
         </div>
-        <CircleDollarSign size={56} />
+        <img className="hero-logo" src={orgniFinanceLogo} alt="Orgni Finance" />
       </div>
-      <div className="stats">
-        <Metric label="Rules" value={count(context.rules)} />
-        <Metric label="Approvals" value={count(context.approvals)} />
-        <Metric label="Exceptions" value={count(context.exceptions)} />
-        <Metric label="Risks" value={count(context.risks)} />
-      </div>
-      <div className="panel">
-        <PanelHeader icon={Check} title="Rules" />
-        <List items={(context.rules || []).map((item) => item.rule || item)} fallback="No finance rules extracted yet." />
-      </div>
-      <div className="panel">
-        <PanelHeader icon={ShieldCheck} title="Approvals" />
-        <List items={(context.approvals || []).map((item) => item.approval || item.rule || item)} fallback="No approvals extracted yet." />
-      </div>
-      <div className="panel span-2">
-        <PanelHeader icon={AlertTriangle} title="Risks and gaps" />
-        <List items={[...(context.risks || []).map((item) => item.risk || item), ...(context.gaps || []).map((item) => item.gap || item)]} fallback="No finance risks or gaps extracted yet." />
-      </div>
-    </section>
-  );
-}
 
-function PluginEmpty({ title, body, onSource }) {
-  return (
-    <EmptyState
-      title={title}
-      body={body}
-      action={<button className="primary" onClick={onSource}><UploadCloud size={16} /> Add documents</button>}
-    />
+      <ExposesPanel
+        title="What Orgni exposes to Finance"
+        intro="Orgni serves this financial control context to the Finance product through one read-only endpoint. The fields below live inside the response's context object — here is the full shape with a real example."
+        data={productExposes.finance}
+      />
+
+      {context ? (
+        <>
+          <div className="stats">
+            <Metric label="Rules" value={count(context.rules)} />
+            <Metric label="Approvals" value={count(context.approvals)} />
+            <Metric label="Exceptions" value={count(context.exceptions)} />
+            <Metric label="Risks" value={count(context.risks)} />
+          </div>
+          <div className="panel">
+            <PanelHeader icon={Check} title="Live rules" />
+            <List items={(context.rules || []).map((item) => item.rule || item)} fallback="No finance rules extracted yet." />
+          </div>
+          <div className="panel">
+            <PanelHeader icon={ShieldCheck} title="Approvals" />
+            <List items={(context.approvals || []).map((item) => item.approval || item.rule || item)} fallback="No approvals extracted yet." />
+          </div>
+          <div className="panel span-2">
+            <PanelHeader icon={AlertTriangle} title="Risks and gaps" />
+            <List items={[...(context.risks || []).map((item) => item.risk || item), ...(context.gaps || []).map((item) => item.gap || item)]} fallback="No finance risks or gaps extracted yet." />
+          </div>
+        </>
+      ) : (
+        <div className="panel span-2">
+          <PanelHeader icon={UploadCloud} title="No live context yet" />
+          <p className="lead">Build a knowledge map and Finance will show your real rules, approvals, and risks here.</p>
+          <button className="primary" onClick={onSource}><UploadCloud size={16} /> Add documents</button>
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -509,14 +613,14 @@ function PluginsCatalog({ onOpen }) {
         <p className="lead">Connect Orgni's business context to the tools where work already happens.</p>
         <div className="native-plugin-grid">
           <button className="native-plugin" onClick={() => onOpen('workflowPlugin')}>
-            <BrandGlyph icon={Layers3} />
+            <BrandGlyph image={orgniWorkflowLogo} />
             <div>
               <strong>Workflow</strong>
               <span>Roles, steps, dependencies, bottlenecks, and AI execution boundaries.</span>
             </div>
           </button>
           <button className="native-plugin" onClick={() => onOpen('financePlugin')}>
-            <BrandGlyph icon={CircleDollarSign} />
+            <BrandGlyph image={orgniFinanceLogo} />
             <div>
               <strong>Finance</strong>
               <span>Rules, approvals, exceptions, risks, gaps, and missing controls.</span>
@@ -530,7 +634,7 @@ function PluginsCatalog({ onOpen }) {
         <div className="integration-grid">
           {externalPlugins.map((plugin) => (
             <div className="integration-card" key={plugin.name}>
-              <BrandGlyph iconData={plugin.icon} mark={plugin.mark} color={plugin.color} />
+              <BrandGlyph image={plugin.image} iconData={plugin.icon} mark={plugin.mark} color={plugin.color} />
               <div>
                 <strong>{plugin.name}</strong>
                 <span>{plugin.category}</span>
@@ -544,9 +648,13 @@ function PluginsCatalog({ onOpen }) {
   );
 }
 
-function BrandGlyph({ icon: Icon, iconData, mark, color }) {
+function BrandGlyph({ icon: Icon, iconData, mark, color, image }) {
+  if (image) {
+    return <span className="brand-glyph brand-glyph-image"><img src={image} alt="" /></span>;
+  }
+  const brand = color || `#${iconData?.hex || 'f26a1b'}`;
   return (
-    <span className="brand-glyph" style={{ '--brand': color || `#${iconData?.hex || 'f26a1b'}` }}>
+    <span className="brand-glyph brand-glyph-solid" style={{ '--brand': brand }}>
       {Icon ? <Icon size={20} /> : iconData ? (
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d={iconData.path} />
@@ -556,21 +664,41 @@ function BrandGlyph({ icon: Icon, iconData, mark, color }) {
   );
 }
 
-function Documents({ docs, onUpload, onDelete, onIntake }) {
+function Documents({ docs, onUpload, onDelete, onIntake, onConnect }) {
   return (
     <section className="view-grid">
       <div className="panel span-2">
-        <PanelHeader icon={UploadCloud} title="Upload documents" />
-        <label className="dropzone">
-          <UploadCloud size={28} />
-          <strong>Drop or choose files</strong>
-          <span>.txt, .md, .csv, .json, .pdf, .docx</span>
-          <input type="file" multiple onChange={(event) => onUpload(event.target.files)} />
-        </label>
+        <PanelHeader icon={Database} title="Add a knowledge source" />
+        <p className="lead">Give Orgni something to learn from — upload your files, or connect a tool where your knowledge already lives.</p>
+
+        <div className="source-options">
+          <label className="dropzone">
+            <UploadCloud size={28} />
+            <strong>Upload files</strong>
+            <span>.txt, .md, .csv, .json, .pdf, .docx</span>
+            <input type="file" multiple onChange={(event) => onUpload(event.target.files)} />
+          </label>
+
+          <div className="source-connect">
+            <p className="source-connect-title">Or connect a source</p>
+            <div className="source-grid">
+              {connectSources.map((src) => (
+                <button type="button" className="source-card" key={src.name} onClick={() => onConnect(src.name)}>
+                  <BrandGlyph icon={src.glyphIcon} iconData={src.iconData} image={src.image} color={src.color} />
+                  <span className="source-text">
+                    <strong>{src.name}</strong>
+                    <span>{src.detail}</span>
+                  </span>
+                  <span className="source-soon">Soon</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="panel span-2">
-        <PanelHeader icon={FileText} title={`Documents (${docs.length})`} />
+        <PanelHeader icon={FileText} title={`Your sources (${docs.length})`} />
         <div className="doc-list">
           {docs.length ? docs.map((doc) => (
             <div className="doc-row" key={doc.id}>
@@ -581,9 +709,9 @@ function Documents({ docs, onUpload, onDelete, onIntake }) {
                 {doc.parseError && <em>{doc.parseError}</em>}
               </div>
               <span className={`pill ${doc.status}`}>{doc.status}</span>
-              <button className="icon-btn danger" title="Delete document" onClick={() => onDelete(doc.id)}><Trash2 size={16} /></button>
+              <button className="icon-btn danger" title="Remove source" onClick={() => onDelete(doc.id)}><Trash2 size={16} /></button>
             </div>
-          )) : <EmptyInline message="No documents uploaded." />}
+          )) : <EmptyInline message="No sources added yet — upload a file or connect a tool above." />}
         </div>
         <div className="inline-actions">
           <button className="primary" onClick={onIntake} disabled={!docs.length}><Sparkles size={16} /> Build map</button>
@@ -593,161 +721,345 @@ function Documents({ docs, onUpload, onDelete, onIntake }) {
   );
 }
 
-function KnowledgeMap({ context, history, expandedWorkflow, setExpandedWorkflow }) {
-  if (!context) return <EmptyState title="No knowledge map yet" body="Upload source documents, then build the Knowledge Map." />;
-  const workflows = context.workflows || [];
-  const summary = context.summary?.plain_english_summary || context.businessSummary?.plain_english_summary || context.businessSummary || 'No summary generated.';
+function KnowledgeMap({ context }) {
+  const network = useMemo(
+    () => (context ? buildKnowledgeNetwork(context) : { nodes: [], edges: [], nodeMap: new globalThis.Map(), legend: [] }),
+    [context]
+  );
+  const [selectedId, setSelectedId] = useState('business');
+
+  useEffect(() => { setSelectedId('business'); }, [context]);
+
+  if (!context || !network.nodes.length) {
+    return <EmptyState title="No knowledge map yet" body="Upload source documents, then build the Knowledge Map." />;
+  }
+
+  const selected = network.nodeMap.get(selectedId) || network.nodeMap.get('business');
+
   return (
     <section className="view-grid">
-      <div className="panel span-2">
-        <PanelHeader icon={Map} title="Business summary" />
-        <p className="lead">{String(summary)}</p>
-      </div>
-
-      <KnowledgeNetwork context={context} />
-
-      <div className="stats">
-        <Metric label="Confidence" value={pct(context.confidence ?? context.overallConfidence)} />
-        <Metric label="Departments" value={count(context.departments)} />
-        <Metric label="Roles" value={count(context.roles)} />
-        <Metric label="Risk score" value={pct(context.riskScore ?? context.overallRiskScore)} />
-      </div>
-
-      <div className="panel span-2">
-        <PanelHeader icon={Layers3} title="Workflows" />
-        {workflows.length ? workflows.map((workflow, index) => {
-          const id = workflow.workflow_name || workflow.name || `Workflow ${index + 1}`;
-          const open = expandedWorkflow === id;
-          return (
-            <div className="workflow" key={id}>
-              <button onClick={() => setExpandedWorkflow(open ? '' : id)}>
-                <strong>{id}</strong>
-                <span>{count(workflow.steps)} steps</span>
-                <ChevronDown size={16} className={open ? 'rotate' : ''} />
-              </button>
-              {open && <List items={workflow.steps?.map((step) => step.step || step)} fallback="No steps extracted." />}
+      <div className="panel span-2 km-layout">
+        <div className="km-network">
+          <PanelHeader icon={Map} title="Knowledge network" />
+          <p className="network-hint">Your business sits at the centre. Drag to move the map, scroll or use the buttons to zoom, and click any node to see its details.</p>
+          <KnowledgeNetwork network={network} selectedId={selected?.id} onSelect={setSelectedId} />
+          {network.legend.length > 0 && (
+            <div className="network-legend">
+              {network.legend.map((item) => <span key={item.type} className={item.type}><i className="dot" />{item.label}</span>)}
             </div>
-          );
-        }) : <EmptyInline message="No workflows extracted." />}
-      </div>
-
-      <div className="panel">
-        <PanelHeader icon={AlertTriangle} title="Risks" />
-        <List items={(context.risks || []).map((risk) => risk.risk || risk.title)} fallback="No risks extracted." />
-      </div>
-
-      <div className="panel">
-        <PanelHeader icon={History} title="Version history" />
-        <List items={history.map((item) => `v${item.version} · ${item.status} · ${pct(item.confidence)} · ${time(item.generatedAt)}`)} fallback="No history yet." />
+          )}
+        </div>
+        <aside className="km-detail">
+          <NodeDetail node={selected} context={context} onSelect={setSelectedId} />
+        </aside>
       </div>
     </section>
   );
 }
 
-function KnowledgeNetwork({ context }) {
-  const network = buildKnowledgeNetwork(context);
+function NodeDetail({ node, context, onSelect }) {
+  if (!node) return null;
+
+  if (node.kind === 'business') {
+    const summary = context.summary?.plain_english_summary || context.businessSummary?.plain_english_summary || context.businessSummary || 'No summary generated yet.';
+    return (
+      <div className="detail-card">
+        <span className="detail-tag business">Business</span>
+        <h3>{node.label}</h3>
+        <p className="detail-summary">{String(summary)}</p>
+        <div className="detail-stats">
+          <Metric label="Confidence" value={pct(context.confidence ?? context.overallConfidence)} />
+          <Metric label="Departments" value={count(context.departments)} />
+          <Metric label="Roles" value={count(context.roles)} />
+          <Metric label="Risk score" value={pct(context.riskScore ?? context.overallRiskScore)} />
+        </div>
+        <p className="detail-hint">Click a branch or note in the map to drill in.</p>
+      </div>
+    );
+  }
+
+  if (node.kind === 'hub') {
+    return (
+      <div className="detail-card">
+        <span className={`detail-tag ${node.type}`}>{node.label}</span>
+        <h3>{node.label}</h3>
+        <p className="detail-summary">{node.count} {node.count === 1 ? 'item' : 'items'} in this branch.</p>
+        <ul className="detail-list">
+          {(node.items || []).map((entry) => (
+            <li key={entry.id}>
+              <button className="detail-jump" onClick={() => onSelect(entry.id)}>{entry.label}</button>
+            </li>
+          ))}
+        </ul>
+        {node.count > (node.items || []).length && (
+          <p className="detail-hint">Showing {(node.items || []).length} of {node.count}.</p>
+        )}
+      </div>
+    );
+  }
+
   return (
-    <div className="panel span-2 network-panel">
-      <PanelHeader icon={Map} title="Knowledge network" />
-      <div className="network-wrap" aria-label="Knowledge map network">
+    <div className="detail-card">
+      <span className={`detail-tag ${node.type}`}>{node.hubLabel || node.type}</span>
+      <h3>{node.label}</h3>
+      <DetailFields type={node.type} data={node.data} />
+    </div>
+  );
+}
+
+function DetailFields({ type, data }) {
+  if (!data || typeof data !== 'object') {
+    return <p className="detail-summary">{String(data || 'No additional detail.')}</p>;
+  }
+
+  const fieldMap = {
+    workflow: [
+      { key: 'trigger', label: 'Trigger' },
+      { key: 'owner', label: 'Owner' },
+      { key: 'steps', label: 'Steps', list: true },
+      { key: 'required_documents', label: 'Required documents', list: true },
+      { key: 'decision_points', label: 'Decision points', list: true }
+    ],
+    rule: [
+      { key: 'condition', label: 'Condition' },
+      { key: 'action', label: 'Action' },
+      { key: 'risk_level', label: 'Risk level' }
+    ],
+    risk: [
+      { key: 'severity', label: 'Severity' },
+      { key: 'reason', label: 'Reason' },
+      { key: 'affected_workflow', label: 'Affected workflow' },
+      { key: 'recommendation', label: 'Recommendation' }
+    ],
+    department: [
+      { key: 'functions', label: 'Functions', list: true }
+    ],
+    role: [
+      { key: 'department', label: 'Department' },
+      { key: 'responsibilities', label: 'Responsibilities', list: true }
+    ]
+  };
+
+  const text = (value) => {
+    if (Array.isArray(value)) return value.map(text).filter(Boolean).join(', ');
+    if (value && typeof value === 'object') return formatItem(value);
+    return value == null ? '' : String(value);
+  };
+
+  const fields = (fieldMap[type] || []).map((field) => {
+    const raw = data[field.key];
+    if (field.list) {
+      const items = (Array.isArray(raw) ? raw : raw ? [raw] : []).map((v) => text(v.step || v)).filter(Boolean);
+      return items.length ? { ...field, items } : null;
+    }
+    const value = text(raw).trim();
+    return value ? { ...field, value } : null;
+  }).filter(Boolean);
+
+  if (!fields.length) return <p className="detail-summary">No additional detail extracted.</p>;
+
+  return (
+    <div className="detail-fields">
+      {fields.map((field) => (
+        <div className="detail-field" key={field.key}>
+          <span className="detail-field-label">{field.label}</span>
+          {field.list
+            ? <ul className="detail-bullets">{field.items.map((item, i) => <li key={i}>{item}</li>)}</ul>
+            : <p>{field.value}</p>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const ZOOM_MIN = 0.4;
+const ZOOM_MAX = 2.8;
+
+function KnowledgeNetwork({ network, selectedId, onSelect }) {
+  const wrapRef = useRef(null);
+  const dragRef = useRef(null);
+  const movedRef = useRef(false);
+  const [view, setView] = useState({ scale: 1, x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
+
+  const clamp = (s) => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, s));
+
+  const zoomAt = useCallback((factor, px, py) => {
+    setView((v) => {
+      const ns = clamp(v.scale * factor);
+      const ratio = ns / v.scale;
+      return { scale: ns, x: px - (px - v.x) * ratio, y: py - (py - v.y) * ratio };
+    });
+  }, []);
+
+  // Reset framing whenever the underlying map changes.
+  useEffect(() => { setView({ scale: 1, x: 0, y: 0 }); }, [network]);
+
+  // Non-passive wheel listener so we can prevent page scroll while zooming.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return undefined;
+    const onWheel = (e) => {
+      e.preventDefault();
+      const rect = el.getBoundingClientRect();
+      const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+      zoomAt(factor, e.clientX - rect.left, e.clientY - rect.top);
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [zoomAt]);
+
+  const onPointerDown = (e) => {
+    if (e.button !== 0) return;
+    movedRef.current = false;
+    if (e.target.closest('.network-node') || e.target.closest('.network-controls')) return;
+    dragRef.current = { sx: e.clientX, sy: e.clientY, ox: view.x, oy: view.y };
+    setDragging(true);
+    wrapRef.current?.setPointerCapture?.(e.pointerId);
+  };
+
+  const onPointerMove = (e) => {
+    const d = dragRef.current;
+    if (!d) return;
+    const dx = e.clientX - d.sx;
+    const dy = e.clientY - d.sy;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) movedRef.current = true;
+    setView((v) => ({ ...v, x: d.ox + dx, y: d.oy + dy }));
+  };
+
+  const endDrag = (e) => {
+    if (!dragRef.current) return;
+    dragRef.current = null;
+    setDragging(false);
+    wrapRef.current?.releasePointerCapture?.(e.pointerId);
+  };
+
+  const zoomCenter = (factor) => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    zoomAt(factor, rect.width / 2, rect.height / 2);
+  };
+
+  if (!network.nodes.length) return null;
+
+  return (
+    <div
+      className={`network-wrap${dragging ? ' grabbing' : ''}`}
+      ref={wrapRef}
+      aria-label="Knowledge map network — drag to pan, scroll to zoom"
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+    >
+      <div
+        className="network-canvas"
+        style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.scale})` }}
+      >
         <svg className="network-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
           {network.edges.map((edge) => {
             const from = network.nodeMap.get(edge.from);
             const to = network.nodeMap.get(edge.to);
             if (!from || !to) return null;
-            return <line key={`${edge.from}-${edge.to}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} />;
+            const active = selectedId && (edge.from === selectedId || edge.to === selectedId);
+            return <line key={`${edge.from}-${edge.to}`} className={`edge ${edge.kind} ${edge.type || ''} ${active ? 'active' : ''}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} />;
           })}
         </svg>
         {network.nodes.map((node) => (
-          <div className={`network-node ${node.type}`} key={node.id} style={{ left: `${node.x}%`, top: `${node.y}%` }}>
-            <span>{node.type}</span>
+          <button
+            type="button"
+            className={`network-node ${node.kind} ${node.type} ${node.id === selectedId ? 'selected' : ''}`}
+            key={node.id}
+            style={{ left: `${node.x}%`, top: `${node.y}%` }}
+            title={node.label}
+            onClick={() => { if (!movedRef.current) onSelect(node.id); }}
+          >
+            {node.kind !== 'leaf' && <span className="node-dot" aria-hidden="true" />}
             <strong>{node.label}</strong>
-          </div>
+            {node.count != null && <em>{node.count} {node.count === 1 ? 'item' : 'items'}</em>}
+          </button>
         ))}
       </div>
-      <div className="network-legend">
-        {network.legend.map((item) => <span key={item.type} className={item.type}>{item.label}</span>)}
+
+      <div className="network-controls">
+        <button type="button" onClick={() => zoomCenter(1.2)} title="Zoom in" aria-label="Zoom in"><Plus size={16} /></button>
+        <span className="network-zoom-level">{Math.round(view.scale * 100)}%</span>
+        <button type="button" onClick={() => zoomCenter(1 / 1.2)} title="Zoom out" aria-label="Zoom out"><Minus size={16} /></button>
+        <button type="button" onClick={() => setView({ scale: 1, x: 0, y: 0 })} title="Reset view" aria-label="Reset view"><Maximize2 size={16} /></button>
       </div>
     </div>
   );
 }
 
 function buildKnowledgeNetwork(context) {
-  const nodes = [];
-  const edges = [];
-  const addNode = (node) => {
-    if (!nodes.some((item) => item.id === node.id)) nodes.push(node);
-  };
-  const addEdge = (from, to) => {
-    if (from && to && !edges.some((edge) => edge.from === from && edge.to === to)) edges.push({ from, to });
-  };
   const slug = (value) => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'item';
   const textValue = (value) => {
     if (Array.isArray(value)) return value.map(textValue).filter(Boolean).join(', ');
     if (value && typeof value === 'object') return formatItem(value);
     return value == null ? '' : String(value);
   };
-  const pickLabel = (item, fields) => textValue(fields.map((field) => item?.[field]).find(Boolean) || formatItem(item));
-  const place = (items, x, startY, gap) => items.map((item, index) => ({ item, x, y: startY + index * gap }));
+  const trim = (value, max = 64) => {
+    const text = textValue(value).trim();
+    return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
+  };
 
-  const businessName = context.summary?.business_name || context.orgName || 'Business';
-  addNode({ id: 'business', label: businessName, type: 'business', x: 50, y: 48 });
+  const businessName = trim(context.summary?.business_name || context.orgName || 'Business', 40);
 
-  const departments = (context.departments || []).slice(0, 5);
-  const roles = (context.roles || []).slice(0, 5);
-  const workflows = (context.workflows || []).slice(0, 6);
-  const rules = (context.rules || []).slice(0, 5);
-  const risks = (context.risks || []).slice(0, 4);
-  const documents = (context.sourceDocuments || []).slice(0, 3);
+  const categories = [
+    { key: 'workflow', label: 'Workflows', raw: context.workflows || [], getLabel: (item) => item.workflow_name || item.name || item },
+    { key: 'role', label: 'Roles', raw: context.roles || [], getLabel: (item) => item.role || item.name || item },
+    { key: 'department', label: 'Departments', raw: context.departments || [], getLabel: (item) => item.name || item.department || item },
+    { key: 'rule', label: 'Rules', raw: context.rules || [], getLabel: (item) => item.rule_name || item.rule || item.condition || item },
+    { key: 'risk', label: 'Risks', raw: context.risks || [], getLabel: (item) => item.risk || item.title || item }
+  ]
+    .map((cat) => ({
+      ...cat,
+      entries: cat.raw
+        .map((item) => ({ label: textValue(cat.getLabel(item)), data: item }))
+        .filter((entry) => entry.label)
+    }))
+    .filter((cat) => cat.entries.length);
 
-  place(departments, 16, 18, 13).forEach(({ item, x, y }) => {
-    const id = `department-${slug(item.name || item.department)}`;
-    addNode({ id, label: textValue(item.name || item.department || item || 'Department'), type: 'department', x, y });
-    addEdge('business', id);
-  });
+  const nodes = [];
+  const edges = [];
+  const cx = 50;
+  const cy = 50;
+  nodes.push({ id: 'business', label: businessName, type: 'business', kind: 'business', x: cx, y: cy });
 
-  place(roles, 32, 12, 12).forEach(({ item, x, y }) => {
-    const id = `role-${slug(item.role || item.name)}`;
-    addNode({ id, label: textValue(item.role || item.name || item || 'Role'), type: 'role', x, y });
-    const departmentId = item.department ? `department-${slug(item.department)}` : 'business';
-    addEdge(departmentId, id);
-  });
+  const hubRx = 21;
+  const hubRy = 27;
+  const leafRx = 41;
+  const leafRy = 44;
+  const n = categories.length || 1;
 
-  place(workflows, 50, 12, 12).forEach(({ item, x, y }) => {
-    const id = `workflow-${slug(item.workflow_name || item.name)}`;
-    addNode({ id, label: textValue(item.workflow_name || item.name || item || 'Workflow'), type: 'workflow', x, y });
-    addEdge('business', id);
-  });
+  categories.forEach((cat, i) => {
+    const angle = (-Math.PI / 2) + (i / n) * Math.PI * 2;
+    const hx = cx + hubRx * Math.cos(angle);
+    const hy = cy + hubRy * Math.sin(angle);
+    const hubId = `hub-${cat.key}`;
+    const visible = cat.entries.slice(0, 5);
+    const visibleNodes = visible.map((entry, j) => ({ id: `${cat.key}-leaf-${slug(entry.label)}-${j}`, label: trim(entry.label, 48), entry }));
+    nodes.push({ id: hubId, label: cat.label, count: cat.entries.length, type: cat.key, kind: 'hub', x: hx, y: hy, items: visibleNodes.map((v) => ({ id: v.id, label: v.label })) });
+    edges.push({ from: 'business', to: hubId, kind: 'trunk', type: cat.key });
 
-  place(rules, 72, 16, 12).forEach(({ item, x, y }, index) => {
-    const id = `rule-${slug(item.rule_name || item.rule || index)}`;
-    addNode({ id, label: pickLabel(item, ['rule_name', 'rule', 'condition']), type: 'rule', x, y });
-    addEdge(workflows[index % Math.max(workflows.length, 1)] ? `workflow-${slug(workflows[index % workflows.length].workflow_name || workflows[index % workflows.length].name)}` : 'business', id);
-  });
-
-  place(risks, 86, 24, 14).forEach(({ item, x, y }, index) => {
-    const id = `risk-${slug(item.risk || item.title || index)}`;
-    addNode({ id, label: textValue(item.risk || item.title || item || 'Risk'), type: 'risk', x, y });
-    addEdge(workflows[index % Math.max(workflows.length, 1)] ? `workflow-${slug(workflows[index % workflows.length].workflow_name || workflows[index % workflows.length].name)}` : 'business', id);
-  });
-
-  place(documents, 22, 78, 9).forEach(({ item, x, y }) => {
-    const id = `document-${slug(item.name || item.originalName || item.id)}`;
-    addNode({ id, label: textValue(item.name || item.originalName || item.id || 'Source document'), type: 'document', x, y });
-    addEdge(id, 'business');
+    const k = visibleNodes.length;
+    const spread = k <= 1 ? 0 : Math.min(Math.PI * 0.55, 0.34 * (k - 1));
+    visibleNodes.forEach((v, j) => {
+      const t = k === 1 ? 0 : (j / (k - 1)) - 0.5;
+      const childAngle = angle + t * spread;
+      const lx = cx + leafRx * Math.cos(childAngle);
+      const ly = cy + leafRy * Math.sin(childAngle);
+      nodes.push({ id: v.id, label: v.label, type: cat.key, kind: 'leaf', x: lx, y: ly, data: v.entry.data, hubLabel: cat.label });
+      edges.push({ from: hubId, to: v.id, kind: 'branch', type: cat.key });
+    });
   });
 
   return {
     nodes,
     edges,
     nodeMap: new globalThis.Map(nodes.map((node) => [node.id, node])),
-    legend: [
-      { type: 'business', label: 'Business' },
-      { type: 'workflow', label: 'Workflow' },
-      { type: 'rule', label: 'Rule' },
-      { type: 'risk', label: 'Risk' },
-      { type: 'document', label: 'Source' }
-    ]
+    legend: categories.map((cat) => ({ type: cat.key, label: cat.label }))
   };
 }
 

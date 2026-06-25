@@ -92,8 +92,13 @@ app.get('/api-info', (req, res) => res.json({
 
 // UI
 app.use(express.static(path.join(__dirname, 'public')));
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// SPA fallback: serve index.html for any non-API GET so refreshes / deep links
+// don't 404. API 404s still fall through to the JSON notFound handler below.
+app.use((req, res, next) => {
+  if (req.method === 'GET' && !req.path.startsWith('/api')) {
+    return res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  }
+  next();
 });
 
 app.use(notFound);

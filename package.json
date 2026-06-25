@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "node index.js",
     "dev:api": "node index.js",
-    "dev:ui": "vite --host 127.0.0.1",
+    "dev:ui": "vite",
     "build:ui": "vite build",
     "test": "jest --testPathPatterns=src/tests --forceExit",
     "test:watch": "jest --testPathPatterns=src/tests --watch",

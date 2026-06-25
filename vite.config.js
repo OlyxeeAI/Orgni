@@ -6,7 +6,10 @@ module.exports = defineConfig({
   root: path.join(__dirname, 'client'),
   plugins: [react()],
   server: {
-    port: 5173,
+    host: '0.0.0.0',
+    port: 5000,
+    strictPort: true,
+    allowedHosts: true,
     proxy: {
       '/api': 'http://127.0.0.1:3000',
       '/health': 'http://127.0.0.1:3000',
