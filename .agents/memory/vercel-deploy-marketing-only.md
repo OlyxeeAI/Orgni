@@ -3,9 +3,14 @@ name: Vercel deploys marketing site only
 description: Why the Vercel deploy serves only the orgni marketing site, not the full stack
 ---
 
-The repo deploys to Vercel (GitHub OlyxeeAI/Orgni → Vercel) via root `vercel.json`:
-`outputDirectory: artifacts/orgni/dist/public`, `buildCommand: pnpm run build`, framework null,
-plus an SPA fallback rewrite (orgni is a wouter SPA: /, /pricing, /docs, /api-reference).
+The repo deploys to Vercel (GitHub OlyxeeAI/Orgni → Vercel). The root `build` script
+collects the orgni build into a **root-level `public/`** dir (`collect:public`: cp from
+`artifacts/orgni/dist/public`), and `vercel.json` sets `outputDirectory: public` + framework null
++ SPA fallback rewrite (orgni is a wouter SPA: /, /pricing, /docs, /api-reference).
+**Why output to root `public/`:** Vercel kept failing with `No Output Directory named "public"`
+even with vercel.json pointing at the nested dist path — a nested `outputDirectory` was not being
+honored (dashboard override / stale redeploy). Emitting to the default `public/` location works
+regardless of whether vercel.json is read. `/public` is gitignored.
 
 **Only the marketing site (orgni) goes live on Vercel.** The product app (orgni-app) and the
 Express API are intentionally NOT served there.
