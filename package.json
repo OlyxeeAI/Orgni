@@ -4,14 +4,13 @@
   "license": "MIT",
   "scripts": {
     "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
-    "build": "pnpm --filter @workspace/orgni run build && BASE_PATH=/app/ pnpm --filter @workspace/orgni-app run build && pnpm --filter @workspace/api-server run build:vercel && pnpm run collect:public",
-    "collect:public": "rm -rf public && mkdir -p public/app && cp -r artifacts/orgni/dist/public/. public/ && cp -r artifacts/orgni-app/dist/public/. public/app/",
+    "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },
   "private": true,
   "devDependencies": {
-    "prettier": "^3.8.3",
+    "prettier": "^3.8.4",
     "typescript": "~5.9.3"
   }
 }

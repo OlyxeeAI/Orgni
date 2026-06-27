@@ -47,6 +47,3 @@ Thumbs.db
 # Replit
 .cache/
 .local/
-
-# Vercel build output (marketing site collected here)
-/public
