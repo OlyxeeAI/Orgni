@@ -537,37 +537,65 @@ export function App() {
   );
 }
 
-function formatAssistant(text) {
+function formatAssistant(text, withCaret) {
   const lines = String(text || '').split('\n');
   const blocks = [];
   let list = null;
 
   const renderInline = (str) => {
-    const parts = str.split(/(\*\*[^*]+\*\*)/g).filter(Boolean);
-    return parts.map((part, i) =>
-      part.startsWith('**') && part.endsWith('**')
-        ? <strong key={i}>{part.slice(2, -2)}</strong>
-        : <span key={i}>{part}</span>
-    );
+    const parts = str.split(/(\*\*[^*]+\*\*|`[^`]+`)/g).filter(Boolean);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) return <strong key={i}>{part.slice(2, -2)}</strong>;
+      if (part.startsWith('`') && part.endsWith('`')) return <code key={i} className="chat-code">{part.slice(1, -1)}</code>;
+      return <span key={i}>{part}</span>;
+    });
   };
 
-  lines.forEach((raw, idx) => {
-    const line = raw.trimEnd();
-    const bullet = line.match(/^\s*[-•]\s+(.*)$/);
-    if (bullet) {
-      if (!list) { list = []; blocks.push({ type: 'ul', items: list }); }
-      list.push(bullet[1]);
-    } else {
-      list = null;
-      if (line.trim()) blocks.push({ type: 'p', text: line });
+  lines.forEach((raw) => {
+    const line = raw.trim();
+    if (!line) { list = null; return; }
+
+    const heading = line.match(/^(#{1,3})\s+(.*)$/);
+    if (heading) { list = null; blocks.push({ type: 'h', text: heading[2] }); return; }
+
+    const ordered = line.match(/^\d+[.)]\s+(.*)$/);
+    if (ordered) {
+      if (!list || list.type !== 'ol') { list = { type: 'ol', items: [] }; blocks.push(list); }
+      list.items.push(ordered[1]);
+      return;
     }
+
+    const bullet = line.match(/^[-•*]\s+(.*)$/);
+    if (bullet) {
+      if (!list || list.type !== 'ul') { list = { type: 'ul', items: [] }; blocks.push(list); }
+      list.items.push(bullet[1]);
+      return;
+    }
+
+    list = null;
+    blocks.push({ type: 'p', text: line });
   });
 
-  return blocks.map((block, i) =>
-    block.type === 'ul'
-      ? <ul key={i} className="chat-list">{block.items.map((it, j) => <li key={j}>{renderInline(it)}</li>)}</ul>
-      : <p key={i}>{renderInline(block.text)}</p>
-  );
+  const caret = <span className="chat-caret" aria-hidden="true" />;
+  if (withCaret && blocks.length === 0) return [<p key="caret">{caret}</p>];
+
+  return blocks.map((block, i) => {
+    const last = withCaret && i === blocks.length - 1;
+    if (block.type === 'h') {
+      return <h4 key={i} className="chat-h">{renderInline(block.text)}{last && caret}</h4>;
+    }
+    if (block.type === 'ul' || block.type === 'ol') {
+      const Tag = block.type === 'ol' ? 'ol' : 'ul';
+      return (
+        <Tag key={i} className={`chat-list ${block.type === 'ol' ? 'chat-ol' : ''}`}>
+          {block.items.map((it, j) => (
+            <li key={j}>{renderInline(it)}{last && j === block.items.length - 1 && caret}</li>
+          ))}
+        </Tag>
+      );
+    }
+    return <p key={i}>{renderInline(block.text)}{last && caret}</p>;
+  });
 }
 
 function AssistantAttachment({ attachment, onOpenMap }) {
@@ -624,10 +652,35 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
   const ready = Boolean(context);
   const empty = messages.length === 0;
 
+  // Reveal each new assistant reply character-by-character (client-side
+  // "typing" — the backend returns the whole answer at once).
+  const [typed, setTyped] = useState(0);
+  const [typingIdx, setTypingIdx] = useState(-1);
+  const seenCount = useRef(messages.length);
+
+  useEffect(() => {
+    const last = messages[messages.length - 1];
+    if (messages.length > seenCount.current && last && last.role === 'assistant' && !last.error) {
+      setTypingIdx(messages.length - 1);
+      setTyped(0);
+    }
+    seenCount.current = messages.length;
+  }, [messages]);
+
+  useEffect(() => {
+    if (typingIdx < 0) return undefined;
+    const full = messages[typingIdx]?.content || '';
+    if (typed >= full.length) return undefined;
+    // Reveal faster for longer answers so big replies don't crawl.
+    const step = full.length > 600 ? 5 : full.length > 240 ? 3 : 2;
+    const id = setTimeout(() => setTyped((t) => Math.min(full.length, t + step)), 12);
+    return () => clearTimeout(id);
+  }, [typed, typingIdx, messages]);
+
   useEffect(() => {
     const el = scrollRef.current;
     if (el) el.scrollTop = el.scrollHeight;
-  }, [messages, sending]);
+  }, [messages, sending, typed]);
 
   function submit(event) {
     event.preventDefault();
@@ -680,26 +733,31 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
           </div>
         ) : (
           <div className="chat-thread">
-            {messages.map((msg, i) => (
-              <div key={i} className={`chat-row ${msg.role}`}>
-                {msg.role === 'assistant' && <span className="chat-bubble-avatar">{ASSISTANT_NAME.charAt(0)}</span>}
-                <div className="chat-bubble-col">
-                  <div className={`chat-bubble ${msg.role} ${msg.error ? 'error' : ''}`}>
-                    {msg.role === 'assistant' ? formatAssistant(msg.content) : <p>{msg.content}</p>}
-                    {msg.role === 'assistant' && msg.sources?.length > 0 && (
-                      <div className="chat-sources">
-                        {msg.sources.map((src) => (
-                          <span key={src.id} className="chat-source-chip"><FileText size={12} /> {src.name}</span>
-                        ))}
-                      </div>
+            {messages.map((msg, i) => {
+              const isAssistant = msg.role === 'assistant';
+              const typingThis = isAssistant && i === typingIdx && typed < msg.content.length;
+              const shown = typingThis ? msg.content.slice(0, typed) : msg.content;
+              return (
+                <div key={i} className={`chat-row ${msg.role}`}>
+                  {isAssistant && <span className="chat-bubble-avatar">{ASSISTANT_NAME.charAt(0)}</span>}
+                  <div className="chat-bubble-col">
+                    <div className={`chat-bubble ${msg.role} ${msg.error ? 'error' : ''}`}>
+                      {isAssistant ? formatAssistant(shown, typingThis) : <p>{msg.content}</p>}
+                      {isAssistant && !typingThis && msg.sources?.length > 0 && (
+                        <div className="chat-sources">
+                          {msg.sources.map((src) => (
+                            <span key={src.id} className="chat-source-chip"><FileText size={12} /> {src.name}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    {isAssistant && !typingThis && msg.attachment && (
+                      <AssistantAttachment attachment={msg.attachment} onOpenMap={onOpenMap} />
                     )}
                   </div>
-                  {msg.role === 'assistant' && msg.attachment && (
-                    <AssistantAttachment attachment={msg.attachment} onOpenMap={onOpenMap} />
-                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
             {sending && (
               <div className="chat-row assistant">
                 <span className="chat-bubble-avatar">{ASSISTANT_NAME.charAt(0)}</span>
