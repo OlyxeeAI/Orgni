@@ -2269,14 +2269,17 @@ main {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding-bottom: 18px;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding-bottom: 16px;
   border-bottom: 1px solid var(--line);
 }
 
 .chat-head-id {
   display: flex;
   align-items: center;
-  gap: 13px;
+  gap: 11px;
 }
 
 .chat-avatar {
@@ -2292,14 +2295,8 @@ main {
 
 .chat-head h1 {
   margin: 0;
-  font-size: 19px;
+  font-size: 18px;
   letter-spacing: -0.01em;
-}
-
-.chat-head p {
-  margin: 2px 0 0;
-  color: var(--muted);
-  font-size: 13px;
 }
 
 .chat-reset {
@@ -2315,10 +2312,16 @@ main {
   padding: 24px 2px;
 }
 
+.chat-stream.is-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Welcome / empty state */
 .chat-welcome {
-  max-width: 560px;
-  margin: clamp(16px, 6vh, 70px) auto 0;
+  max-width: 520px;
+  margin: 0 auto;
   text-align: center;
 }
 

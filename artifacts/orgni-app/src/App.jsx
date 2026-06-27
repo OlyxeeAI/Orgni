@@ -644,20 +644,17 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
 
   return (
     <section className="chat-screen">
-      <header className="chat-head">
-        <div className="chat-head-id">
-          <span className="chat-avatar">{ASSISTANT_NAME.charAt(0)}</span>
-          <div>
+      {!empty && (
+        <header className="chat-head">
+          <div className="chat-head-id">
+            <span className="chat-avatar">{ASSISTANT_NAME.charAt(0)}</span>
             <h1>{ASSISTANT_NAME}</h1>
-            <p>{org?.name ? `Knows how ${org.name} runs · here to help` : 'Your operations partner · here to help'}</p>
           </div>
-        </div>
-        {!empty && (
           <button className="ghost chat-reset" onClick={onReset}><Plus size={15} /> New chat</button>
-        )}
-      </header>
+        </header>
+      )}
 
-      <div className="chat-stream" ref={scrollRef}>
+      <div className={`chat-stream ${empty ? 'is-empty' : ''}`} ref={scrollRef}>
         {empty ? (
           <div className="chat-welcome">
             <span className="chat-welcome-orb">{ASSISTANT_NAME.charAt(0)}</span>
