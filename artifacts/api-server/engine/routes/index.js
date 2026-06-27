@@ -4,8 +4,6 @@
 
 const express = require('express');
 const multer  = require('multer');
-const path    = require('path');
-const fs      = require('fs');
 const router  = express.Router();
 
 const orgResolver = require('../middleware/orgResolver');
@@ -19,25 +17,13 @@ const engineCtrl = require('../controllers/engine.controller');
 // ── File upload ──────────────────────────────────────────────────────────────
 // We accept all files here and let the parser service reject unsupported types
 // with a clean error. This gives us better error messages than multer's fileFilter.
-
-const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, '../../uploads');
-fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    // Files are isolated per organisation
-    const dir = path.join(UPLOAD_DIR, req.params.orgId || 'tmp');
-    fs.mkdirSync(dir, { recursive: true });
-    cb(null, dir);
-  },
-  filename: (req, file, cb) => {
-    const safe = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
-    cb(null, `${Date.now()}-${safe}`);
-  }
-});
+//
+// Files are held in memory (no disk writes): they are parsed to text in the
+// request and only the extracted text is persisted. This keeps the engine
+// stateless and compatible with read-only serverless filesystems (Vercel).
 
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024, files: 10 } // 10MB per file, max 10 files
 });
 

@@ -11,6 +11,10 @@
  *   .docx        — text extracted via mammoth
  *
  * Unsupported formats are REJECTED — not silently misread.
+ *
+ * Buffer-based parsing (parseBuffer) is the primary entry point so the engine
+ * never needs to touch the filesystem — important for serverless. parseFile is
+ * retained as a thin convenience wrapper that reads the file then delegates.
  */
 
 const fs   = require('fs');
@@ -20,10 +24,10 @@ const logger = require('../db/logger');
 const SUPPORTED_EXTENSIONS = new Set(['.txt', '.md', '.csv', '.json', '.pdf', '.docx']);
 
 /**
- * Parse a file and return its plain text content.
+ * Parse an in-memory buffer and return its plain text content.
  * Throws a structured ParserError on failure.
  */
-async function parseFile(filePath, originalName) {
+async function parseBuffer(buffer, originalName) {
   const ext = path.extname(originalName).toLowerCase();
 
   if (!SUPPORTED_EXTENSIONS.has(ext)) {
@@ -38,19 +42,19 @@ async function parseFile(filePath, originalName) {
     switch (ext) {
       case '.txt':
       case '.md':
-        return parsePlainText(filePath);
+        return parsePlainText(buffer);
       case '.csv':
-        return parseCSV(filePath);
+        return parseCSV(buffer);
       case '.json':
-        return parseJSON(filePath);
+        return parseJSON(buffer);
       case '.pdf':
-        return parsePDF(filePath, originalName);
+        return parsePDF(buffer, originalName);
       case '.docx':
-        return parseDOCX(filePath, originalName);
+        return parseDOCX(buffer, originalName);
     }
   } catch (err) {
     if (err instanceof ParserError) throw err;
-    logger.error('Parser error', { filePath, originalName, error: err.message });
+    logger.error('Parser error', { originalName, error: err.message });
     throw new ParserError(
       `Could not parse "${originalName}": ${err.message}`,
       'PARSE_FAILED',
@@ -59,14 +63,22 @@ async function parseFile(filePath, originalName) {
   }
 }
 
-function parsePlainText(filePath) {
-  const content = fs.readFileSync(filePath, 'utf-8');
+/**
+ * Parse a file from disk. Convenience wrapper around parseBuffer.
+ */
+async function parseFile(filePath, originalName) {
+  const buffer = fs.readFileSync(filePath);
+  return parseBuffer(buffer, originalName);
+}
+
+function parsePlainText(buffer) {
+  const content = buffer.toString('utf-8');
   if (!content.trim()) throw new ParserError('File is empty', 'EMPTY_FILE');
   return content.trim();
 }
 
-function parseCSV(filePath) {
-  const content = fs.readFileSync(filePath, 'utf-8');
+function parseCSV(buffer) {
+  const content = buffer.toString('utf-8');
   const lines = content.split('\n').filter(l => l.trim());
   if (lines.length === 0) throw new ParserError('CSV file is empty', 'EMPTY_FILE');
 
@@ -84,8 +96,8 @@ function parseCSV(filePath) {
   ].join('\n');
 }
 
-function parseJSON(filePath) {
-  const content = fs.readFileSync(filePath, 'utf-8');
+function parseJSON(buffer) {
+  const content = buffer.toString('utf-8');
   let parsed;
   try {
     parsed = JSON.parse(content);
@@ -95,9 +107,8 @@ function parseJSON(filePath) {
   return `JSON Document:\n${JSON.stringify(parsed, null, 2)}`;
 }
 
-async function parsePDF(filePath, originalName) {
+async function parsePDF(buffer, originalName) {
   const pdfParse = require('pdf-parse/lib/pdf-parse.js');
-  const buffer = fs.readFileSync(filePath);
   let result;
   try {
     result = await pdfParse(buffer);
@@ -109,11 +120,11 @@ async function parsePDF(filePath, originalName) {
   return text;
 }
 
-async function parseDOCX(filePath, originalName) {
+async function parseDOCX(buffer, originalName) {
   const mammoth = require('mammoth');
   let result;
   try {
-    result = await mammoth.extractRawText({ path: filePath });
+    result = await mammoth.extractRawText({ buffer });
   } catch (e) {
     throw new ParserError(`DOCX parse failed for "${originalName}": ${e.message}`, 'PARSE_FAILED', '.docx');
   }
@@ -134,4 +145,4 @@ class ParserError extends Error {
   }
 }
 
-module.exports = { parseFile, ParserError, SUPPORTED_EXTENSIONS };
+module.exports = { parseFile, parseBuffer, ParserError, SUPPORTED_EXTENSIONS };

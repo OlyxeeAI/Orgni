@@ -3,13 +3,24 @@
  *
  * THIS IS THE ONLY FILE YOU CHANGE TO SWAP DATABASES.
  *
- * Current: lowdb (JSON file, zero setup, prototype)
- * Next:    PostgresAdapter or SupabaseAdapter
+ * Storage is selected at runtime:
+ *   - Postgres  → when DATABASE_URL is set (production / Vercel serverless).
+ *   - lowdb     → otherwise (zero-setup local prototype, JSON file).
  *
- * Example production switch:
- *   const PostgresAdapter = require('./adapters/postgres.adapter');
- *   module.exports = new PostgresAdapter();
+ * Force a specific driver with ORGNI_DB_DRIVER=lowdb | postgres.
  */
 
-const LowdbAdapter = require('./adapters/lowdb.adapter');
-module.exports = new LowdbAdapter();
+const driver =
+  process.env.ORGNI_DB_DRIVER ||
+  (process.env.DATABASE_URL ? 'postgres' : 'lowdb');
+
+let adapter;
+if (driver === 'postgres') {
+  const PostgresAdapter = require('./adapters/postgres.adapter');
+  adapter = new PostgresAdapter();
+} else {
+  const LowdbAdapter = require('./adapters/lowdb.adapter');
+  adapter = new LowdbAdapter();
+}
+
+module.exports = adapter;

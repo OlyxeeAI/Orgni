@@ -3,12 +3,11 @@
  */
 
 const path          = require('path');
-const fs            = require('fs');
 const docModel      = require('../models/document.model');
 const orgModel      = require('../models/organization.model');
 const activityModel = require('../models/activity.model');
 const OrgniEngine   = require('../sdk/engine.sdk');
-const { parseFile, ParserError, SUPPORTED_EXTENSIONS } = require('../services/parser.service');
+const { parseBuffer, ParserError, SUPPORTED_EXTENSIONS } = require('../services/parser.service');
 const { asyncHandler } = require('../middleware/errorHandler');
 const logger        = require('../db/logger');
 
@@ -24,25 +23,25 @@ const upload = asyncHandler(async (req, res) => {
   for (const file of req.files) {
     const ext = path.extname(file.originalname).toLowerCase();
     if (!SUPPORTED_EXTENSIONS.has(ext)) {
-      // Clean up the file multer already saved
-      if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
       rejected.push({ name: file.originalname, reason: `File type "${ext}" is not supported` });
       continue;
     }
 
     const doc = await docModel.create({
       orgId,
-      filename:     file.filename,
+      filename:     file.originalname,
       originalName: file.originalname,
       fileType:     ext,
-      filePath:     file.path,
+      filePath:     null,
       fileSize:     file.size
     });
 
-    // Parse asynchronously — do not block the HTTP response
-    parseAndUpdate(doc, orgId);
+    // Parse in-request from the in-memory buffer (no disk writes). We await so
+    // the work completes before the response — serverless functions may freeze
+    // immediately after responding, so background parsing is unreliable there.
+    const parsed = await parseAndUpdate(doc, orgId, file.buffer);
 
-    uploaded.push({ id: doc.id, name: file.originalname, size: file.size, status: 'pending' });
+    uploaded.push({ id: doc.id, name: file.originalname, size: file.size, status: parsed.status });
     await activityModel.log(orgId, 'document_uploaded', `Uploaded "${file.originalname}"`, { docId: doc.id });
   }
 
@@ -63,9 +62,9 @@ const upload = asyncHandler(async (req, res) => {
   });
 });
 
-async function parseAndUpdate(doc, orgId) {
+async function parseAndUpdate(doc, orgId, buffer) {
   try {
-    const content = await parseFile(doc.filePath, doc.originalName);
+    const content = await parseBuffer(buffer, doc.originalName);
     const updated = await docModel.update(doc.id, {
       content,
       wordCount: content.split(/\s+/).length,
@@ -82,10 +81,12 @@ async function parseAndUpdate(doc, orgId) {
         logger.error('Incremental update failed', { docId: doc.id, error: e.message })
       );
     }
+    return { status: 'parsed' };
   } catch (err) {
     const parseError = err instanceof ParserError ? err.message : `Parse failed: ${err.message}`;
     await docModel.update(doc.id, { status: 'failed', parseError });
     logger.error('Document parse failed', { docId: doc.id, name: doc.originalName, error: parseError });
+    return { status: 'failed', parseError };
   }
 }
 
@@ -119,9 +120,6 @@ const remove = asyncHandler(async (req, res) => {
   const doc = await docModel.findById(req.params.docId);
   if (!doc || doc.orgId !== req.org.id) {
     return res.status(404).json({ error: 'Document not found' });
-  }
-  if (doc.filePath && fs.existsSync(doc.filePath)) {
-    fs.unlinkSync(doc.filePath);
   }
   await docModel.remove(doc.id);
   await activityModel.log(req.org.id, 'document_deleted', `Deleted "${doc.originalName}"`);
