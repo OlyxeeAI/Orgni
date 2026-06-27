@@ -1115,7 +1115,7 @@ button:disabled:active {
 }
 
 .cmap-node.center:hover { transform: translate(-50%, -50%) scale(1.03); }
-.cmap-node.center.active { box-shadow: 0 0 0 4px rgba(242, 106, 27, 0.28), 0 14px 30px rgba(13, 59, 52, 0.32); }
+.cmap-node.center.active { box-shadow: 0 14px 30px rgba(13, 59, 52, 0.32); }
 
 .cmap-node.hub {
   display: inline-flex;
@@ -1189,7 +1189,7 @@ button:disabled:active {
 .cmap-node.hub.active,
 .cmap-node.leaf.active {
   border-color: var(--group-color, var(--accent));
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--group-color, var(--accent)) 26%, transparent), 0 10px 22px rgba(32, 32, 28, 0.14);
+  box-shadow: 0 10px 22px rgba(32, 32, 28, 0.14);
 }
 
 .cmap-node.leaf.active { border-left: 3px solid var(--group-color, var(--accent)); }
