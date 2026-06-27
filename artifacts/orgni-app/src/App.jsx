@@ -15,6 +15,8 @@ import {
   Loader2,
   LogOut,
   Map,
+  Maximize2,
+  Minus,
   Plus,
   Plug,
   Scale,
@@ -26,7 +28,7 @@ import {
   Workflow,
   X
 } from 'lucide-react';
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import orgniLogo from './assets/orgni-logo.png';
 import orgniWorkflowLogo from './assets/orgni-workflow.png';
 import orgniFinanceLogo from './assets/orgni-finance.png';
@@ -1016,43 +1018,127 @@ const HUB_VERB = {
   risk: 'exposed to'
 };
 
+const CMAP_MIN_SCALE = 0.45;
+const CMAP_MAX_SCALE = 2.2;
+
+function edgePath(a, b, bowScale = 0.14, cap = 30) {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const bow = Math.min(len * bowScale, cap);
+  const nx = -dy / len;
+  const ny = dx / len;
+  const cx = (a.x + b.x) / 2 + nx * bow;
+  const cy = (a.y + b.y) / 2 + ny * bow;
+  return `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`;
+}
+
 function ConceptMap({ model, selectedId, onSelect }) {
   const layout = useMemo(() => buildGraphLayout(model), [model]);
   const { width, height, center, hubs } = layout;
-  const scrollRef = useRef(null);
+  const viewportRef = useRef(null);
+  const [tf, setTf] = useState({ scale: 1, x: 0, y: 0 });
+  const pan = useRef(null);
+  const moved = useRef(false);
+
+  const clamp = (s) => Math.min(CMAP_MAX_SCALE, Math.max(CMAP_MIN_SCALE, s));
+
+  const recenter = useCallback(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    setTf({ scale: 1, x: el.clientWidth / 2 - center.x, y: el.clientHeight / 2 - center.y });
+  }, [center.x, center.y]);
+
+  const fit = useCallback(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const s = clamp(Math.min(el.clientWidth / width, el.clientHeight / height) * 0.88);
+    setTf({ scale: s, x: (el.clientWidth - width * s) / 2, y: (el.clientHeight - height * s) / 2 });
+  }, [width, height]);
 
   useEffect(() => {
-    const el = scrollRef.current;
+    recenter();
+  }, [recenter]);
+
+  const zoomAt = useCallback((factor, ox, oy) => {
+    setTf((v) => {
+      const el = viewportRef.current;
+      const px = ox ?? (el ? el.clientWidth / 2 : 0);
+      const py = oy ?? (el ? el.clientHeight / 2 : 0);
+      const next = clamp(v.scale * factor);
+      const k = next / v.scale;
+      return { scale: next, x: px - (px - v.x) * k, y: py - (py - v.y) * k };
+    });
+  }, []);
+
+  useEffect(() => {
+    const el = viewportRef.current;
     if (!el) return;
-    el.scrollLeft = Math.max(0, center.x - el.clientWidth / 2);
-    el.scrollTop = Math.max(0, center.y - el.clientHeight / 2);
-  }, [center.x, center.y, width, height]);
+    const onWheel = (e) => {
+      e.preventDefault();
+      const rect = el.getBoundingClientRect();
+      zoomAt(e.deltaY < 0 ? 1.12 : 1 / 1.12, e.clientX - rect.left, e.clientY - rect.top);
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [zoomAt]);
+
+  const onPointerDown = (e) => {
+    if (e.target.closest('.cmap-node')) return;
+    pan.current = { sx: e.clientX, sy: e.clientY, ox: tf.x, oy: tf.y };
+    moved.current = false;
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  };
+  const onPointerMove = (e) => {
+    if (!pan.current) return;
+    const dx = e.clientX - pan.current.sx;
+    const dy = e.clientY - pan.current.sy;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved.current = true;
+    setTf((v) => ({ ...v, x: pan.current.ox + dx, y: pan.current.oy + dy }));
+  };
+  const onPointerUp = (e) => {
+    pan.current = null;
+    e.currentTarget.releasePointerCapture?.(e.pointerId);
+  };
+  const onBackgroundClick = () => {
+    if (!moved.current) onSelect(null);
+  };
 
   return (
-    <div className="cmap-scroll" ref={scrollRef}>
-      <div className="cmap-canvas" style={{ width, height }}>
+    <div
+      className={`cmap-viewport${pan.current ? ' panning' : ''}`}
+      ref={viewportRef}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerLeave={onPointerUp}
+      onClick={onBackgroundClick}
+    >
+      <div
+        className="cmap-stage"
+        style={{ width, height, transform: `translate(${tf.x}px, ${tf.y}px) scale(${tf.scale})` }}
+      >
         <svg className="cmap-edges" width={width} height={height} aria-hidden="true">
-          {hubs.map((hub) => (
-            <g key={`edges-${hub.key}`} className={`cmap-edge-group ${hub.key}`}>
-              <line
-                className={`cmap-edge hub${selectedId === `hub-${hub.key}` ? ' active' : ''}`}
-                x1={center.x}
-                y1={center.y}
-                x2={hub.x}
-                y2={hub.y}
-              />
-              {hub.leaves.map((leaf) => (
-                <line
-                  key={`e-${leaf.id}`}
-                  className={`cmap-edge leaf${leaf.id === selectedId ? ' active' : ''}`}
-                  x1={hub.x}
-                  y1={hub.y}
-                  x2={leaf.x}
-                  y2={leaf.y}
+          {hubs.map((hub) => {
+            const hubActive = selectedId === `hub-${hub.key}`;
+            return (
+              <g key={`edges-${hub.key}`} className={`cmap-edge-group ${hub.key}`}>
+                <path
+                  className={`cmap-edge hub${hubActive ? ' active' : ''}`}
+                  d={edgePath(center, hub, 0.05, 18)}
+                  fill="none"
                 />
-              ))}
-            </g>
-          ))}
+                {hub.leaves.map((leaf) => (
+                  <path
+                    key={`e-${leaf.id}`}
+                    className={`cmap-edge leaf${leaf.id === selectedId ? ' active' : ''}`}
+                    d={edgePath(hub, leaf)}
+                    fill="none"
+                  />
+                ))}
+              </g>
+            );
+          })}
         </svg>
 
         {hubs.map((hub) => (
@@ -1107,6 +1193,22 @@ function ConceptMap({ model, selectedId, onSelect }) {
           );
         })}
       </div>
+
+      <div className="cmap-controls" onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+        <button type="button" className="cmap-ctrl" onClick={() => zoomAt(1.2)} aria-label="Zoom in" title="Zoom in">
+          <Plus size={16} />
+        </button>
+        <span className="cmap-zoom-val">{Math.round(tf.scale * 100)}%</span>
+        <button type="button" className="cmap-ctrl" onClick={() => zoomAt(1 / 1.2)} aria-label="Zoom out" title="Zoom out">
+          <Minus size={16} />
+        </button>
+        <span className="cmap-ctrl-sep" />
+        <button type="button" className="cmap-ctrl" onClick={fit} aria-label="Fit to view" title="Fit to view">
+          <Maximize2 size={15} />
+        </button>
+      </div>
+
+      <span className="cmap-hint">Drag to pan · Scroll to zoom</span>
     </div>
   );
 }
