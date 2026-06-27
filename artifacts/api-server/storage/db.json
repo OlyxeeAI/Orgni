@@ -5220,6 +5220,17 @@
         "docCount": 1
       },
       "createdAt": "2026-06-27T03:32:10.692Z"
+    },
+    {
+      "id": "b9689c8e-4874-4bf9-b692-f9fa54c660d4",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "type": "assistant_chat",
+      "description": "Chat: Where are the biggest risks or bottlenecks?",
+      "meta": {
+        "grounded": true,
+        "turns": 1
+      },
+      "createdAt": "2026-06-27T04:11:37.964Z"
     }
   ]
 }
