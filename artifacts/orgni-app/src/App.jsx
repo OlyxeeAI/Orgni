@@ -444,65 +444,60 @@ export function App() {
 
   return (
     <div className="shell">
-      <aside className="spine-rail" aria-label="Sidebar">
-        <div className="spine-brand">
-          <span className="spine-mark"><img src={orgniLogo} alt="Orgni logo" /></span>
-          <span className="spine-brand-text">
+      <aside className="ios-rail" aria-label="Sidebar">
+        <div className="ios-brand">
+          <span className="ios-logo"><img src={orgniLogo} alt="Orgni logo" /></span>
+          <span className="ios-brand-text">
             <strong>Orgni</strong>
             <small>Operating model</small>
           </span>
         </div>
 
-        <div className="spine-track">
-          <nav className="spine-nav" aria-label="Primary">
-            {navItems.map((item, i) => {
-              const Icon = item.icon;
+        <nav className="ios-nav" aria-label="Primary">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const active = view === item.id;
+            return (
+              <button
+                key={item.id}
+                className={`ios-item ${active ? 'active' : ''}`}
+                onClick={() => setView(item.id)}
+                aria-pressed={active}
+              >
+                <span className="ios-icon"><Icon size={17} /></span>
+                <span className="ios-label">{item.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="ios-group">
+          <p className="ios-group-label">Plugins</p>
+          <nav className="ios-nav" aria-label="Plugins">
+            {pluginItems.map((item) => {
               const active = view === item.id;
               return (
                 <button
                   key={item.id}
-                  className={`spine-node ${active ? 'active' : ''}`}
+                  className={`ios-item ${active ? 'active' : ''}`}
                   onClick={() => setView(item.id)}
                   aria-pressed={active}
                 >
-                  <span className="spine-dot"><Icon size={18} /></span>
-                  <span className="spine-text">
-                    <span className="spine-step">{String(i + 1).padStart(2, '0')}</span>
-                    <span className="spine-name">{item.label}</span>
-                  </span>
+                  <span className="ios-icon ios-icon-img"><img className="plugin-logo" src={item.image} alt="" /></span>
+                  <span className="ios-label">{item.label}</span>
                 </button>
               );
             })}
           </nav>
-
-          <div className="spine-branch">
-            <p className="spine-section-label">Plugins</p>
-            <nav className="spine-plugins" aria-label="Plugins">
-              {pluginItems.map((item) => {
-                const active = view === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    className={`spine-plug ${active ? 'active' : ''}`}
-                    onClick={() => setView(item.id)}
-                    aria-pressed={active}
-                  >
-                    <span className="spine-plug-dot"><img className="plugin-logo" src={item.image} alt="" /></span>
-                    <span className="spine-name">{item.label}</span>
-                  </button>
-                );
-              })}
-            </nav>
-          </div>
         </div>
 
         <button
-          className={`spine-profile ${view === 'profile' ? 'active' : ''}`}
+          className={`ios-item ios-profile ${view === 'profile' ? 'active' : ''}`}
           onClick={() => setView('profile')}
           aria-pressed={view === 'profile'}
         >
-          <span className="spine-dot"><Building2 size={16} /></span>
-          <span className="spine-name">Profile</span>
+          <span className="ios-icon"><Building2 size={17} /></span>
+          <span className="ios-label">Profile</span>
         </button>
       </aside>
 

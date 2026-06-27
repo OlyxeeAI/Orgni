@@ -1555,12 +1555,12 @@ label {
 }
 
 /* ============================================================
-   Sidebar — "The Operating Spine"
-   Navigation reads as a vertical pipeline: knowledge nodes
-   strung along a conduit, plugins branching off, profile as
-   the terminal node.
+   Sidebar — clean iOS-style nav
+   Flat list of rows: rounded-square icon + label. Selected row
+   gets a soft grey pill with a graphite icon tile. No conduit,
+   no numbers, no connector chrome.
    ============================================================ */
-.spine-rail {
+.ios-rail {
   position: fixed;
   top: 0;
   left: 0;
@@ -1570,8 +1570,8 @@ label {
   display: flex;
   flex-direction: column;
   gap: 22px;
-  padding: 26px 22px 22px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.78));
+  padding: 24px 16px 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.82));
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   border-right: 1px solid var(--line);
@@ -1579,58 +1579,51 @@ label {
   overflow-y: auto;
 }
 
-.spine-rail::-webkit-scrollbar {
+.ios-rail::-webkit-scrollbar {
   width: 0;
 }
 
-/* Brand — origin of the spine */
-.spine-brand {
+.ios-brand {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 4px 2px;
+  padding: 0 8px 2px;
   min-width: 0;
 }
 
-.spine-mark {
-  width: 44px;
-  height: 44px;
+.ios-logo {
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
-  border-radius: 14px;
+  border-radius: 12px;
   display: grid;
   place-items: center;
-  background: linear-gradient(180deg, #48484a, #1c1c1e);
   overflow: hidden;
-  box-shadow: 0 8px 18px -7px rgba(28, 28, 30, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+  background: linear-gradient(180deg, #48484a, #1c1c1e);
+  box-shadow: 0 6px 14px -6px rgba(28, 28, 30, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-.spine-brand:hover .spine-mark {
-  transform: translateY(-1px) rotate(-2deg);
-  box-shadow: 0 12px 24px -8px rgba(28, 28, 30, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.16);
-}
-
-.spine-mark img {
+.ios-logo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.spine-brand-text {
+.ios-brand-text {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
 
-.spine-brand-text strong {
-  font-size: 19px;
+.ios-brand-text strong {
+  font-size: 18px;
   line-height: 1.1;
   letter-spacing: -0.01em;
   color: var(--ink);
 }
 
-.spine-brand-text small {
+.ios-brand-text small {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -1638,250 +1631,93 @@ label {
   color: var(--muted);
 }
 
-/* Track holding the conduit + nodes */
-.spine-track {
-  position: relative;
-  flex: 1 1 auto;
+.ios-nav {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 2px;
 }
 
-/* Primary nav — nodes strung along the conduit line */
-.spine-nav {
-  position: relative;
+.ios-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease);
+}
+
+.ios-item:hover {
+  background: rgba(60, 60, 67, 0.06);
+}
+
+.ios-item:active {
+  background: rgba(60, 60, 67, 0.1);
+}
+
+.ios-icon {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #f0f0f4;
+  color: var(--ink-2);
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+
+.ios-icon-img {
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.ios-label {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* Selected row — soft grey pill, graphite icon tile */
+.ios-item.active {
+  background: rgba(60, 60, 67, 0.1);
+}
+
+.ios-item.active .ios-icon {
+  background: linear-gradient(180deg, #48484a, #1c1c1e);
+  color: #fff;
+  border-color: transparent;
+}
+
+.ios-item.active .ios-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.ios-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.spine-nav::before {
-  content: "";
-  position: absolute;
-  left: 25px;
-  top: 26px;
-  bottom: 26px;
-  width: 2px;
-  background: repeating-linear-gradient(180deg, var(--line-strong) 0 5px, transparent 5px 11px);
-  z-index: 0;
-}
-
-.spine-node {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  padding: 6px;
-  border: none;
-  background: transparent;
-  border-radius: var(--r-md, 16px);
-  text-align: left;
-  cursor: pointer;
-  transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
-}
-
-.spine-node:hover {
-  background: var(--soft);
-}
-
-.spine-node:active {
-  transform: scale(0.99);
-}
-
-.spine-dot {
-  position: relative;
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: #fff;
-  border: 1px solid var(--line-strong);
-  color: var(--muted);
-  box-shadow: var(--shadow-xs);
-  transition: transform var(--t-fast) var(--ease), background var(--t-fast) var(--ease),
-    border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
-}
-
-.spine-node:hover .spine-dot {
-  transform: scale(1.06);
-  color: var(--ink);
-}
-
-.spine-text {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  line-height: 1.15;
-}
-
-.spine-step {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.spine-name {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  color: var(--ink-2);
-  white-space: nowrap;
-}
-
-/* Active node — graphite, lit along the conduit */
-.spine-node.active {
-  background: #e8e8ee;
-}
-
-.spine-node.active .spine-dot {
-  background: linear-gradient(180deg, #48484a, #1c1c1e);
-  border-color: #1c1c1e;
-  color: #fff;
-  box-shadow: 0 8px 18px -7px rgba(28, 28, 30, 0.4), 0 0 0 4px rgba(60, 60, 67, 0.08);
-}
-
-.spine-node.active .spine-step {
-  color: var(--ink);
-}
-
-.spine-node.active .spine-name {
-  color: var(--ink);
-  font-weight: 700;
-}
-
-/* Plugins — a branch off the spine */
-.spine-branch {
-  position: relative;
-}
-
-.spine-section-label {
-  margin: 0 0 8px 52px;
+.ios-group-label {
+  margin: 0;
+  padding: 0 10px;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--muted);
 }
 
-.spine-plugins {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.spine-plug {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 7px 8px 7px 6px;
-  border: 1px solid transparent;
-  background: transparent;
-  border-radius: var(--r-sm);
-  text-align: left;
-  cursor: pointer;
-  transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease),
-    box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
-}
-
-.spine-plug::before {
-  content: "";
-  position: absolute;
-  left: 19px;
-  top: -2px;
-  width: 13px;
-  height: 22px;
-  border-left: 2px solid var(--line);
-  border-bottom: 2px solid var(--line);
-  border-bottom-left-radius: 8px;
-  z-index: 0;
-}
-
-.spine-plug-dot {
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  background: #fff;
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-xs);
-}
-
-.spine-plug:hover:not(:active) {
-  background: #fff;
-  border-color: var(--line);
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-1px);
-}
-
-.spine-plug.active {
-  background: var(--soft);
-  border-color: var(--line-strong);
-}
-
-.spine-plug.active .spine-plug-dot {
-  border-color: var(--line-strong);
-}
-
-.spine-plug.active .spine-plug-dot .plugin-logo {
-  transform: scale(1.05);
-}
-
-.spine-plug.active .spine-name {
-  color: var(--ink);
-  font-weight: 650;
-}
-
-/* Profile — terminal node */
-.spine-profile {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
+.ios-profile {
   margin-top: auto;
-  padding: 6px;
-  border: none;
-  background: transparent;
-  border-radius: var(--r-md, 16px);
-  text-align: left;
-  cursor: pointer;
-  transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
-}
-
-.spine-profile:hover {
-  background: var(--soft);
-}
-
-.spine-profile:active {
-  transform: scale(0.99);
-}
-
-.spine-profile:hover .spine-dot {
-  transform: scale(1.06);
-  color: var(--ink);
-}
-
-.spine-profile.active .spine-dot {
-  background: linear-gradient(180deg, #48484a, #1c1c1e);
-  border-color: #1c1c1e;
-  color: #fff;
-  box-shadow: 0 8px 18px -7px rgba(28, 28, 30, 0.4), 0 0 0 4px rgba(60, 60, 67, 0.08);
-}
-
-.spine-profile.active .spine-name {
-  color: var(--ink);
-  font-weight: 700;
 }
 
 main {
@@ -1897,58 +1733,40 @@ main {
     grid-column: auto;
   }
 
-  .spine-rail {
+  .ios-rail {
     position: static;
     width: auto;
     height: auto;
     flex-direction: column;
-    gap: 16px;
-    padding: 16px;
+    gap: 14px;
+    padding: 14px;
     border-right: none;
     border-bottom: 1px solid var(--line);
     overflow: visible;
   }
 
-  .spine-track {
-    position: static;
-    gap: 14px;
-  }
-
-  .spine-nav {
+  .ios-nav {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    gap: 6px;
   }
 
-  .spine-nav::before {
-    display: none;
-  }
-
-  .spine-node {
+  .ios-item {
     background: #fff;
     border: 1px solid var(--line);
-    box-shadow: var(--shadow-xs);
   }
 
-  .spine-section-label {
-    margin-left: 4px;
+  .ios-item.active {
+    background: rgba(60, 60, 67, 0.1);
+    border-color: transparent;
   }
 
-  .spine-plugins {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+  .ios-group-label {
+    padding-left: 4px;
   }
 
-  .spine-plug::before {
-    display: none;
-  }
-
-  .spine-profile {
+  .ios-profile {
     margin-top: 0;
-    background: #fff;
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow-xs);
   }
 
   nav {
