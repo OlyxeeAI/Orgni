@@ -72,11 +72,6 @@ const connectSources = [
   { name: 'Website / URL', glyphIcon: Globe, color: '#0d9488', detail: 'Crawl a public page' }
 ];
 
-const pluginItems = [
-  { id: 'workflowPlugin', label: 'Workflow', image: orgniWorkflowLogo },
-  { id: 'financePlugin', label: 'Finance', image: orgniFinanceLogo }
-];
-
 const externalPlugins = [
   { name: 'ChatGPT', category: 'AI assistant', image: logoOpenai, use: 'Ground answers, actions, and planning in company documents.' },
   { name: 'Microsoft Copilot', category: 'AI assistant', image: logoCopilot, use: 'Bring Orgni context into Microsoft 365 work.' },
@@ -508,25 +503,6 @@ export function App() {
             );
           })}
         </nav>
-
-        <div className="ios-group">
-          <nav className="ios-nav" aria-label="Plugins">
-            {pluginItems.map((item) => {
-              const active = view === item.id;
-              return (
-                <button
-                  key={item.id}
-                  className={`ios-item ${active ? 'active' : ''}`}
-                  onClick={() => setView(item.id)}
-                  aria-pressed={active}
-                >
-                  <span className="ios-icon ios-icon-img"><img className="plugin-logo" src={item.image} alt="" /></span>
-                  <span className="ios-label">{item.label}</span>
-                </button>
-              );
-            })}
-          </nav>
-        </div>
 
         <button
           className={`ios-item ios-profile ${view === 'profile' ? 'active' : ''}`}
