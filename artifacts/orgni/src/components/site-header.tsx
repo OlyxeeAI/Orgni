@@ -128,7 +128,7 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
             <Search className="h-4 w-4" />
           </button>
           <div className={`${dividerClass} mx-1`}></div>
-          <a href="/app">
+          <a href="/app/">
             <Button size="sm" variant="outline" className={isDark ? "rounded-sm text-xs h-8 px-4 font-bold border-white/30 text-white hover:bg-white hover:text-black bg-transparent" : "rounded-sm text-xs h-8 px-4 font-bold"}>Try it</Button>
           </a>
           <Button size="sm" className="rounded-sm text-xs h-8 px-4 font-bold bg-primary text-primary-foreground hover:bg-primary/90" onClick={open}>Join waitlist</Button>
