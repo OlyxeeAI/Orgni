@@ -758,6 +758,17 @@
         "turns": 1
       },
       "createdAt": "2026-06-27T02:27:12.546Z"
+    },
+    {
+      "id": "69b3d432-e665-43c6-95a3-f18fdd37ff0b",
+      "orgId": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
+      "type": "assistant_chat",
+      "description": "Chat: What rules govern approvals and spending?",
+      "meta": {
+        "grounded": true,
+        "turns": 1
+      },
+      "createdAt": "2026-06-27T02:48:57.963Z"
     }
   ]
 }
