@@ -29,6 +29,15 @@ async function buildAll() {
     // - use path traversal to read files (e.g. @google-cloud/secret-manager loads sibling .proto files)
     external: [
       "*.node",
+      // Ported Orgni engine deps that don't bundle cleanly into ESM:
+      // - pdf-parse / mammoth read sibling files at runtime
+      // - lowdb v1 / winston use dynamic requires
+      "pdf-parse",
+      "pdf-parse/*",
+      "mammoth",
+      "lowdb",
+      "lowdb/*",
+      "winston",
       "sharp",
       "better-sqlite3",
       "sqlite3",
