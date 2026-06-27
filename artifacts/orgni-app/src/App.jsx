@@ -838,12 +838,13 @@ function PluginsCatalog({ onOpen }) {
         <PanelHeader icon={Sparkles} title="External tools" />
         <div className="integration-grid">
           {externalPlugins.map((plugin) => (
-            <div className="integration-card" key={plugin.name}>
+            <div className="integration-card unavailable" key={plugin.name} aria-disabled="true">
               <BrandGlyph image={plugin.image} iconData={plugin.icon} mark={plugin.mark} color={plugin.color} />
               <div>
                 <strong>{plugin.name}</strong>
                 <span>{plugin.category}</span>
               </div>
+              <span className="integration-soon">Soon</span>
               <p>{plugin.use}</p>
             </div>
           ))}
