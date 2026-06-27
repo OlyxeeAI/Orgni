@@ -3,16 +3,17 @@
  *
  * THIS IS THE ONLY FILE YOU CHANGE TO SWAP DATABASES.
  *
- * Storage is selected at runtime:
- *   - Postgres  → when DATABASE_URL is set (production / Vercel serverless).
- *   - lowdb     → otherwise (zero-setup local prototype, JSON file).
+ * MVP default: lowdb — a zero-setup JSON file store. No database required.
  *
- * Force a specific driver with ORGNI_DB_DRIVER=lowdb | postgres.
+ * When you outgrow the prototype, opt into Postgres explicitly with
+ * ORGNI_DB_DRIVER=postgres (DATABASE_URL must be set). Nothing else changes.
+ *
+ * Note: on serverless (Vercel) the lowdb file lives in a temp dir and is
+ * therefore EPHEMERAL — fine for an MVP/demo, but data is not shared across
+ * instances or kept across cold starts. Switch to Postgres for real persistence.
  */
 
-const driver =
-  process.env.ORGNI_DB_DRIVER ||
-  (process.env.DATABASE_URL ? 'postgres' : 'lowdb');
+const driver = process.env.ORGNI_DB_DRIVER || 'lowdb';
 
 let adapter;
 if (driver === 'postgres') {

@@ -8,8 +8,17 @@
  */
 
 const path = require('path');
+const os = require('os');
 
-const base = process.env.ORGNI_STORAGE_DIR || path.join(__dirname, '..', 'storage');
+// On serverless (Vercel) the deployment filesystem is read-only; only the OS
+// temp dir is writable. For the MVP no-database setup we keep lowdb's JSON file
+// there (ephemeral). Locally we anchor in artifacts/api-server/storage so data
+// survives rebuilds. Override either with ORGNI_STORAGE_DIR.
+const base =
+  process.env.ORGNI_STORAGE_DIR ||
+  (process.env.VERCEL
+    ? path.join(os.tmpdir(), 'orgni-storage')
+    : path.join(__dirname, '..', 'storage'));
 
 process.env.DB_PATH = process.env.DB_PATH || path.join(base, 'db.json');
 process.env.UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(base, 'uploads');

@@ -32,11 +32,18 @@ absolute `/api/...` (not base-relative), which correctly hit the function.
   `.listen()` (index.ts is the one that listens — do not use it as the entry).
 
 ## Serverless-safety rules (read-only FS, freeze-after-response)
-- Storage: `engine/db/index.js` picks Postgres when `DATABASE_URL` set, else
-  lowdb. Postgres reuses the SAME Replit Postgres `DATABASE_URL` already used by
-  lib/db's waitlist. `postgres.adapter.js` auto-creates per-collection tables
-  (`id TEXT PK, data JSONB, created_at, updated_at`) via `CREATE TABLE IF NOT
-  EXISTS` — race-safe across cold starts.
+- Storage (MVP = NO DATABASE): `engine/db/index.js` defaults to lowdb; Postgres
+  is OPT-IN only via `ORGNI_DB_DRIVER=postgres` (it does NOT auto-switch on
+  `DATABASE_URL`). The user explicitly wants no database for the MVP.
+  - lowdb writes a JSON file; on Vercel the FS is read-only except the OS temp
+    dir, so `bootstrap.js` anchors storage at `os.tmpdir()/orgni-storage` when
+    `process.env.VERCEL` is set (else `artifacts/api-server/storage`). This means
+    data on Vercel is EPHEMERAL (per-instance, lost on cold start) — fine for an
+    MVP/demo, NOT real persistence. Flip to Postgres later for durability.
+  - Postgres path (when opted in) reuses the SAME Replit `DATABASE_URL` as
+    lib/db's waitlist. `postgres.adapter.js` auto-creates per-collection tables
+    (`id TEXT PK, data JSONB, created_at, updated_at`) via `CREATE TABLE IF NOT
+    EXISTS` — race-safe across cold starts.
 - Uploads: multer `memoryStorage` (no disk). Parsing is buffer-based
   (`parser.service.parseBuffer`) and AWAITED in the controller — serverless may
   freeze right after responding, so fire-and-forget parsing is unreliable.

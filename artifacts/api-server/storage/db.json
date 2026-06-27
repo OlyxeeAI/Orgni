@@ -27,6 +27,48 @@
       "knowledgeStatus": "ready",
       "createdAt": "2026-06-25T00:57:26.004Z",
       "updatedAt": "2026-06-25T00:57:26.406Z"
+    },
+    {
+      "id": "86ed5cf0-8f08-4b88-8933-d2f3c5c6c7f0",
+      "name": "MVP Co",
+      "businessType": "saas",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "empty",
+      "createdAt": "2026-06-27T03:27:15.313Z",
+      "updatedAt": "2026-06-27T03:27:15.313Z"
+    },
+    {
+      "id": "8b58c60d-f2ae-4727-86e2-6e90787a7572",
+      "name": "MVP Co",
+      "businessType": "saas",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "empty",
+      "createdAt": "2026-06-27T03:27:21.001Z",
+      "updatedAt": "2026-06-27T03:27:21.001Z"
+    },
+    {
+      "id": "6cef5509-9186-402e-8bde-969e5ae93cd3",
+      "name": "MVP Co2",
+      "businessType": "saas",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "ready",
+      "createdAt": "2026-06-27T03:27:28.934Z",
+      "updatedAt": "2026-06-27T03:27:29.307Z"
     }
   ],
   "documents": [
@@ -350,6 +392,91 @@
       ],
       "generatedAt": "2026-06-27T01:43:15.329Z",
       "updatedAt": "2026-06-27T01:43:15.329Z"
+    },
+    {
+      "id": "bb99a0fc-71da-41bb-bf48-c7eb29c058ff",
+      "orgId": "6cef5509-9186-402e-8bde-969e5ae93cd3",
+      "version": 1,
+      "status": "active",
+      "businessSummary": {
+        "business_name": "MVP Co2",
+        "business_type": "saas",
+        "plain_english_summary": "MVP Co2 is a saas with 1 documented workflow and 0 extracted rules. The map was built deterministically from profile data and parsed source documents.",
+        "core_function": "saas",
+        "key_operational_facts": [
+          "Workflow: Key workflows:"
+        ],
+        "systems_in_use": [],
+        "document_types_in_use": [],
+        "confidence": 0.55,
+        "confidence_reason": "Confidence is rule-based: higher when source text contains explicit workflow steps, approval rules, and source excerpts.",
+        "missing_information": []
+      },
+      "departments": [],
+      "roles": [],
+      "workflows": [
+        {
+          "workflow_name": "Key workflows:",
+          "trigger": "",
+          "steps": [],
+          "owner": "",
+          "required_documents": [],
+          "decision_points": [],
+          "approval_points": [],
+          "dependencies": [],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Business: MVP Co2\nType: saas\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+          "_confidence": 0.58,
+          "_supported": true
+        }
+      ],
+      "rules": [],
+      "approvals": [],
+      "exceptions": [],
+      "risks": [
+        {
+          "risk": "Main problems:",
+          "severity": "low",
+          "reason": "Main problems:",
+          "affected_workflow": "Key workflows:",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Main problems:",
+          "_confidence": 0.68
+        }
+      ],
+      "bottlenecks": [],
+      "gaps": [],
+      "dependencies": [],
+      "aiOpportunities": [],
+      "readiness": [
+        {
+          "workflow": "Key workflows:",
+          "readiness_score": 35,
+          "reason": "Readiness is based on documented steps and rules, not AI interpretation.",
+          "blockers": [],
+          "required_integrations": []
+        }
+      ],
+      "blueprint": {
+        "blueprints": []
+      },
+      "missingInformation": [
+        "Business departments are not listed in the profile.",
+        "Approval rules are not clearly documented."
+      ],
+      "overallConfidence": 0.55,
+      "overallRiskScore": 0.28,
+      "sourceDocuments": [],
+      "recommendedNextSteps": [
+        "Review workflow: Key workflows: — Most clearly documented workflow."
+      ],
+      "generatedAt": "2026-06-27T03:27:29.294Z",
+      "updatedAt": "2026-06-27T03:27:29.294Z"
     }
   ],
   "validations": [
@@ -454,6 +581,40 @@
       "reviewedBy": null,
       "reviewedAt": null,
       "createdAt": "2026-06-27T01:43:15.337Z"
+    },
+    {
+      "id": "6f4d0199-0223-4814-a888-ba13f501950c",
+      "orgId": "6cef5509-9186-402e-8bde-969e5ae93cd3",
+      "mapId": "bb99a0fc-71da-41bb-bf48-c7eb29c058ff",
+      "insightType": "workflow",
+      "claim": "Workflow: Key workflows:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Business: MVP Co2\nType: saas\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+      "confidence": 0.58,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Extracted from Business profile",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-27T03:27:29.301Z"
+    },
+    {
+      "id": "822451a3-6252-4f96-8b1b-190ed53c9b45",
+      "orgId": "6cef5509-9186-402e-8bde-969e5ae93cd3",
+      "mapId": "bb99a0fc-71da-41bb-bf48-c7eb29c058ff",
+      "insightType": "risk",
+      "claim": "Risk: Main problems:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Main problems:",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-27T03:27:29.304Z"
     }
   ],
   "insights": [
@@ -628,6 +789,56 @@
       "sourceExcerpt": null,
       "confidence": 0.68,
       "createdAt": "2026-06-27T01:43:15.335Z"
+    },
+    {
+      "id": "0ad641bf-64e4-4e47-b757-faa23b62f0e9",
+      "orgId": "6cef5509-9186-402e-8bde-969e5ae93cd3",
+      "mapId": "bb99a0fc-71da-41bb-bf48-c7eb29c058ff",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Key workflows:",
+        "trigger": "",
+        "steps": [],
+        "owner": "",
+        "required_documents": [],
+        "decision_points": [],
+        "approval_points": [],
+        "dependencies": [],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Business: MVP Co2\nType: saas\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+        "_confidence": 0.58,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Business: MVP Co2\nType: saas\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+      "confidence": 0.58,
+      "createdAt": "2026-06-27T03:27:29.298Z"
+    },
+    {
+      "id": "7023900c-e54d-492a-9e25-b59974beb2bc",
+      "orgId": "6cef5509-9186-402e-8bde-969e5ae93cd3",
+      "mapId": "bb99a0fc-71da-41bb-bf48-c7eb29c058ff",
+      "type": "risk",
+      "content": {
+        "risk": "Main problems:",
+        "severity": "low",
+        "reason": "Main problems:",
+        "affected_workflow": "Key workflows:",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Main problems:",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-27T03:27:29.303Z"
     }
   ],
   "conversations": [],
@@ -780,6 +991,53 @@
         "turns": 1
       },
       "createdAt": "2026-06-27T03:03:16.092Z"
+    },
+    {
+      "id": "b41a6e77-3520-4b45-8830-01ebc29b8428",
+      "orgId": "86ed5cf0-8f08-4b88-8933-d2f3c5c6c7f0",
+      "type": "org_created",
+      "description": "Organization \"MVP Co\" created",
+      "meta": {},
+      "createdAt": "2026-06-27T03:27:15.315Z"
+    },
+    {
+      "id": "90efc23a-bfd0-4752-ae5a-9d94c43c939c",
+      "orgId": "8b58c60d-f2ae-4727-86e2-6e90787a7572",
+      "type": "org_created",
+      "description": "Organization \"MVP Co\" created",
+      "meta": {},
+      "createdAt": "2026-06-27T03:27:21.001Z"
+    },
+    {
+      "id": "ddbd11f4-763d-4623-b525-a3a756b29d5f",
+      "orgId": "6cef5509-9186-402e-8bde-969e5ae93cd3",
+      "type": "org_created",
+      "description": "Organization \"MVP Co2\" created",
+      "meta": {},
+      "createdAt": "2026-06-27T03:27:28.935Z"
+    },
+    {
+      "id": "f0f5e839-acf4-4221-b385-980520ebbfcb",
+      "orgId": "6cef5509-9186-402e-8bde-969e5ae93cd3",
+      "type": "engine_intake_complete",
+      "description": "Knowledge Map built",
+      "meta": {
+        "mapId": "bb99a0fc-71da-41bb-bf48-c7eb29c058ff",
+        "version": 1,
+        "docCount": 0
+      },
+      "createdAt": "2026-06-27T03:27:29.308Z"
+    },
+    {
+      "id": "9d306afb-8c73-4516-94cb-231854c45f9d",
+      "orgId": "6cef5509-9186-402e-8bde-969e5ae93cd3",
+      "type": "assistant_chat",
+      "description": "Chat: What is the key risk?",
+      "meta": {
+        "grounded": true,
+        "turns": 1
+      },
+      "createdAt": "2026-06-27T03:27:35.995Z"
     }
   ]
 }
