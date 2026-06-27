@@ -36,8 +36,8 @@ function getConfig() {
   return {
     provider: process.env.AI_PROVIDER || 'anthropic',
     model:    process.env.AI_MODEL    || 'claude-sonnet-4-6',
-    apiKey:   process.env.AI_API_KEY  || process.env.ANTHROPIC_API_KEY || '',
-    baseUrl:  process.env.AI_BASE_URL || 'https://api.anthropic.com'
+    apiKey:   process.env.AI_API_KEY  || process.env.ANTHROPIC_API_KEY || process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY || '',
+    baseUrl:  process.env.AI_BASE_URL || process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL || 'https://api.anthropic.com'
   };
 }
 

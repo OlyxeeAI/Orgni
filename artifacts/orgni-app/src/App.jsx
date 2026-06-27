@@ -50,7 +50,15 @@ import logoTrello from './assets/logos/trello.svg';
 const navItems = [
   { id: 'documents', label: 'Sources', icon: Database },
   { id: 'map', label: 'Knowledge', icon: Map },
+  { id: 'assistant', label: 'Assistant', icon: Sparkles },
   { id: 'plugins', label: 'Plugins', icon: Plug }
+];
+
+const assistantStarters = [
+  'How does this business run day to day?',
+  'Who owns what across the team?',
+  'Where are the biggest risks or bottlenecks?',
+  'What rules govern approvals and spending?'
 ];
 
 const connectSources = [
@@ -221,6 +229,8 @@ export function App() {
   const [profile, setProfile] = useState(emptyProfile);
   const [actionResult, setActionResult] = useState(null);
   const [actionContext, setActionContext] = useState('');
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatSending, setChatSending] = useState(false);
 
   const currentOrg = useMemo(() => orgs.find((org) => org.id === orgId), [orgs, orgId]);
 
@@ -230,6 +240,7 @@ export function App() {
 
   useEffect(() => {
     if (!orgId) return;
+    setChatMessages([]);
     refreshOrgData(orgId);
   }, [orgId]);
 
@@ -326,6 +337,32 @@ export function App() {
 
   function logout() {
     window.location.href = '/';
+  }
+
+  async function sendChat(text) {
+    const content = text.trim();
+    if (!content || chatSending || !orgId) return;
+
+    const history = [...chatMessages, { role: 'user', content }];
+    setChatMessages(history);
+    setChatSending(true);
+    try {
+      const data = await api(`/api/orgs/${orgId}/engine/chat`, {
+        method: 'POST',
+        body: JSON.stringify({ messages: history.map(({ role, content }) => ({ role, content })) })
+      });
+      setChatMessages([
+        ...history,
+        { role: 'assistant', content: data.answer, sources: data.sources || [], grounded: data.grounded }
+      ]);
+    } catch (error) {
+      setChatMessages([
+        ...history,
+        { role: 'assistant', content: `I hit a snag answering that: ${error.message}`, error: true }
+      ]);
+    } finally {
+      setChatSending(false);
+    }
   }
 
   async function saveProfile(event) {
@@ -431,6 +468,7 @@ export function App() {
     <>
       {view === 'documents' && <Documents docs={docs} onUpload={uploadFiles} onDelete={deleteDocument} onIntake={runIntake} onConnect={(name) => toast(`${name} connections are coming soon — upload files for now.`, 'info')} />}
       {view === 'map' && <KnowledgeMap context={context} />}
+      {view === 'assistant' && <Assistant org={currentOrg} context={context} messages={chatMessages} sending={chatSending} onSend={sendChat} onReset={() => setChatMessages([])} onSource={() => setView('documents')} />}
       {view === 'validation' && <Validation validation={validation} onReview={reviewFinding} />}
       {view === 'actions' && <Actions actionContext={actionContext} setActionContext={setActionContext} result={actionResult} onRun={runAction} />}
       {view === 'plugins' && <PluginsCatalog onOpen={setView} />}
@@ -506,6 +544,148 @@ export function App() {
       {notice && <div className={`toast ${notice.tone}`}>{notice.message}</div>}
       {busy && <div className="busy"><Loader2 size={20} /> {busy}</div>}
     </div>
+  );
+}
+
+function formatAssistant(text) {
+  const lines = String(text || '').split('\n');
+  const blocks = [];
+  let list = null;
+
+  const renderInline = (str) => {
+    const parts = str.split(/(\*\*[^*]+\*\*)/g).filter(Boolean);
+    return parts.map((part, i) =>
+      part.startsWith('**') && part.endsWith('**')
+        ? <strong key={i}>{part.slice(2, -2)}</strong>
+        : <span key={i}>{part}</span>
+    );
+  };
+
+  lines.forEach((raw, idx) => {
+    const line = raw.trimEnd();
+    const bullet = line.match(/^\s*[-•]\s+(.*)$/);
+    if (bullet) {
+      if (!list) { list = []; blocks.push({ type: 'ul', items: list }); }
+      list.push(bullet[1]);
+    } else {
+      list = null;
+      if (line.trim()) blocks.push({ type: 'p', text: line });
+    }
+  });
+
+  return blocks.map((block, i) =>
+    block.type === 'ul'
+      ? <ul key={i} className="chat-list">{block.items.map((it, j) => <li key={j}>{renderInline(it)}</li>)}</ul>
+      : <p key={i}>{renderInline(block.text)}</p>
+  );
+}
+
+function Assistant({ org, context, messages, sending, onSend, onReset, onSource }) {
+  const [draft, setDraft] = useState('');
+  const scrollRef = useRef(null);
+  const ready = Boolean(context);
+  const empty = messages.length === 0;
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages, sending]);
+
+  function submit(event) {
+    event.preventDefault();
+    if (!draft.trim()) return;
+    onSend(draft);
+    setDraft('');
+  }
+
+  function onKeyDown(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      submit(event);
+    }
+  }
+
+  return (
+    <section className="chat-screen">
+      <header className="chat-head">
+        <div className="chat-head-id">
+          <span className="chat-avatar"><Sparkles size={18} /></span>
+          <div>
+            <h1>Assistant</h1>
+            <p>{org?.name ? `Ask anything about how ${org.name} runs` : 'Ask anything about how the business runs'}</p>
+          </div>
+        </div>
+        {!empty && (
+          <button className="ghost chat-reset" onClick={onReset}><Plus size={15} /> New chat</button>
+        )}
+      </header>
+
+      <div className="chat-stream" ref={scrollRef}>
+        {empty ? (
+          <div className="chat-welcome">
+            <span className="chat-welcome-orb"><Sparkles size={26} /></span>
+            <h2>{ready ? `Hi — I know ${org?.name || 'this business'} inside out.` : `Let's get me up to speed first.`}</h2>
+            <p>
+              {ready
+                ? 'Ask me about your people, workflows, rules, risks, or anything else. I answer from your own documents and knowledge map.'
+                : 'I answer from your business knowledge map. Add a few source documents and build the map, then I can talk through how everything works.'}
+            </p>
+            {ready ? (
+              <div className="chat-starters">
+                {assistantStarters.map((s) => (
+                  <button key={s} className="chat-starter" onClick={() => onSend(s)}>
+                    <span>{s}</span>
+                    <ArrowRight size={15} />
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <button className="primary" onClick={onSource}><UploadCloud size={16} /> Add sources</button>
+            )}
+          </div>
+        ) : (
+          <div className="chat-thread">
+            {messages.map((msg, i) => (
+              <div key={i} className={`chat-row ${msg.role}`}>
+                {msg.role === 'assistant' && <span className="chat-bubble-avatar"><Sparkles size={15} /></span>}
+                <div className={`chat-bubble ${msg.role} ${msg.error ? 'error' : ''}`}>
+                  {msg.role === 'assistant' ? formatAssistant(msg.content) : <p>{msg.content}</p>}
+                  {msg.role === 'assistant' && msg.sources?.length > 0 && (
+                    <div className="chat-sources">
+                      {msg.sources.map((src) => (
+                        <span key={src.id} className="chat-source-chip"><FileText size={12} /> {src.name}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+            {sending && (
+              <div className="chat-row assistant">
+                <span className="chat-bubble-avatar"><Sparkles size={15} /></span>
+                <div className="chat-bubble assistant">
+                  <span className="chat-typing"><i /><i /><i /></span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      <form className="chat-composer" onSubmit={submit}>
+        <textarea
+          rows={1}
+          value={draft}
+          placeholder={ready ? 'Ask about your business…' : 'Add sources to start chatting…'}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={onKeyDown}
+          disabled={!ready || sending}
+        />
+        <button type="submit" className="chat-send" disabled={!ready || sending || !draft.trim()} aria-label="Send">
+          {sending ? <Loader2 size={18} className="spin" /> : <ArrowRight size={18} />}
+        </button>
+      </form>
+    </section>
   );
 }
 

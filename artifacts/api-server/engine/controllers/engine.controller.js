@@ -111,6 +111,26 @@ const ask = asyncHandler(async (req, res) => {
   res.json(result);
 });
 
+const chat = asyncHandler(async (req, res) => {
+  const { messages } = req.body;
+  const orgId        = req.org.id;
+  const documents    = (await docModel.findByOrg(orgId)).filter(d => d.status === 'parsed');
+
+  let result;
+  try {
+    result = await OrgniEngine.chat(orgId, messages, documents);
+  } catch (err) {
+    return handleAIError(err, res);
+  }
+
+  const lastUser = [...messages].reverse().find(m => m.role === 'user');
+  await activityModel.log(orgId, 'assistant_chat', `Chat: ${(lastUser?.content || '').slice(0, 80)}`, {
+    grounded: result.grounded, turns: messages.length
+  });
+
+  res.json(result);
+});
+
 const getValidation = asyncHandler(async (req, res) => {
   const stats       = await OrgniEngine.getValidationStats(req.org.id);
   const needsReview = await OrgniEngine.getNeedsReview(req.org.id);
@@ -157,6 +177,6 @@ const runAction = asyncHandler(async (req, res) => {
 
 module.exports = {
   intake, getContext, getWorkflowContext, getFinanceContext,
-  getHistory, ask, getValidation, confirmFinding, rejectFinding,
+  getHistory, ask, chat, getValidation, confirmFinding, rejectFinding,
   getInsights, runAction
 };

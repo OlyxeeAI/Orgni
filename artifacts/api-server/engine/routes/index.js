@@ -9,7 +9,7 @@ const fs      = require('fs');
 const router  = express.Router();
 
 const orgResolver = require('../middleware/orgResolver');
-const { validate, createOrgSchema, updateOrgSchema, askSchema, actionSchema } = require('../validators');
+const { validate, createOrgSchema, updateOrgSchema, askSchema, chatSchema, actionSchema } = require('../validators');
 
 const orgCtrl    = require('../controllers/organization.controller');
 const docCtrl    = require('../controllers/document.controller');
@@ -67,6 +67,9 @@ router.get ('/orgs/:orgId/engine/history',           orgResolver, engineCtrl.get
 
 // Grounded Q&A
 router.post('/orgs/:orgId/engine/ask',               orgResolver, validate(askSchema), engineCtrl.ask);
+
+// Conversational assistant
+router.post('/orgs/:orgId/engine/chat',              orgResolver, validate(chatSchema), engineCtrl.chat);
 
 // Validation & traceability
 router.get ('/orgs/:orgId/engine/validation',                                   orgResolver, engineCtrl.getValidation);

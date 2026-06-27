@@ -72,6 +72,13 @@ const OrgniEngine = {
   ask: (orgId, question, documents) => engine.ask(orgId, question, documents),
 
   /**
+   * Have a conversation with Orgni about the organisation.
+   * Accepts the full chat history so answers stay coherent across turns.
+   * Answers are grounded in the knowledge map and source documents.
+   */
+  chat: (orgId, messages, documents) => engine.chat(orgId, messages, documents),
+
+  /**
    * Get the knowledge map history for an org (all versions).
    */
   getHistory: (orgId) => knowledgeMap.getHistory(orgId),

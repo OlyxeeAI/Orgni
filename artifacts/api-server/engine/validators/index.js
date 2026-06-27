@@ -27,6 +27,13 @@ const askSchema = Joi.object({
   question: Joi.string().min(5).max(1000).required()
 });
 
+const chatSchema = Joi.object({
+  messages: Joi.array().items(Joi.object({
+    role: Joi.string().valid('user', 'assistant').required(),
+    content: Joi.string().min(1).max(4000).required()
+  })).min(1).max(50).required()
+});
+
 const actionSchema = Joi.object({
   type: Joi.string()
     .valid('task_list', 'draft_message', 'workflow_summary', 'flag_missing', 'next_step')
@@ -48,4 +55,4 @@ function validate(schema) {
   };
 }
 
-module.exports = { createOrgSchema, updateOrgSchema, askSchema, actionSchema, validate };
+module.exports = { createOrgSchema, updateOrgSchema, askSchema, chatSchema, actionSchema, validate };
