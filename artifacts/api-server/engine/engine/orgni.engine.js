@@ -335,6 +335,16 @@ async function chat(orgId, messages = [], documents = []) {
     };
   }
 
+  const lastUser = [...messages].reverse().find(m => m.role === 'user');
+  const question = lastUser?.content || '';
+
+  // No AI provider configured (e.g. deployed without an API key): degrade to the
+  // same deterministic, context-grounded answerer that `ask` uses instead of
+  // failing. The assistant stays useful; only the conversational phrasing is lost.
+  if (!ai.isConfigured()) {
+    return deterministicChatAnswer(question, ctx, parsed);
+  }
+
   const brief = buildBusinessBrief(org, ctx);
 
   // Each document gets a short stable id so the model can cite exactly which
@@ -377,7 +387,18 @@ After your reply, if you drew on specific documents above, add a final line exac
 
 Reply as You (Remi), continuing the conversation naturally:`;
 
-  const raw = await ai.complete(prompt, { maxTokens: 1200 });
+  let raw;
+  try {
+    raw = await ai.complete(prompt, { maxTokens: 1200 });
+  } catch (err) {
+    // Key present but unusable at call time (bad key, etc.): degrade rather than
+    // 5xx so the assistant keeps working from the knowledge map.
+    if (err instanceof AIError && ['MISSING_API_KEY', 'AUTH_ERROR'].includes(err.code)) {
+      logger.warn('Chat AI unavailable, using deterministic fallback', { code: err.code });
+      return deterministicChatAnswer(question, ctx, parsed);
+    }
+    throw err;
+  }
 
   // Pull the trailing SOURCES line (if any), strip it from the visible answer,
   // and resolve cited ids to real documents.
@@ -394,6 +415,22 @@ Reply as You (Remi), continuing the conversation naturally:`;
   }
 
   return { answer, grounded: Boolean(ctx) || sources.length > 0, sources };
+}
+
+/**
+ * Deterministic, no-AI chat answer. Reuses the same context-grounded retrieval
+ * as `ask`, reshaped to the chat response contract ({ answer, grounded, sources
+ * as { name } }). Used when no AI provider is configured/usable.
+ */
+function deterministicChatAnswer(question, ctx, parsed) {
+  const res = deterministicExtractor.answerFromContext(question, ctx, parsed);
+  return {
+    answer: res.answer,
+    grounded: res.grounded,
+    sources: (res.sources || [])
+      .map(s => ({ name: s.documentName }))
+      .filter(s => s.name)
+  };
 }
 
 // ── Internal helpers ────────────────────────────────────────────────────────

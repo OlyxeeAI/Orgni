@@ -168,6 +168,16 @@ function testStub(prompt) {
 }
 
 /**
+ * Whether a real AI provider is usable right now. Lets callers degrade
+ * gracefully (e.g. a deterministic fallback) instead of throwing when no key
+ * is configured — important on hosts like Vercel where the key is optional.
+ */
+function isConfigured() {
+  if (process.env.NODE_ENV === 'test' && process.env.AI_ENABLED !== 'true') return true;
+  return Boolean(getConfig().apiKey);
+}
+
+/**
  * Call AI and return raw text.
  */
 async function complete(prompt, options = {}) {
@@ -320,4 +330,4 @@ function isRetryable(err) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-module.exports = { complete, completeJSON, AIError, parseAIJson };
+module.exports = { complete, completeJSON, isConfigured, AIError, parseAIJson };

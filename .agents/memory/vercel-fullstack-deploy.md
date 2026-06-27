@@ -49,3 +49,11 @@ absolute `/api/...` (not base-relative), which correctly hit the function.
 
 **Required Vercel env:** `DATABASE_URL` (and `NODE_ENV=production`, which Vercel
 sets automatically). AI assistant is optional (Anthropic integration env vars).
+
+**AI must never break the app without a key.** Default intake extraction is
+deterministic (`ORGNI_USE_LLM_EXTRACTION` is off by default) and `ask` uses the
+deterministic extractor — neither needs a key. The only default AI runtime path
+is `chat`; it checks `ai.isConfigured()` and falls back to the same deterministic
+context answerer (and also catches MISSING_API_KEY/AUTH_ERROR at call time), so
+chat degrades to grounded retrieval instead of 5xx. Intake's opt-in LLM path
+still fails loudly without a key by design (a fake empty knowledge map is worse).
