@@ -643,254 +643,225 @@ button:disabled:active {
   max-width: 640px;
 }
 
-.network-wrap {
-  position: relative;
-  height: 560px;
-  margin-top: 16px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background:
-    radial-gradient(circle at center, rgba(242, 106, 27, 0.05), transparent 62%),
-    radial-gradient(rgba(32, 32, 28, 0.05) 1px, transparent 1px) 0 0 / 22px 22px,
-    #fcfcfb;
-  overflow: hidden;
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
-}
-
-.network-wrap.grabbing {
-  cursor: grabbing;
-}
-
-.network-canvas {
-  position: absolute;
-  inset: 0;
-  transform-origin: 0 0;
-  will-change: transform;
-}
-
-.network-lines {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.network-controls {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 5;
+.km-hero {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 6px;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  margin-top: 16px;
+  padding: 18px 20px;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(4px);
-  box-shadow: 0 6px 18px rgba(32, 32, 28, 0.1);
-}
-
-.network-controls button {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--r-sm);
-  background: #ffffff;
-  border: 1px solid var(--line);
-  color: var(--ink);
+  border-radius: var(--r-md);
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(242, 106, 27, 0.08), transparent 55%),
+    #ffffff;
+  box-shadow: var(--shadow-xs);
   cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.network-controls button:hover {
-  background: #fff2e8;
+.km-hero:hover {
   border-color: rgba(242, 106, 27, 0.45);
 }
 
-.network-zoom-level {
+.km-hero.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(242, 106, 27, 0.18), var(--shadow-sm);
+}
+
+.km-hero-top {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.km-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #ffffff;
   font-size: 11px;
-  font-weight: 700;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.network-lines .edge {
-  vector-effect: non-scaling-stroke;
-  stroke-linecap: round;
+.km-hero-top strong {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--ink);
 }
 
-.network-lines .edge.trunk {
-  stroke: rgba(150, 150, 144, 0.55);
-  stroke-width: 1.6;
+.km-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
 }
 
-.network-lines .edge.branch {
-  stroke: rgba(170, 170, 164, 0.5);
-  stroke-width: 1;
-  stroke-dasharray: 3 3;
-}
-
-.network-lines .edge.workflow { stroke: rgba(242, 106, 27, 0.5); }
-.network-lines .edge.role { stroke: rgba(37, 99, 235, 0.45); }
-.network-lines .edge.department { stroke: rgba(13, 148, 136, 0.45); }
-.network-lines .edge.rule { stroke: rgba(124, 58, 237, 0.45); }
-.network-lines .edge.risk { stroke: rgba(159, 37, 37, 0.45); }
-
-/* ── Nodes ─────────────────────────────────────────── */
-.network-node {
-  position: absolute;
-  z-index: 1;
+.km-hero-stat {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  transform: translate(-50%, -50%);
-  background: #ffffff;
+  padding: 10px 8px;
   border: 1px solid var(--line);
   border-radius: 10px;
-  box-shadow: 0 6px 18px rgba(32, 32, 28, 0.07);
-  --node-color: var(--muted);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+  background: var(--soft, #fbfbf9);
 }
 
-.network-node:hover {
-  transform: translate(-50%, -50%) scale(1.04);
-  box-shadow: 0 10px 24px rgba(32, 32, 28, 0.14);
-  border-color: var(--node-color);
-}
-
-.network-node.selected {
-  border-color: var(--node-color);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--node-color) 45%, transparent), 0 12px 26px rgba(32, 32, 28, 0.16);
-}
-
-.network-node.business:hover {
-  transform: translate(-50%, -50%) scale(1.04);
-}
-
-.network-node strong {
-  overflow: hidden;
+.km-hero-stat b {
+  font-size: 18px;
+  font-weight: 800;
   color: var(--ink);
-  line-height: 1.25;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  font-variant-numeric: tabular-nums;
 }
 
-.network-node em {
-  color: var(--muted);
+.km-hero-stat em {
   font-size: 10px;
   font-weight: 700;
   font-style: normal;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  white-space: nowrap;
 }
 
-.network-node .node-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--node-color);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--node-color) 18%, transparent);
-}
-
-/* Central business node */
-.network-node.business {
-  z-index: 3;
-  align-items: center;
-  text-align: center;
-  width: 150px;
-  padding: 16px 16px;
-}
-
-.network-node.business .node-dot {
-  width: 12px;
-  height: 12px;
-  background: var(--accent, #f26a1b);
-  box-shadow: 0 0 0 4px rgba(242, 106, 27, 0.18);
-}
-
-.network-node.business strong {
-  font-size: 15px;
-  font-weight: 800;
-  -webkit-line-clamp: 3;
-}
-
-/* Category hub nodes */
-.network-node.hub {
-  z-index: 2;
-  width: 132px;
-  padding: 11px 13px;
-}
-
-.network-node.hub strong {
+.km-empty-note {
+  margin: 16px 0 0;
+  padding: 14px 16px;
+  border: 1px dashed var(--line);
+  border-radius: var(--r-md);
+  background: var(--soft, #fbfbf9);
+  color: var(--muted);
   font-size: 13px;
-  font-weight: 750;
+  line-height: 1.5;
 }
 
-/* Leaf (small) notes */
-.network-node.leaf {
-  width: 116px;
-  padding: 7px 10px;
-  border-style: dashed;
-  border-color: color-mix(in srgb, var(--node-color) 40%, var(--line));
-  background: #ffffff;
+/* ── Category groups ───────────────────────────────── */
+.km-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
 }
 
-.network-node.leaf strong {
-  font-size: 11px;
-  font-weight: 600;
-  color: #45453f;
-}
-
-/* Type colours */
-.network-node.workflow { --node-color: #f26a1b; }
-.network-node.role { --node-color: #2563eb; }
-.network-node.department { --node-color: #0d9488; }
-.network-node.rule { --node-color: #7c3aed; }
-.network-node.risk { --node-color: #9f2525; }
-
-/* ── Legend ────────────────────────────────────────── */
-.network-legend {
+.km-group {
+  --group-color: var(--muted);
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.network-legend span {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 28px;
-  padding: 5px 12px;
+  flex-direction: column;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--r-md);
   background: #ffffff;
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+}
+
+.km-group.department { --group-color: #0d9488; }
+.km-group.role { --group-color: #2563eb; }
+.km-group.workflow { --group-color: #f26a1b; }
+.km-group.rule { --group-color: #7c3aed; }
+.km-group.risk { --group-color: #9f2525; }
+
+.km-group-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--group-color) 7%, #ffffff);
+}
+
+.km-group-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--group-color) 16%, #ffffff);
+  color: var(--group-color);
+}
+
+.km-group-head h4 {
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 750;
   color: var(--ink);
+}
+
+.km-group-count {
+  min-width: 24px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--group-color) 14%, #ffffff);
+  color: var(--group-color);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
-.network-legend .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--muted);
+.km-group-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 320px;
+  overflow-y: auto;
 }
 
-.network-legend .workflow .dot { background: #f26a1b; }
-.network-legend .role .dot { background: #2563eb; }
-.network-legend .department .dot { background: #0d9488; }
-.network-legend .rule .dot { background: #7c3aed; }
-.network-legend .risk .dot { background: #9f2525; }
+.km-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  padding: 9px 11px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.13s ease, border-color 0.13s ease;
+}
+
+.km-item:hover {
+  background: color-mix(in srgb, var(--group-color) 7%, #ffffff);
+}
+
+.km-item.active {
+  background: color-mix(in srgb, var(--group-color) 11%, #ffffff);
+  border-color: color-mix(in srgb, var(--group-color) 45%, transparent);
+}
+
+.km-item-label {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.km-item-arrow {
+  flex-shrink: 0;
+  color: var(--muted);
+  opacity: 0;
+  transform: translateX(-3px);
+  transition: opacity 0.13s ease, transform 0.13s ease;
+}
+
+.km-item:hover .km-item-arrow,
+.km-item.active .km-item-arrow {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--group-color);
+}
 
 /* ── Knowledge layout (map + detail) ───────────────── */
 .km-layout {
@@ -901,7 +872,7 @@ button:disabled:active {
   overflow: visible;
 }
 
-.km-network {
+.km-main {
   min-width: 0;
 }
 
@@ -1781,27 +1752,8 @@ main {
     align-items: start;
   }
 
-  .network-wrap {
-    height: 600px;
-  }
-
-  .network-node.hub {
-    width: 110px;
-    padding: 9px 10px;
-  }
-
-  .network-node.leaf {
-    width: 96px;
-    padding: 6px 8px;
-  }
-
-  .network-node.business {
-    width: 124px;
-    padding: 13px;
-  }
-
-  .network-node.leaf strong {
-    font-size: 10px;
+  .km-hero-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

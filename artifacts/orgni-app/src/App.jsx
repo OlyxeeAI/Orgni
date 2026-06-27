@@ -14,16 +14,17 @@ import {
   LogOut,
   Map,
   Plus,
-  Minus,
-  Maximize2,
   Plug,
+  Scale,
   ShieldCheck,
   Sparkles,
   Trash2,
   UploadCloud,
+  Users,
+  Workflow,
   X
 } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import orgniLogo from './assets/orgni-logo.png';
 import orgniWorkflowLogo from './assets/orgni-workflow.png';
 import orgniFinanceLogo from './assets/orgni-finance.png';
@@ -924,43 +925,95 @@ function Documents({ docs, onUpload, onDelete, onIntake, onConnect }) {
   );
 }
 
+const CATEGORY_META = {
+  department: { label: 'Departments', icon: Building2 },
+  role: { label: 'Roles', icon: Users },
+  workflow: { label: 'Workflows', icon: Workflow },
+  rule: { label: 'Rules', icon: Scale },
+  risk: { label: 'Risks', icon: AlertTriangle }
+};
+
 function KnowledgeMap({ context }) {
-  const network = useMemo(
-    () => (context ? buildKnowledgeNetwork(context) : { nodes: [], edges: [], nodeMap: new globalThis.Map(), legend: [] }),
-    [context]
-  );
+  const model = useMemo(() => (context ? buildKnowledgeModel(context) : null), [context]);
   const [selectedId, setSelectedId] = useState('business');
 
   useEffect(() => { setSelectedId('business'); }, [context]);
 
-  if (!context || !network.nodes.length) {
+  if (!context || !model) {
     return <EmptyState title="No knowledge map yet" body="Upload source documents, then build the Knowledge Map." />;
   }
 
-  const selected = network.nodeMap.get(selectedId) || network.nodeMap.get('business');
+  const selected = model.nodeMap.get(selectedId) || model.nodeMap.get('business');
 
   return (
     <section className="view-grid">
       <div className="panel span-2 km-layout">
-        <div className="km-network">
-          <PanelHeader icon={Map} title="Knowledge network" />
-          <p className="network-hint">Your business sits at the centre. Drag to move the map, scroll or use the buttons to zoom, and click any node to see its details.</p>
-          <KnowledgeNetwork network={network} selectedId={selected?.id} onSelect={setSelectedId} />
-          {network.legend.length > 0 && (
-            <div className="network-legend">
-              {network.legend.map((item) => <span key={item.type} className={item.type}><i className="dot" />{item.label}</span>)}
-            </div>
+        <div className="km-main">
+          <PanelHeader icon={Map} title="Knowledge map" />
+          <p className="network-hint">A clear, structured view of how {model.business.label} runs — its departments, roles, workflows, rules and risks, all extracted from your documents. Select any item to read the detail on the right.</p>
+
+          <button
+            type="button"
+            className={`km-hero${selectedId === 'business' ? ' active' : ''}`}
+            onClick={() => setSelectedId('business')}
+          >
+            <span className="km-hero-top">
+              <span className="km-hero-badge"><Building2 size={14} /> Business</span>
+              <strong>{model.business.label}</strong>
+            </span>
+            <span className="km-hero-stats">
+              {model.business.stats.map((stat) => (
+                <span className="km-hero-stat" key={stat.label}>
+                  <b>{stat.value}</b>
+                  <em>{stat.label}</em>
+                </span>
+              ))}
+            </span>
+          </button>
+
+          {!model.groups.length && (
+            <p className="km-empty-note">No departments, roles, workflows, rules or risks have been extracted yet. Add more detailed source documents and rebuild the map to populate it.</p>
           )}
+
+          <div className="km-groups">
+            {model.groups.map((group) => {
+              const meta = CATEGORY_META[group.key] || { label: group.label, icon: Layers3 };
+              const Icon = meta.icon;
+              return (
+                <div className={`km-group ${group.key}`} key={group.key}>
+                  <header className="km-group-head">
+                    <span className="km-group-icon"><Icon size={15} /></span>
+                    <h4>{meta.label}</h4>
+                    <span className="km-group-count">{group.count}</span>
+                  </header>
+                  <ul className="km-group-list">
+                    {group.items.map((item) => (
+                      <li key={item.id}>
+                        <button
+                          type="button"
+                          className={`km-item${item.id === selectedId ? ' active' : ''}`}
+                          onClick={() => setSelectedId(item.id)}
+                        >
+                          <span className="km-item-label">{item.label}</span>
+                          <ArrowRight size={14} className="km-item-arrow" aria-hidden="true" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
         </div>
         <aside className="km-detail">
-          <NodeDetail node={selected} context={context} onSelect={setSelectedId} />
+          <NodeDetail node={selected} context={context} />
         </aside>
       </div>
     </section>
   );
 }
 
-function NodeDetail({ node, context, onSelect }) {
+function NodeDetail({ node, context }) {
   if (!node) return null;
 
   if (node.kind === 'business') {
@@ -977,26 +1030,6 @@ function NodeDetail({ node, context, onSelect }) {
           <Metric label="Risk score" value={pct(context.riskScore ?? context.overallRiskScore)} />
         </div>
         <p className="detail-hint">Click a branch or note in the map to drill in.</p>
-      </div>
-    );
-  }
-
-  if (node.kind === 'hub') {
-    return (
-      <div className="detail-card">
-        <span className={`detail-tag ${node.type}`}>{node.label}</span>
-        <h3>{node.label}</h3>
-        <p className="detail-summary">{node.count} {node.count === 1 ? 'item' : 'items'} in this branch.</p>
-        <ul className="detail-list">
-          {(node.items || []).map((entry) => (
-            <li key={entry.id}>
-              <button className="detail-jump" onClick={() => onSelect(entry.id)}>{entry.label}</button>
-            </li>
-          ))}
-        </ul>
-        {node.count > (node.items || []).length && (
-          <p className="detail-hint">Showing {(node.items || []).length} of {node.count}.</p>
-        )}
       </div>
     );
   }
@@ -1075,194 +1108,61 @@ function DetailFields({ type, data }) {
   );
 }
 
-const ZOOM_MIN = 0.4;
-const ZOOM_MAX = 2.8;
-
-function KnowledgeNetwork({ network, selectedId, onSelect }) {
-  const wrapRef = useRef(null);
-  const dragRef = useRef(null);
-  const movedRef = useRef(false);
-  const [view, setView] = useState({ scale: 1, x: 0, y: 0 });
-  const [dragging, setDragging] = useState(false);
-
-  const clamp = (s) => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, s));
-
-  const zoomAt = useCallback((factor, px, py) => {
-    setView((v) => {
-      const ns = clamp(v.scale * factor);
-      const ratio = ns / v.scale;
-      return { scale: ns, x: px - (px - v.x) * ratio, y: py - (py - v.y) * ratio };
-    });
-  }, []);
-
-  // Reset framing whenever the underlying map changes.
-  useEffect(() => { setView({ scale: 1, x: 0, y: 0 }); }, [network]);
-
-  // Non-passive wheel listener so we can prevent page scroll while zooming.
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return undefined;
-    const onWheel = (e) => {
-      e.preventDefault();
-      const rect = el.getBoundingClientRect();
-      const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
-      zoomAt(factor, e.clientX - rect.left, e.clientY - rect.top);
-    };
-    el.addEventListener('wheel', onWheel, { passive: false });
-    return () => el.removeEventListener('wheel', onWheel);
-  }, [zoomAt]);
-
-  const onPointerDown = (e) => {
-    if (e.button !== 0) return;
-    movedRef.current = false;
-    if (e.target.closest('.network-node') || e.target.closest('.network-controls')) return;
-    dragRef.current = { sx: e.clientX, sy: e.clientY, ox: view.x, oy: view.y };
-    setDragging(true);
-    wrapRef.current?.setPointerCapture?.(e.pointerId);
-  };
-
-  const onPointerMove = (e) => {
-    const d = dragRef.current;
-    if (!d) return;
-    const dx = e.clientX - d.sx;
-    const dy = e.clientY - d.sy;
-    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) movedRef.current = true;
-    setView((v) => ({ ...v, x: d.ox + dx, y: d.oy + dy }));
-  };
-
-  const endDrag = (e) => {
-    if (!dragRef.current) return;
-    dragRef.current = null;
-    setDragging(false);
-    wrapRef.current?.releasePointerCapture?.(e.pointerId);
-  };
-
-  const zoomCenter = (factor) => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    zoomAt(factor, rect.width / 2, rect.height / 2);
-  };
-
-  if (!network.nodes.length) return null;
-
-  return (
-    <div
-      className={`network-wrap${dragging ? ' grabbing' : ''}`}
-      ref={wrapRef}
-      aria-label="Knowledge map network — drag to pan, scroll to zoom"
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={endDrag}
-      onPointerCancel={endDrag}
-    >
-      <div
-        className="network-canvas"
-        style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.scale})` }}
-      >
-        <svg className="network-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          {network.edges.map((edge) => {
-            const from = network.nodeMap.get(edge.from);
-            const to = network.nodeMap.get(edge.to);
-            if (!from || !to) return null;
-            const active = selectedId && (edge.from === selectedId || edge.to === selectedId);
-            return <line key={`${edge.from}-${edge.to}`} className={`edge ${edge.kind} ${edge.type || ''} ${active ? 'active' : ''}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} />;
-          })}
-        </svg>
-        {network.nodes.map((node) => (
-          <button
-            type="button"
-            className={`network-node ${node.kind} ${node.type} ${node.id === selectedId ? 'selected' : ''}`}
-            key={node.id}
-            style={{ left: `${node.x}%`, top: `${node.y}%` }}
-            title={node.label}
-            onClick={() => { if (!movedRef.current) onSelect(node.id); }}
-          >
-            {node.kind !== 'leaf' && <span className="node-dot" aria-hidden="true" />}
-            <strong>{node.label}</strong>
-            {node.count != null && <em>{node.count} {node.count === 1 ? 'item' : 'items'}</em>}
-          </button>
-        ))}
-      </div>
-
-      <div className="network-controls">
-        <button type="button" onClick={() => zoomCenter(1.2)} title="Zoom in" aria-label="Zoom in"><Plus size={16} /></button>
-        <span className="network-zoom-level">{Math.round(view.scale * 100)}%</span>
-        <button type="button" onClick={() => zoomCenter(1 / 1.2)} title="Zoom out" aria-label="Zoom out"><Minus size={16} /></button>
-        <button type="button" onClick={() => setView({ scale: 1, x: 0, y: 0 })} title="Reset view" aria-label="Reset view"><Maximize2 size={16} /></button>
-      </div>
-    </div>
-  );
-}
-
-function buildKnowledgeNetwork(context) {
+function buildKnowledgeModel(context) {
   const slug = (value) => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'item';
   const textValue = (value) => {
     if (Array.isArray(value)) return value.map(textValue).filter(Boolean).join(', ');
     if (value && typeof value === 'object') return formatItem(value);
     return value == null ? '' : String(value);
   };
-  const trim = (value, max = 64) => {
+  const trim = (value, max = 88) => {
     const text = textValue(value).trim();
     return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
   };
 
-  const businessName = trim(context.summary?.business_name || context.orgName || 'Business', 40);
+  const businessName = trim(context.summary?.business_name || context.orgName || 'Business', 48);
 
   const categories = [
-    { key: 'workflow', label: 'Workflows', raw: context.workflows || [], getLabel: (item) => item.workflow_name || item.name || item },
-    { key: 'role', label: 'Roles', raw: context.roles || [], getLabel: (item) => item.role || item.name || item },
     { key: 'department', label: 'Departments', raw: context.departments || [], getLabel: (item) => item.name || item.department || item },
+    { key: 'role', label: 'Roles', raw: context.roles || [], getLabel: (item) => item.role || item.name || item },
+    { key: 'workflow', label: 'Workflows', raw: context.workflows || [], getLabel: (item) => item.workflow_name || item.name || item },
     { key: 'rule', label: 'Rules', raw: context.rules || [], getLabel: (item) => item.rule_name || item.rule || item.condition || item },
     { key: 'risk', label: 'Risks', raw: context.risks || [], getLabel: (item) => item.risk || item.title || item }
   ]
     .map((cat) => ({
       ...cat,
       entries: cat.raw
-        .map((item) => ({ label: textValue(cat.getLabel(item)), data: item }))
+        .map((item) => ({ label: textValue(cat.getLabel(item)).trim(), data: item }))
         .filter((entry) => entry.label)
     }))
     .filter((cat) => cat.entries.length);
 
-  const nodes = [];
-  const edges = [];
-  const cx = 50;
-  const cy = 50;
-  nodes.push({ id: 'business', label: businessName, type: 'business', kind: 'business', x: cx, y: cy });
+  const nodeMap = new globalThis.Map();
+  nodeMap.set('business', { id: 'business', label: businessName, type: 'business', kind: 'business' });
 
-  const hubRx = 21;
-  const hubRy = 27;
-  const leafRx = 41;
-  const leafRy = 44;
-  const n = categories.length || 1;
-
-  categories.forEach((cat, i) => {
-    const angle = (-Math.PI / 2) + (i / n) * Math.PI * 2;
-    const hx = cx + hubRx * Math.cos(angle);
-    const hy = cy + hubRy * Math.sin(angle);
-    const hubId = `hub-${cat.key}`;
-    const visible = cat.entries.slice(0, 5);
-    const visibleNodes = visible.map((entry, j) => ({ id: `${cat.key}-leaf-${slug(entry.label)}-${j}`, label: trim(entry.label, 48), entry }));
-    nodes.push({ id: hubId, label: cat.label, count: cat.entries.length, type: cat.key, kind: 'hub', x: hx, y: hy, items: visibleNodes.map((v) => ({ id: v.id, label: v.label })) });
-    edges.push({ from: 'business', to: hubId, kind: 'trunk', type: cat.key });
-
-    const k = visibleNodes.length;
-    const spread = k <= 1 ? 0 : Math.min(Math.PI * 0.55, 0.34 * (k - 1));
-    visibleNodes.forEach((v, j) => {
-      const t = k === 1 ? 0 : (j / (k - 1)) - 0.5;
-      const childAngle = angle + t * spread;
-      const lx = cx + leafRx * Math.cos(childAngle);
-      const ly = cy + leafRy * Math.sin(childAngle);
-      nodes.push({ id: v.id, label: v.label, type: cat.key, kind: 'leaf', x: lx, y: ly, data: v.entry.data, hubLabel: cat.label });
-      edges.push({ from: hubId, to: v.id, kind: 'branch', type: cat.key });
+  const groups = categories.map((cat) => {
+    const items = cat.entries.map((entry, j) => {
+      const id = `${cat.key}-${slug(entry.label)}-${j}`;
+      const label = trim(entry.label, 88);
+      nodeMap.set(id, { id, label, type: cat.key, kind: 'leaf', data: entry.data, hubLabel: cat.label });
+      return { id, label };
     });
+    return { key: cat.key, label: cat.label, count: cat.entries.length, items };
   });
 
+  const stats = [
+    { label: 'Confidence', value: pct(context.confidence ?? context.overallConfidence) },
+    { label: 'Departments', value: count(context.departments) },
+    { label: 'Roles', value: count(context.roles) },
+    { label: 'Workflows', value: count(context.workflows) },
+    { label: 'Rules', value: count(context.rules) },
+    { label: 'Risks', value: count(context.risks) }
+  ];
+
   return {
-    nodes,
-    edges,
-    nodeMap: new globalThis.Map(nodes.map((node) => [node.id, node])),
-    legend: categories.map((cat) => ({ type: cat.key, label: cat.label }))
+    business: { id: 'business', label: businessName, stats },
+    groups,
+    nodeMap
   };
 }
 
