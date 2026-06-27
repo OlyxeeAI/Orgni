@@ -1690,9 +1690,8 @@ label {
 }
 
 .ios-item.active .ios-icon {
-  background: linear-gradient(180deg, #48484a, #1c1c1e);
-  color: #fff;
-  border-color: transparent;
+  background: #e2e2e8;
+  color: var(--ink);
 }
 
 .ios-item.active .ios-label {
