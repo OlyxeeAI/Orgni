@@ -444,39 +444,65 @@ export function App() {
 
   return (
     <div className="shell">
-      <aside className="workspace-chrome" aria-label="Sidebar">
-        <div className="chrome-brand">
-          <span className="mark"><img src={orgniLogo} alt="Orgni logo" /></span>
-          <strong>Orgni</strong>
+      <aside className="spine-rail" aria-label="Sidebar">
+        <div className="spine-brand">
+          <span className="spine-mark"><img src={orgniLogo} alt="Orgni logo" /></span>
+          <span className="spine-brand-text">
+            <strong>Orgni</strong>
+            <small>Operating model</small>
+          </span>
         </div>
 
-        <div className="chrome-center">
-          <nav className="chrome-nav" aria-label="Primary">
-            {navItems.map((item) => {
+        <div className="spine-track">
+          <nav className="spine-nav" aria-label="Primary">
+            {navItems.map((item, i) => {
               const Icon = item.icon;
+              const active = view === item.id;
               return (
-                <button key={item.id} className={view === item.id ? 'active' : ''} onClick={() => setView(item.id)}>
-                  <Icon size={17} />
-                  <span>{item.label}</span>
+                <button
+                  key={item.id}
+                  className={`spine-node ${active ? 'active' : ''}`}
+                  onClick={() => setView(item.id)}
+                  aria-pressed={active}
+                >
+                  <span className="spine-dot"><Icon size={18} /></span>
+                  <span className="spine-text">
+                    <span className="spine-step">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="spine-name">{item.label}</span>
+                  </span>
                 </button>
               );
             })}
           </nav>
 
-          <p className="chrome-section-label">Plugins</p>
-          <nav className="chrome-plugins" aria-label="Plugins">
-            {pluginItems.map((item) => (
-              <button key={item.id} className={view === item.id ? 'active plugin-active' : 'plugin-link'} onClick={() => setView(item.id)}>
-                <img className="plugin-logo" src={item.image} alt="" />
-                <span>{item.label}</span>
-              </button>
-            ))}
-          </nav>
+          <div className="spine-branch">
+            <p className="spine-section-label">Plugins</p>
+            <nav className="spine-plugins" aria-label="Plugins">
+              {pluginItems.map((item) => {
+                const active = view === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    className={`spine-plug ${active ? 'active' : ''}`}
+                    onClick={() => setView(item.id)}
+                    aria-pressed={active}
+                  >
+                    <span className="spine-plug-dot"><img className="plugin-logo" src={item.image} alt="" /></span>
+                    <span className="spine-name">{item.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
         </div>
 
-        <button className={`profile-link sidebar-profile ${view === 'profile' ? 'active' : ''}`} onClick={() => setView('profile')}>
-          <Building2 size={16} />
-          <span>Profile</span>
+        <button
+          className={`spine-profile ${view === 'profile' ? 'active' : ''}`}
+          onClick={() => setView('profile')}
+          aria-pressed={view === 'profile'}
+        >
+          <span className="spine-dot"><Building2 size={16} /></span>
+          <span className="spine-name">Profile</span>
         </button>
       </aside>
 

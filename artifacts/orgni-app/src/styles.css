@@ -185,27 +185,6 @@ nav button.active {
   color: var(--ink);
 }
 
-nav button.plugin-link {
-  color: var(--ink);
-}
-
-nav button.plugin-active,
-nav button.plugin-link:hover {
-  background: #fff2e8;
-  color: var(--ink);
-  border-color: rgba(242, 106, 27, 0.35);
-}
-
-.plugin-mark {
-  width: 38px;
-  height: 38px;
-  border-radius: 13px;
-  display: grid;
-  place-items: center;
-  background: #fff2e8;
-  color: var(--accent);
-}
-
 .native-plugin-grid,
 .integration-grid {
   display: grid;
@@ -387,6 +366,7 @@ nav button.plugin-link:hover {
   height: 18px;
   object-fit: contain;
   flex-shrink: 0;
+  transition: transform var(--t-fast) var(--ease);
 }
 
 .hero-logo {
@@ -394,12 +374,6 @@ nav button.plugin-link:hover {
   height: 64px;
   object-fit: contain;
   flex-shrink: 0;
-}
-
-.plugin-active .plugin-mark,
-.plugin-link:hover .plugin-mark {
-  background: var(--accent);
-  color: white;
 }
 
 main {
@@ -1570,155 +1544,220 @@ label {
 }
 
 .shell {
-  --rail-w: 76px;
-  --rail-expanded: 250px;
-  --rail-gutter: 108px;
+  --rail-w: 252px;
   min-height: 100vh;
   display: grid;
-  grid-template-columns: var(--rail-gutter) minmax(0, 1fr);
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
 }
 
 .shell > main {
   grid-column: 2;
 }
 
-/* Floating, vertically-centered island (Dynamic Island style) */
-.workspace-chrome {
+/* ============================================================
+   Sidebar — "The Operating Spine"
+   Navigation reads as a vertical pipeline: knowledge nodes
+   strung along a conduit, plugins branching off, profile as
+   the terminal node.
+   ============================================================ */
+.spine-rail {
   position: fixed;
-  top: 50%;
-  left: 16px;
-  transform: translateY(-50%);
+  top: 0;
+  left: 0;
   z-index: 60;
+  width: var(--rail-w);
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  width: var(--rail-w);
-  height: auto;
-  max-height: calc(100vh - 32px);
-  padding: 16px 14px;
-  background: var(--glass-strong);
+  gap: 22px;
+  padding: 26px 22px 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.78));
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--line);
-  border-radius: 30px;
-  box-shadow: 0 22px 56px -22px rgba(15, 23, 42, 0.30), 0 4px 12px -4px rgba(15, 23, 42, 0.08);
+  border-right: 1px solid var(--line);
   overflow-x: hidden;
   overflow-y: auto;
-  transition: width var(--t-med, 0.28s) var(--ease), box-shadow var(--t-med, 0.28s) var(--ease),
-    border-radius var(--t-med, 0.28s) var(--ease);
 }
 
-.workspace-chrome::-webkit-scrollbar {
+.spine-rail::-webkit-scrollbar {
   width: 0;
 }
 
-.workspace-chrome:hover,
-.workspace-chrome:focus-within {
-  width: var(--rail-expanded);
-  border-radius: 26px;
-  box-shadow: 0 30px 70px -24px rgba(15, 23, 42, 0.38), 0 6px 16px -6px rgba(15, 23, 42, 0.1);
-}
-
-/* Nav block — compact within the floating island */
-.chrome-center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 12px;
-  width: 100%;
-}
-
-/* Collapsed state: hide all text labels, keep icons */
-.chrome-brand strong,
-.chrome-section-label,
-.chrome-nav button span,
-.chrome-plugins button span,
-.profile-link span {
-  opacity: 0;
-  transform: translateX(-4px);
-  transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
-}
-
-.workspace-chrome:hover .chrome-brand strong,
-.workspace-chrome:hover .chrome-section-label,
-.workspace-chrome:hover .chrome-nav button span,
-.workspace-chrome:hover .chrome-plugins button span,
-.workspace-chrome:hover .profile-link span,
-.workspace-chrome:focus-within .chrome-brand strong,
-.workspace-chrome:focus-within .chrome-section-label,
-.workspace-chrome:focus-within .chrome-nav button span,
-.workspace-chrome:focus-within .chrome-plugins button span,
-.workspace-chrome:focus-within .profile-link span {
-  opacity: 1;
-  transform: none;
-}
-
-/* Collapse the section label's height so it doesn't push icons when hidden */
-.chrome-section-label {
-  height: 0;
-  margin: 0;
-  padding: 0 6px;
-  overflow: hidden;
-}
-
-.workspace-chrome:hover .chrome-section-label,
-.workspace-chrome:focus-within .chrome-section-label {
-  height: auto;
-  margin: 6px 0 -4px;
-}
-
-.chrome-brand {
+/* Brand — origin of the spine */
+.spine-brand {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 0 4px 2px;
   min-width: 0;
 }
 
-.chrome-brand .mark {
-  width: 42px;
-  height: 42px;
-  border-radius: 13px;
+.spine-mark {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 14px;
   display: grid;
   place-items: center;
   background: var(--accent);
   overflow: hidden;
-  box-shadow: 0 6px 16px -6px rgba(242, 106, 27, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 18px -6px rgba(242, 106, 27, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
   transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
 }
 
-.chrome-brand:hover .mark {
+.spine-brand:hover .spine-mark {
   transform: translateY(-1px) rotate(-2deg);
-  box-shadow: 0 10px 22px -7px rgba(242, 106, 27, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 24px -7px rgba(242, 106, 27, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-.chrome-brand .mark img {
+.spine-mark img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.chrome-brand strong {
-  font-size: 20px;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-}
-
-.chrome-nav {
+.spine-brand-text {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  min-width: 0;
 }
 
-.chrome-plugins {
+.spine-brand-text strong {
+  font-size: 19px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.spine-brand-text small {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Track holding the conduit + nodes */
+.spine-track {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Primary nav — nodes strung along the conduit line */
+.spine-nav {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.chrome-section-label {
-  margin: 6px 0 -4px;
-  padding: 0 6px;
+.spine-nav::before {
+  content: "";
+  position: absolute;
+  left: 25px;
+  top: 26px;
+  bottom: 26px;
+  width: 2px;
+  background: repeating-linear-gradient(180deg, var(--line-strong) 0 5px, transparent 5px 11px);
+  z-index: 0;
+}
+
+.spine-node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  border-radius: var(--r-md, 16px);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+.spine-node:hover {
+  background: var(--soft);
+}
+
+.spine-node:active {
+  transform: scale(0.99);
+}
+
+.spine-dot {
+  position: relative;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 1px solid var(--line-strong);
+  color: var(--muted);
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--t-fast) var(--ease), background var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+
+.spine-node:hover .spine-dot {
+  transform: scale(1.06);
+  color: var(--ink);
+}
+
+.spine-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.15;
+}
+
+.spine-step {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.spine-name {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* Active node — lights up the conduit */
+.spine-node.active .spine-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 8px 18px -6px var(--accent-ring), 0 0 0 4px var(--accent-soft);
+}
+
+.spine-node.active .spine-step {
+  color: var(--accent-2);
+}
+
+.spine-node.active .spine-name {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* Plugins — a branch off the spine */
+.spine-branch {
+  position: relative;
+}
+
+.spine-section-label {
+  margin: 0 0 8px 52px;
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
@@ -1726,179 +1765,119 @@ label {
   color: var(--muted);
 }
 
-.sidebar-profile {
-  margin-top: auto;
+.spine-plugins {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.chrome-nav button,
-.chrome-plugins button,
-.profile-link {
+.spine-plug {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 11px;
+  gap: 12px;
   width: 100%;
-  min-height: 42px;
-  border-radius: var(--r-sm);
-  padding: 0 12px;
-  background: transparent;
-  color: var(--ink-2);
-  text-align: left;
-  cursor: pointer;
-  font-weight: 550;
-  letter-spacing: -0.005em;
-  white-space: nowrap;
-  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease),
-    transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
-}
-
-.chrome-nav button svg,
-.profile-link svg {
-  flex-shrink: 0;
-  color: var(--muted);
-  transition: color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
-}
-
-.chrome-nav button:active,
-.chrome-plugins button:active,
-.profile-link:active {
-  transform: scale(0.98);
-}
-
-/* Primary nav — flat ghost rows */
-.chrome-nav button:hover {
-  background: var(--soft);
-  color: var(--ink);
-}
-
-.chrome-nav button:hover svg {
-  color: var(--ink);
-  transform: scale(1.08);
-}
-
-.chrome-nav button.active {
-  background: var(--accent-soft);
-  color: var(--accent-2);
-  font-weight: 700;
-}
-
-.chrome-nav button.active svg {
-  color: var(--accent-2);
-}
-
-.chrome-nav button.active::before {
-  content: "";
-  position: absolute;
-  left: 4px;
-  top: 50%;
-  height: 17px;
-  width: 3px;
-  transform: translateY(-50%);
-  border-radius: var(--r-pill);
-  background: var(--accent);
-}
-
-/* Plugin rows — light, lift on hover */
-.chrome-plugins button {
+  padding: 7px 8px 7px 6px;
   border: 1px solid transparent;
   background: transparent;
-  color: var(--ink-2);
+  border-radius: var(--r-sm);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
 }
 
-.chrome-plugins button:hover:not(:active) {
+.spine-plug::before {
+  content: "";
+  position: absolute;
+  left: 19px;
+  top: -2px;
+  width: 13px;
+  height: 22px;
+  border-left: 2px solid var(--line);
+  border-bottom: 2px solid var(--line);
+  border-bottom-left-radius: 8px;
+  z-index: 0;
+}
+
+.spine-plug-dot {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
   background: #fff;
-  border-color: var(--line);
+  border: 1px solid var(--line);
   box-shadow: var(--shadow-xs);
-  transform: translateY(-1px);
 }
 
-.chrome-plugins button.active {
+.spine-plug:hover:not(:active) {
   background: #fff;
   border-color: var(--line);
   box-shadow: var(--shadow-sm);
-  color: var(--ink);
-  font-weight: 650;
+  transform: translateY(-1px);
 }
 
-.chrome-plugins button.active .plugin-logo {
+.spine-plug.active {
+  background: var(--accent-soft);
+  border-color: #f4d5c2;
+}
+
+.spine-plug.active .spine-plug-dot {
+  border-color: #f4d5c2;
+}
+
+.spine-plug.active .spine-plug-dot .plugin-logo {
   transform: scale(1.05);
 }
 
-.plugin-logo {
-  transition: transform var(--t-fast) var(--ease);
-}
-
-/* Profile — distinct card pinned to the bottom */
-.profile-link {
-  border: 1px solid var(--line);
-  background: #fff;
+.spine-plug.active .spine-name {
   color: var(--ink);
-  box-shadow: var(--shadow-xs);
-}
-
-.profile-link:hover:not(:active) {
-  background: #fff;
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-1px);
-}
-
-.profile-link:hover svg,
-.profile-link.active svg {
-  color: var(--accent-2);
-}
-
-.profile-link.active {
-  border-color: #f4d5c2;
-  background: var(--accent-soft);
-  color: var(--accent-2);
   font-weight: 650;
 }
 
-/* Collapsed rail: center icons, drop label width so centering is true */
-.chrome-brand {
-  justify-content: center;
+/* Profile — terminal node */
+.spine-profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin-top: auto;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  border-radius: var(--r-md, 16px);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
 }
 
-.chrome-nav button,
-.chrome-plugins button,
-.profile-link {
-  justify-content: center;
-  gap: 0;
-  padding-left: 0;
-  padding-right: 0;
+.spine-profile:hover {
+  background: var(--soft);
 }
 
-.chrome-nav button span,
-.chrome-plugins button span,
-.profile-link span {
-  max-width: 0;
+.spine-profile:active {
+  transform: scale(0.99);
 }
 
-.workspace-chrome:hover .chrome-brand,
-.workspace-chrome:focus-within .chrome-brand {
-  justify-content: flex-start;
+.spine-profile:hover .spine-dot {
+  transform: scale(1.06);
+  color: var(--ink);
 }
 
-.workspace-chrome:hover .chrome-nav button,
-.workspace-chrome:hover .chrome-plugins button,
-.workspace-chrome:hover .profile-link,
-.workspace-chrome:focus-within .chrome-nav button,
-.workspace-chrome:focus-within .chrome-plugins button,
-.workspace-chrome:focus-within .profile-link {
-  justify-content: flex-start;
-  gap: 11px;
-  padding-left: 12px;
-  padding-right: 12px;
+.spine-profile.active .spine-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 8px 18px -6px var(--accent-ring), 0 0 0 4px var(--accent-soft);
 }
 
-.workspace-chrome:hover .chrome-nav button span,
-.workspace-chrome:hover .chrome-plugins button span,
-.workspace-chrome:hover .profile-link span,
-.workspace-chrome:focus-within .chrome-nav button span,
-.workspace-chrome:focus-within .chrome-plugins button span,
-.workspace-chrome:focus-within .profile-link span {
-  max-width: 170px;
+.spine-profile.active .spine-name {
+  color: var(--ink);
+  font-weight: 700;
 }
 
 main {
@@ -1914,79 +1893,58 @@ main {
     grid-column: auto;
   }
 
-  .workspace-chrome,
-  .workspace-chrome:hover,
-  .workspace-chrome:focus-within {
+  .spine-rail {
     position: static;
-    transform: none;
     width: auto;
     height: auto;
-    max-height: none;
-    overflow: visible;
-    gap: 12px;
-    padding: 18px;
-    border: none;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    border-right: none;
     border-bottom: 1px solid var(--line);
-    border-radius: 0;
-    box-shadow: none;
+    overflow: visible;
   }
 
-  .chrome-center {
-    flex: 0 0 auto;
-    justify-content: flex-start;
-    gap: 12px;
+  .spine-track {
+    position: static;
+    gap: 14px;
   }
 
-  .chrome-brand,
-  .chrome-nav button,
-  .chrome-plugins button,
-  .profile-link {
-    justify-content: flex-start;
-    min-width: 0;
-  }
-
-  .chrome-nav button,
-  .chrome-plugins button,
-  .profile-link {
-    gap: 11px;
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  /* Always show labels on mobile (no hover-to-expand) */
-  .chrome-brand strong,
-  .chrome-section-label,
-  .chrome-nav button span,
-  .chrome-plugins button span,
-  .profile-link span {
-    opacity: 1;
-    transform: none;
-    max-width: none;
-  }
-
-  .chrome-section-label {
-    height: auto;
-    margin: 6px 0 -4px;
-  }
-
-  .chrome-nav {
+  .spine-nav {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    width: 100%;
+    gap: 8px;
   }
 
-  .chrome-plugins {
+  .spine-nav::before {
+    display: none;
+  }
+
+  .spine-node {
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .spine-section-label {
+    margin-left: 4px;
+  }
+
+  .spine-plugins {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    width: 100%;
+    gap: 8px;
   }
 
-  .sidebar-profile {
+  .spine-plug::before {
+    display: none;
+  }
+
+  .spine-profile {
     margin-top: 0;
-  }
-
-  .profile-link {
-    width: 100%;
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-xs);
   }
 
   nav {
