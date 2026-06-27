@@ -10,9 +10,9 @@
       "currentTools": [],
       "mainProblems": [],
       "status": "active",
-      "knowledgeStatus": "empty",
+      "knowledgeStatus": "ready",
       "createdAt": "2026-06-25T00:57:14.877Z",
-      "updatedAt": "2026-06-25T00:57:14.877Z"
+      "updatedAt": "2026-06-27T01:43:15.339Z"
     },
     {
       "id": "616d3fab-c739-4e65-a35c-ea0d3dfc72fb",
@@ -45,6 +45,22 @@
       "uploadedAt": "2026-06-25T00:57:26.104Z",
       "parsedAt": "2026-06-25T00:57:26.106Z",
       "updatedAt": "2026-06-25T00:57:26.106Z"
+    },
+    {
+      "id": "8f8a9c9a-9110-4ffa-b773-62fe09ceaa0e",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "filename": "1782524593086-2026_08_25_Diesel_Electric_Services__Pty__Ltd-Generic.pdf",
+      "originalName": "2026 08 25 Diesel Electric Services (Pty) Ltd-Generic.pdf",
+      "fileType": ".pdf",
+      "filePath": "/home/runner/workspace/artifacts/api-server/storage/uploads/056f28d0-3a30-4a38-9f15-f38fe4de0f1f/1782524593086-2026_08_25_Diesel_Electric_Services__Pty__Ltd-Generic.pdf",
+      "fileSize": 235117,
+      "content": "Certificate Number: 2025/08/30 \nThis certificate is valid for a period of twelve months \nThis certificate is issued without any amendments or alterations \n \n    \n \n \n \n \n \nBROAD-BASED BLACK ECONOMIC EMPOWERMENT \nVERIFICATION CERTIFICATE\n  \nThis serves to certify that: \nEntity: Diesel Electric Services (Pty) Ltd                                                             Registration No.: 1993/001265/07 \nAddress: 27/29 Mewett Street, Ophirton                                                            VAT No.: 4190136707 \n \nBased on information provided to 4\nTh\n Dimension Training Consultants and is an independent opinion based on verification, validation and audit \nanalysis performed. \n \n  Element \nWeighting \nActual  \nScore \nBlack Ownership 25.93% \nOwnership: 25 25.00 Black Female Ownership 25.93% \nManagement Control: 19 9.73 Black Youth Owned 25.93% \nSkills Development: 20 9.74 Black Disabled 0% \nEnterprise and Supplier Development: 42 44.00 Black Unemployed 0% \nSocio Economic Development: 5 5.00 Black People Living in Rural Areas 0% \n 111 93.47 Black Military Veterans 0% \n \nCategory Generic Y.E.S. Participant – Yes/ No N/A \nExclusion Principle Applied – Yes/ No No Achieve Y.E.S. Target and 2.5% \nAbsorption – Yes/ No \nN/A \nEmpowering Supplier Yes Achieve 1.5 x Y.E.S. Target and 5% \nAbsorption – Yes/ No \nN/A \nDiscounting Factor No Achieve Double Y.E.S. Target and 5% \nAbsorption – Yes/ No \nN/A \nFinancial Period Apr ’24 – Mar ‘25 Achieve Double Y.E.S. Target and 5% \nAbsorption – Yes/ No \nN/A \nCodes Applied 36928 and 42496 Modified Flow Through Principle – \nYes/ No \nN/A \n \n \n \n  \n___________________ \nZ. B. Sheik \n4\nth\n Dimension Consultants \nEmail: info@4thd.co.za \nTel: 031 208 8494 \n \n \n \n                                                         \n \n                                                            BVA093  \n \n \n \nDate issued: 26/08/2025 \nRe-issued Date: N/A \nExpiry date: 25/08/2026 \n \n \nB-  BBEE STATUS LEVEL: 3 \n \nB-  BBEE RECOGNITION \nLEVEL: 110%",
+      "wordCount": 248,
+      "status": "parsed",
+      "parseError": null,
+      "uploadedAt": "2026-06-27T01:43:13.788Z",
+      "parsedAt": "2026-06-27T01:43:14.184Z",
+      "updatedAt": "2026-06-27T01:43:14.184Z"
     }
   ],
   "businessMaps": [],
@@ -222,6 +238,118 @@
       ],
       "generatedAt": "2026-06-25T00:57:26.400Z",
       "updatedAt": "2026-06-25T00:57:26.400Z"
+    },
+    {
+      "id": "e7de390b-ec24-408f-bc71-346d97d36cff",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "version": 1,
+      "status": "active",
+      "businessSummary": {
+        "business_name": "Acme Co",
+        "business_type": "Logistics",
+        "plain_english_summary": "Acme Co is a Logistics with 1 documented workflow and 0 extracted rules. The map was built deterministically from profile data and parsed source documents.",
+        "core_function": "Logistics",
+        "key_operational_facts": [
+          "Workflow: Key workflows:"
+        ],
+        "systems_in_use": [],
+        "document_types_in_use": [
+          "pdf"
+        ],
+        "confidence": 0.55,
+        "confidence_reason": "Confidence is rule-based: higher when source text contains explicit workflow steps, approval rules, and source excerpts.",
+        "missing_information": []
+      },
+      "departments": [
+        {
+          "name": "Logistics",
+          "functions": [
+            "Delivery operations"
+          ]
+        }
+      ],
+      "roles": [],
+      "workflows": [
+        {
+          "workflow_name": "Key workflows:",
+          "trigger": "",
+          "steps": [],
+          "owner": "",
+          "required_documents": [],
+          "decision_points": [],
+          "approval_points": [],
+          "dependencies": [],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Business: Acme Co\nType: Logistics\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+          "_confidence": 0.58,
+          "_supported": true
+        }
+      ],
+      "rules": [],
+      "approvals": [],
+      "exceptions": [],
+      "risks": [
+        {
+          "risk": "Main problems:",
+          "severity": "low",
+          "reason": "Main problems:",
+          "affected_workflow": "Key workflows:",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Main problems:",
+          "_confidence": 0.68
+        }
+      ],
+      "bottlenecks": [],
+      "gaps": [],
+      "dependencies": [
+        {
+          "dependency": "Based on information provided to 4",
+          "_sourceDocName": "2026 08 25 Diesel Electric Services (Pty) Ltd-Generic.pdf",
+          "_sourceExcerpt": "Based on information provided to 4",
+          "_confidence": 0.62
+        },
+        {
+          "dependency": "Dimension Training Consultants and is an independent opinion based on verification, validation and audit",
+          "_sourceDocName": "2026 08 25 Diesel Electric Services (Pty) Ltd-Generic.pdf",
+          "_sourceExcerpt": "Dimension Training Consultants and is an independent opinion based on verification, validation and audit",
+          "_confidence": 0.62
+        }
+      ],
+      "aiOpportunities": [],
+      "readiness": [
+        {
+          "workflow": "Key workflows:",
+          "readiness_score": 35,
+          "reason": "Readiness is based on documented steps and rules, not AI interpretation.",
+          "blockers": [],
+          "required_integrations": []
+        }
+      ],
+      "blueprint": {
+        "blueprints": []
+      },
+      "missingInformation": [
+        "Business departments are not listed in the profile.",
+        "Approval rules are not clearly documented."
+      ],
+      "overallConfidence": 0.55,
+      "overallRiskScore": 0.28,
+      "sourceDocuments": [
+        {
+          "id": "8f8a9c9a-9110-4ffa-b773-62fe09ceaa0e",
+          "name": "2026 08 25 Diesel Electric Services (Pty) Ltd-Generic.pdf"
+        }
+      ],
+      "recommendedNextSteps": [
+        "Review workflow: Key workflows: — Most clearly documented workflow."
+      ],
+      "generatedAt": "2026-06-27T01:43:15.329Z",
+      "updatedAt": "2026-06-27T01:43:15.329Z"
     }
   ],
   "validations": [
@@ -292,6 +420,40 @@
       "reviewedBy": null,
       "reviewedAt": null,
       "createdAt": "2026-06-25T00:57:26.405Z"
+    },
+    {
+      "id": "afafb1db-0eb6-4bf6-84a8-5c5c2989ea89",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "mapId": "e7de390b-ec24-408f-bc71-346d97d36cff",
+      "insightType": "workflow",
+      "claim": "Workflow: Key workflows:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Business: Acme Co\nType: Logistics\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+      "confidence": 0.58,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Extracted from Business profile",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-27T01:43:15.333Z"
+    },
+    {
+      "id": "f0776210-8807-4988-894a-5ef5b1e5973b",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "mapId": "e7de390b-ec24-408f-bc71-346d97d36cff",
+      "insightType": "risk",
+      "claim": "Risk: Main problems:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Main problems:",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-27T01:43:15.337Z"
     }
   ],
   "insights": [
@@ -416,6 +578,56 @@
       "sourceExcerpt": null,
       "confidence": 0.68,
       "createdAt": "2026-06-25T00:57:26.404Z"
+    },
+    {
+      "id": "7cef1dc2-b635-402f-aec7-3fc4b6677f27",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "mapId": "e7de390b-ec24-408f-bc71-346d97d36cff",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Key workflows:",
+        "trigger": "",
+        "steps": [],
+        "owner": "",
+        "required_documents": [],
+        "decision_points": [],
+        "approval_points": [],
+        "dependencies": [],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Business: Acme Co\nType: Logistics\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+        "_confidence": 0.58,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Business: Acme Co\nType: Logistics\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+      "confidence": 0.58,
+      "createdAt": "2026-06-27T01:43:15.330Z"
+    },
+    {
+      "id": "d6cee3b4-c1ea-4f29-b691-ac214e5d3878",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "mapId": "e7de390b-ec24-408f-bc71-346d97d36cff",
+      "type": "risk",
+      "content": {
+        "risk": "Main problems:",
+        "severity": "low",
+        "reason": "Main problems:",
+        "affected_workflow": "Key workflows:",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Main problems:",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-27T01:43:15.335Z"
     }
   ],
   "conversations": [],
@@ -458,6 +670,28 @@
         "docCount": 1
       },
       "createdAt": "2026-06-25T00:57:26.407Z"
+    },
+    {
+      "id": "a83a33af-9642-4994-a338-7c65a4a0b5d0",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "type": "document_uploaded",
+      "description": "Uploaded \"2026 08 25 Diesel Electric Services (Pty) Ltd-Generic.pdf\"",
+      "meta": {
+        "docId": "8f8a9c9a-9110-4ffa-b773-62fe09ceaa0e"
+      },
+      "createdAt": "2026-06-27T01:43:14.048Z"
+    },
+    {
+      "id": "2540423c-a06e-45ad-8965-8b1b9f567016",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "type": "engine_intake_complete",
+      "description": "Knowledge Map built",
+      "meta": {
+        "mapId": "e7de390b-ec24-408f-bc71-346d97d36cff",
+        "version": 1,
+        "docCount": 1
+      },
+      "createdAt": "2026-06-27T01:43:15.341Z"
     }
   ]
 }

@@ -24,16 +24,6 @@ import {
   X
 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  siHubspot,
-  siJira,
-  siMake,
-  siNotion,
-  siQuickbooks,
-  siTrello,
-  siXero,
-  siZapier
-} from 'simple-icons';
 import orgniLogo from './assets/orgni-logo.png';
 import orgniWorkflowLogo from './assets/orgni-workflow.png';
 import orgniFinanceLogo from './assets/orgni-finance.png';
@@ -48,6 +38,14 @@ import logoGoogleCalendar from './assets/logos/google-calendar.svg';
 import logoAirtable from './assets/logos/airtable.svg';
 import logoAsana from './assets/logos/asana.svg';
 import logoClickup from './assets/logos/clickup.svg';
+import logoNotion from './assets/logos/notion.svg';
+import logoHubspot from './assets/logos/hubspot.svg';
+import logoQuickbooks from './assets/logos/quickbooks.svg';
+import logoXero from './assets/logos/xero.svg';
+import logoZapier from './assets/logos/zapier.svg';
+import logoMake from './assets/logos/make.svg';
+import logoJira from './assets/logos/jira.svg';
+import logoTrello from './assets/logos/trello.svg';
 
 const navItems = [
   { id: 'documents', label: 'Sources', icon: Database },
@@ -57,9 +55,9 @@ const navItems = [
 
 const connectSources = [
   { name: 'Google Drive', image: logoGoogleDrive, detail: 'Sync folders & files' },
-  { name: 'Notion', iconData: siNotion, detail: 'Import internal docs' },
+  { name: 'Notion', image: logoNotion, detail: 'Import internal docs' },
   { name: 'Gmail', image: logoGmail, detail: 'Learn from email' },
-  { name: 'HubSpot', iconData: siHubspot, detail: 'Connect CRM records' },
+  { name: 'HubSpot', image: logoHubspot, detail: 'Connect CRM records' },
   { name: 'Airtable', image: logoAirtable, detail: 'Map structured data' },
   { name: 'Website / URL', glyphIcon: Globe, color: '#0d9488', detail: 'Crawl a public page' }
 ];
@@ -77,16 +75,16 @@ const externalPlugins = [
   { name: 'Google Drive', category: 'Files', image: logoGoogleDrive, use: 'Use Drive folders as business knowledge sources.' },
   { name: 'Gmail', category: 'Email', image: logoGmail, use: 'Draft replies and classify requests with business context.' },
   { name: 'Google Calendar', category: 'Calendar', image: logoGoogleCalendar, use: 'Connect meetings to workflows, owners, and next steps.' },
-  { name: 'Notion', category: 'Docs', icon: siNotion, use: 'Keep internal docs synced with Orgni knowledge.' },
-  { name: 'HubSpot', category: 'CRM', icon: siHubspot, use: 'Make customer workflows aware of internal rules.' },
+  { name: 'Notion', category: 'Docs', image: logoNotion, use: 'Keep internal docs synced with Orgni knowledge.' },
+  { name: 'HubSpot', category: 'CRM', image: logoHubspot, use: 'Make customer workflows aware of internal rules.' },
   { name: 'Salesforce', category: 'CRM', image: logoSalesforce, use: 'Give sales and service teams approved context.' },
-  { name: 'QuickBooks', category: 'Finance', icon: siQuickbooks, use: 'Connect finance rules, approvals, and exceptions.' },
-  { name: 'Xero', category: 'Finance', icon: siXero, use: 'Support finance controls with operational context.' },
-  { name: 'Zapier', category: 'Automation', icon: siZapier, use: 'Trigger workflows from trusted business context.' },
-  { name: 'Make', category: 'Automation', icon: siMake, use: 'Build automations around extracted roles and rules.' },
+  { name: 'QuickBooks', category: 'Finance', image: logoQuickbooks, use: 'Connect finance rules, approvals, and exceptions.' },
+  { name: 'Xero', category: 'Finance', image: logoXero, use: 'Support finance controls with operational context.' },
+  { name: 'Zapier', category: 'Automation', image: logoZapier, use: 'Trigger workflows from trusted business context.' },
+  { name: 'Make', category: 'Automation', image: logoMake, use: 'Build automations around extracted roles and rules.' },
   { name: 'Asana', category: 'Work management', image: logoAsana, use: 'Turn gaps and next steps into trackable work.' },
-  { name: 'Jira', category: 'Work management', icon: siJira, use: 'Route operational findings into delivery queues.' },
-  { name: 'Trello', category: 'Work management', icon: siTrello, use: 'Create boards from workflows, risks, and actions.' },
+  { name: 'Jira', category: 'Work management', image: logoJira, use: 'Route operational findings into delivery queues.' },
+  { name: 'Trello', category: 'Work management', image: logoTrello, use: 'Create boards from workflows, risks, and actions.' },
   { name: 'Airtable', category: 'Database', image: logoAirtable, use: 'Map structured operations data to business memory.' },
   { name: 'ClickUp', category: 'Work management', image: logoClickup, use: 'Push Orgni tasks into team execution spaces.' }
 ];
