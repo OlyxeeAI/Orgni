@@ -1164,10 +1164,23 @@ button:disabled:active {
   transform: translate(-50%, -50%);
   cursor: pointer;
   font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
   transition: transform var(--t-fast) var(--ease), box-shadow var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
 }
 
 .cmap-node:hover { z-index: 5; }
+
+.cmap-node:focus { outline: none; }
+.cmap-node:focus-visible {
+  outline: none;
+  box-shadow: 0 8px 20px rgba(32, 32, 28, 0.14),
+    0 0 0 3px color-mix(in srgb, var(--group-color, var(--accent)) 32%, transparent);
+}
+.cmap-node.center:focus-visible {
+  box-shadow: 0 14px 30px rgba(13, 59, 52, 0.32), 0 0 0 3px rgba(255, 255, 255, 0.4);
+}
 
 .cmap-node.center {
   display: flex;
