@@ -769,6 +769,17 @@
         "turns": 1
       },
       "createdAt": "2026-06-27T02:48:57.963Z"
+    },
+    {
+      "id": "275d4d19-3301-4f83-be20-c9f21984e7b8",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "type": "assistant_chat",
+      "description": "Chat: Who owns what across the team?",
+      "meta": {
+        "grounded": true,
+        "turns": 1
+      },
+      "createdAt": "2026-06-27T03:03:16.092Z"
     }
   ]
 }
