@@ -1599,15 +1599,15 @@ label {
   border-radius: 14px;
   display: grid;
   place-items: center;
-  background: var(--accent);
+  background: linear-gradient(180deg, #48484a, #1c1c1e);
   overflow: hidden;
-  box-shadow: 0 8px 18px -6px rgba(242, 106, 27, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 18px -7px rgba(28, 28, 30, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
   transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
 }
 
 .spine-brand:hover .spine-mark {
   transform: translateY(-1px) rotate(-2deg);
-  box-shadow: 0 12px 24px -7px rgba(242, 106, 27, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 24px -8px rgba(28, 28, 30, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
 .spine-mark img {
@@ -1734,16 +1734,20 @@ label {
   white-space: nowrap;
 }
 
-/* Active node — lights up the conduit */
+/* Active node — graphite, lit along the conduit */
+.spine-node.active {
+  background: #e8e8ee;
+}
+
 .spine-node.active .spine-dot {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: linear-gradient(180deg, #48484a, #1c1c1e);
+  border-color: #1c1c1e;
   color: #fff;
-  box-shadow: 0 8px 18px -6px var(--accent-ring), 0 0 0 4px var(--accent-soft);
+  box-shadow: 0 8px 18px -7px rgba(28, 28, 30, 0.4), 0 0 0 4px rgba(60, 60, 67, 0.08);
 }
 
 .spine-node.active .spine-step {
-  color: var(--accent-2);
+  color: var(--ink);
 }
 
 .spine-node.active .spine-name {
@@ -1822,12 +1826,12 @@ label {
 }
 
 .spine-plug.active {
-  background: var(--accent-soft);
-  border-color: #f4d5c2;
+  background: var(--soft);
+  border-color: var(--line-strong);
 }
 
 .spine-plug.active .spine-plug-dot {
-  border-color: #f4d5c2;
+  border-color: var(--line-strong);
 }
 
 .spine-plug.active .spine-plug-dot .plugin-logo {
@@ -1869,10 +1873,10 @@ label {
 }
 
 .spine-profile.active .spine-dot {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: linear-gradient(180deg, #48484a, #1c1c1e);
+  border-color: #1c1c1e;
   color: #fff;
-  box-shadow: 0 8px 18px -6px var(--accent-ring), 0 0 0 4px var(--accent-soft);
+  box-shadow: 0 8px 18px -7px rgba(28, 28, 30, 0.4), 0 0 0 4px rgba(60, 60, 67, 0.08);
 }
 
 .spine-profile.active .spine-name {
