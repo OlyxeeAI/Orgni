@@ -472,7 +472,6 @@ export function App() {
         </nav>
 
         <div className="ios-group">
-          <p className="ios-group-label">Plugins</p>
           <nav className="ios-nav" aria-label="Plugins">
             {pluginItems.map((item) => {
               const active = view === item.id;

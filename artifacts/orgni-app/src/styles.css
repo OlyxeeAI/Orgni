@@ -1705,16 +1705,6 @@ label {
   gap: 6px;
 }
 
-.ios-group-label {
-  margin: 0;
-  padding: 0 10px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--muted);
-}
-
 .ios-profile {
   margin-top: auto;
 }
@@ -1758,10 +1748,6 @@ main {
   .ios-item.active {
     background: rgba(60, 60, 67, 0.1);
     border-color: transparent;
-  }
-
-  .ios-group-label {
-    padding-left: 4px;
   }
 
   .ios-profile {
