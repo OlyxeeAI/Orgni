@@ -26,7 +26,7 @@ import {
   Workflow,
   X
 } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import orgniLogo from './assets/orgni-logo.png';
 import orgniWorkflowLogo from './assets/orgni-workflow.png';
 import orgniFinanceLogo from './assets/orgni-finance.png';
@@ -994,71 +994,212 @@ function KnowledgeMap({ context }) {
       <div className="panel span-2 km-layout">
         <div className="km-main">
           <PanelHeader icon={Map} title="Knowledge map" />
-          <p className="network-hint">A clear, structured view of how {model.business.label} runs — its departments, roles, workflows, rules and risks, all extracted from your documents. Select any item to read the detail on the right.</p>
+          <p className="network-hint">A living map of how {model.business.label} runs — its departments, roles, workflows, rules and risks, all extracted from your documents. Click any node to read the detail on the right.</p>
 
-          <button
-            type="button"
-            className={`km-hero${selectedId === 'business' ? ' active' : ''}`}
-            onClick={() => setSelectedId('business')}
-          >
-            <span className="km-hero-top">
-              <span className="km-hero-badge"><Building2 size={14} /> Business</span>
-              <strong>{model.business.label}</strong>
-            </span>
-            <span className="km-hero-stats">
-              {model.business.stats.map((stat) => (
-                <span className="km-hero-stat" key={stat.label}>
-                  <b>{stat.value}</b>
-                  <em>{stat.label}</em>
-                </span>
-              ))}
-            </span>
-          </button>
-
-          {!model.groups.length && (
-            <p className="km-empty-note">No departments, roles, workflows, rules or risks have been extracted yet. Add more detailed source documents and rebuild the map to populate it.</p>
-          )}
-
-          <div className="km-groups">
-            {model.groups.map((group) => {
-              const meta = CATEGORY_META[group.key] || { label: group.label, icon: Layers3 };
-              const Icon = meta.icon;
-              return (
-                <div className={`km-group ${group.key}`} key={group.key}>
-                  <header className="km-group-head">
-                    <span className="km-group-icon"><Icon size={15} /></span>
-                    <h4>{meta.label}</h4>
-                    <span className="km-group-count">{group.count}</span>
-                  </header>
-                  <ul className="km-group-list">
-                    {group.items.map((item) => (
-                      <li key={item.id}>
-                        <button
-                          type="button"
-                          className={`km-item${item.id === selectedId ? ' active' : ''}`}
-                          onClick={() => setSelectedId(item.id)}
-                        >
-                          <span className="km-item-label">{item.label}</span>
-                          <ArrowRight size={14} className="km-item-arrow" aria-hidden="true" />
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-          </div>
+          {!model.groups.length
+            ? <p className="km-empty-note">No departments, roles, workflows, rules or risks have been extracted yet. Add more detailed source documents and rebuild the map to populate it.</p>
+            : <ConceptMap model={model} selectedId={selectedId} onSelect={setSelectedId} />}
         </div>
         <aside className="km-detail">
-          <NodeDetail node={selected} context={context} />
+          <NodeDetail node={selected} context={context} onSelect={setSelectedId} />
         </aside>
       </div>
     </section>
   );
 }
 
-function NodeDetail({ node, context }) {
+const HUB_VERB = {
+  department: 'organized into',
+  role: 'run by',
+  workflow: 'operates through',
+  rule: 'governed by',
+  risk: 'exposed to'
+};
+
+function ConceptMap({ model, selectedId, onSelect }) {
+  const layout = useMemo(() => buildGraphLayout(model), [model]);
+  const { width, height, center, hubs } = layout;
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollLeft = Math.max(0, center.x - el.clientWidth / 2);
+    el.scrollTop = Math.max(0, center.y - el.clientHeight / 2);
+  }, [center.x, center.y, width, height]);
+
+  return (
+    <div className="cmap-scroll" ref={scrollRef}>
+      <div className="cmap-canvas" style={{ width, height }}>
+        <svg className="cmap-edges" width={width} height={height} aria-hidden="true">
+          {hubs.map((hub) => (
+            <g key={`edges-${hub.key}`} className={`cmap-edge-group ${hub.key}`}>
+              <line
+                className={`cmap-edge hub${selectedId === `hub-${hub.key}` ? ' active' : ''}`}
+                x1={center.x}
+                y1={center.y}
+                x2={hub.x}
+                y2={hub.y}
+              />
+              {hub.leaves.map((leaf) => (
+                <line
+                  key={`e-${leaf.id}`}
+                  className={`cmap-edge leaf${leaf.id === selectedId ? ' active' : ''}`}
+                  x1={hub.x}
+                  y1={hub.y}
+                  x2={leaf.x}
+                  y2={leaf.y}
+                />
+              ))}
+            </g>
+          ))}
+        </svg>
+
+        {hubs.map((hub) => (
+          <span
+            key={`lbl-${hub.key}`}
+            className="cmap-elabel"
+            style={{ left: (center.x + hub.x) / 2, top: (center.y + hub.y) / 2 }}
+          >
+            {hub.verb}
+          </span>
+        ))}
+
+        <button
+          type="button"
+          className={`cmap-node center${selectedId === 'business' ? ' active' : ''}`}
+          style={{ left: center.x, top: center.y }}
+          onClick={() => onSelect('business')}
+        >
+          <span className="cmap-center-kicker">Business</span>
+          <span className="cmap-center-name">{model.business.label}</span>
+        </button>
+
+        {hubs.map((hub) => {
+          const meta = CATEGORY_META[hub.key] || { label: hub.label, icon: Layers3 };
+          const Icon = meta.icon;
+          const hubId = `hub-${hub.key}`;
+          return (
+            <Fragment key={`nodes-${hub.key}`}>
+              <button
+                type="button"
+                className={`cmap-node hub ${hub.key}${selectedId === hubId ? ' active' : ''}`}
+                style={{ left: hub.x, top: hub.y }}
+                onClick={() => onSelect(hubId)}
+              >
+                <span className="cmap-hub-icon"><Icon size={14} /></span>
+                <span className="cmap-hub-label">{meta.label}</span>
+                <span className="cmap-hub-count">{hub.count}</span>
+              </button>
+              {hub.leaves.map((leaf) => (
+                <button
+                  type="button"
+                  key={leaf.id}
+                  className={`cmap-node leaf ${hub.key}${selectedId === leaf.id ? ' active' : ''}`}
+                  style={{ left: leaf.x, top: leaf.y }}
+                  onClick={() => onSelect(leaf.id)}
+                  title={leaf.label}
+                >
+                  {leaf.label}
+                </button>
+              ))}
+            </Fragment>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function buildGraphLayout(model) {
+  const hubs = model.groups;
+  const N = Math.max(hubs.length, 1);
+  const R1 = 196;
+  const leafGap = 142;
+  const startAngle = -Math.PI / 2;
+  const sector = (2 * Math.PI) / N;
+
+  const placed = hubs.map((hub, i) => {
+    const angle = startAngle + i * sector;
+    const hx = R1 * Math.cos(angle);
+    const hy = R1 * Math.sin(angle);
+    const m = hub.items.length;
+    const fan = Math.min(sector * 0.84, Math.max(0, m - 1) * 0.3);
+    const leaves = hub.items.map((item, k) => {
+      const t = m <= 1 ? 0 : k / (m - 1) - 0.5;
+      const la = angle + t * fan;
+      const rad = R1 + leafGap + (k % 2) * 70;
+      return { id: item.id, label: item.label, x: rad * Math.cos(la), y: rad * Math.sin(la) };
+    });
+    return {
+      key: hub.key,
+      label: hub.label,
+      count: hub.count,
+      verb: HUB_VERB[hub.key] || 'includes',
+      x: hx,
+      y: hy,
+      leaves
+    };
+  });
+
+  const pts = [{ x: 0, y: 0 }];
+  placed.forEach((h) => {
+    pts.push({ x: h.x, y: h.y });
+    h.leaves.forEach((l) => pts.push({ x: l.x, y: l.y }));
+  });
+
+  const padX = 140;
+  const padY = 74;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  pts.forEach((p) => {
+    minX = Math.min(minX, p.x);
+    minY = Math.min(minY, p.y);
+    maxX = Math.max(maxX, p.x);
+    maxY = Math.max(maxY, p.y);
+  });
+
+  const offX = padX - minX;
+  const offY = padY - minY;
+  const shift = (p) => ({ x: p.x + offX, y: p.y + offY });
+
+  return {
+    width: Math.max((maxX - minX) + padX * 2, 680),
+    height: Math.max((maxY - minY) + padY * 2, 480),
+    center: shift({ x: 0, y: 0 }),
+    hubs: placed.map((h) => ({
+      ...h,
+      ...shift(h),
+      leaves: h.leaves.map((l) => ({ ...l, ...shift(l) }))
+    }))
+  };
+}
+
+function NodeDetail({ node, context, onSelect }) {
   if (!node) return null;
+
+  if (node.kind === 'hub') {
+    const meta = CATEGORY_META[node.type] || { label: node.label, icon: Layers3 };
+    return (
+      <div className="detail-card">
+        <span className={`detail-tag ${node.type}`}>{meta.label}</span>
+        <h3>{node.label}</h3>
+        <p className="detail-summary">{node.count} {node.count === 1 ? 'item' : 'items'} extracted from your documents.</p>
+        <ul className="detail-hub-list">
+          {node.items.map((item) => (
+            <li key={item.id}>
+              <button type="button" className="detail-hub-item" onClick={() => onSelect?.(item.id)}>
+                <span>{item.label}</span>
+                <ArrowRight size={13} aria-hidden="true" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
 
   if (node.kind === 'business') {
     const summary = context.summary?.plain_english_summary || context.businessSummary?.plain_english_summary || context.businessSummary || 'No summary generated yet.';
@@ -1192,6 +1333,17 @@ function buildKnowledgeModel(context) {
       return { id, label };
     });
     return { key: cat.key, label: cat.label, count: cat.entries.length, items };
+  });
+
+  groups.forEach((group) => {
+    nodeMap.set(`hub-${group.key}`, {
+      id: `hub-${group.key}`,
+      label: group.label,
+      type: group.key,
+      kind: 'hub',
+      count: group.count,
+      items: group.items
+    });
   });
 
   const stats = [
