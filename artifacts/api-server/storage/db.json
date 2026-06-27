@@ -747,6 +747,17 @@
         "turns": 1
       },
       "createdAt": "2026-06-27T01:57:39.087Z"
+    },
+    {
+      "id": "21f9a06e-3ee2-431a-95c5-f5498c4a2a08",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "type": "assistant_chat",
+      "description": "Chat: How does this business run day to day?",
+      "meta": {
+        "grounded": true,
+        "turns": 1
+      },
+      "createdAt": "2026-06-27T02:27:12.546Z"
     }
   ]
 }
