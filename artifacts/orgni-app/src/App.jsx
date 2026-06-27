@@ -60,7 +60,7 @@ const navItems = [
   { id: 'plugins', label: 'Plugins', icon: Plug }
 ];
 
-const ASSISTANT_NAME = 'Remi';
+const ASSISTANT_NAME = 'Lucy';
 
 const assistantStarters = [
   'How does this business run day to day?',
@@ -1538,7 +1538,7 @@ function buildKnowledgeModel(context) {
   };
 }
 
-// Decide what Remi should "pull up" alongside an answer. Looks at what the
+// Decide what Lucy should "pull up" alongside an answer. Looks at what the
 // person asked and, when it maps to real extracted data, returns a panel that
 // gets shown inline — so it feels like a colleague opening the map or a file
 // on screen, never an empty placeholder.
