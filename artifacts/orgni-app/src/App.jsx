@@ -215,6 +215,30 @@ function count(value) {
   return Array.isArray(value) ? value.length : 0;
 }
 
+const CHAT_STORE_PREFIX = 'orgni:chat:';
+
+function loadChat(orgId) {
+  try {
+    const raw = localStorage.getItem(CHAT_STORE_PREFIX + orgId);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveChat(orgId, messages) {
+  try {
+    if (!messages || messages.length === 0) {
+      localStorage.removeItem(CHAT_STORE_PREFIX + orgId);
+    } else {
+      localStorage.setItem(CHAT_STORE_PREFIX + orgId, JSON.stringify(messages));
+    }
+  } catch {
+    /* storage unavailable / over quota — non-fatal */
+  }
+}
+
 export function App() {
   const [view, setView] = useState('documents');
   const [orgs, setOrgs] = useState([]);
@@ -234,6 +258,7 @@ export function App() {
   const [actionContext, setActionContext] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
   const [chatSending, setChatSending] = useState(false);
+  const hydratingChat = useRef(false);
 
   const currentOrg = useMemo(() => orgs.find((org) => org.id === orgId), [orgs, orgId]);
 
@@ -243,9 +268,22 @@ export function App() {
 
   useEffect(() => {
     if (!orgId) return;
-    setChatMessages([]);
+    hydratingChat.current = true;
+    setChatMessages(loadChat(orgId));
     refreshOrgData(orgId);
   }, [orgId]);
+
+  // Persist the conversation per-org so it survives reloads and tab switches.
+  // Skip the first run after an org switch so we never write the previous
+  // org's messages under the newly selected org's key.
+  useEffect(() => {
+    if (!orgId) return;
+    if (hydratingChat.current) {
+      hydratingChat.current = false;
+      return;
+    }
+    saveChat(orgId, chatMessages);
+  }, [orgId, chatMessages]);
 
   useEffect(() => {
     if (!currentOrg) return;
