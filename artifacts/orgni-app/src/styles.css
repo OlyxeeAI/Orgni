@@ -2214,6 +2214,207 @@ main {
   color: var(--accent);
 }
 
+/* Bubble + inline panel stack */
+.chat-bubble-col {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+  max-width: 80%;
+}
+
+.chat-row.user .chat-bubble-col {
+  align-items: flex-end;
+}
+
+.chat-bubble-col .chat-bubble {
+  max-width: 100%;
+}
+
+/* Inline "opened" panels — Remi pulling up the map or a list of records */
+.assist-card {
+  width: 100%;
+  text-align: left;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px 15px;
+  box-shadow: var(--shadow-sm);
+  animation: assist-rise 0.28s ease both;
+}
+
+@keyframes assist-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.assist-card-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13.5px;
+}
+
+.assist-card-head strong {
+  flex: 1;
+  min-width: 0;
+  font-size: 13.5px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.assist-card-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--card-color, var(--accent));
+}
+
+.assist-card-count {
+  flex: none;
+  min-width: 22px;
+  padding: 1px 8px;
+  border-radius: var(--r-pill);
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.assist-card-open {
+  flex: none;
+  color: var(--muted);
+}
+
+/* Map snapshot card */
+.assist-map {
+  cursor: pointer;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+.assist-map:hover {
+  border-color: rgba(242, 106, 27, 0.4);
+  box-shadow: 0 8px 22px rgba(20, 20, 30, 0.08);
+  transform: translateY(-1px);
+}
+
+.assist-map .assist-card-icon { background: linear-gradient(150deg, var(--accent), var(--accent-2)); }
+
+.assist-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.assist-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 7px 11px;
+  border-radius: 11px;
+  background: var(--soft);
+  min-width: 64px;
+}
+
+.assist-stat b {
+  font-size: 16px;
+  letter-spacing: -0.02em;
+}
+
+.assist-stat em {
+  font-style: normal;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.assist-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 11px;
+}
+
+.assist-chip {
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+}
+
+.assist-chip.department { background: #0d9488; }
+.assist-chip.role { background: #2563eb; }
+.assist-chip.workflow { background: #f26a1b; }
+.assist-chip.rule { background: #7c3aed; }
+.assist-chip.risk { background: #9f2525; }
+
+.assist-list.department { --card-color: #0d9488; }
+.assist-list.role { --card-color: #2563eb; }
+.assist-list.workflow { --card-color: #f26a1b; }
+.assist-list.rule { --card-color: #7c3aed; }
+.assist-list.risk { --card-color: #9f2525; }
+
+/* Record list card */
+.assist-items {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.assist-items li {
+  padding: 8px 0 8px 16px;
+  position: relative;
+  font-size: 13.5px;
+  line-height: 1.4;
+  border-top: 1px solid var(--line);
+}
+
+.assist-items li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--card-color, var(--accent));
+}
+
+.assist-more {
+  margin: 9px 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.assist-open-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 12px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.assist-open-link:hover {
+  text-decoration: underline;
+}
+
 /* Typing indicator */
 .chat-typing {
   display: inline-flex;

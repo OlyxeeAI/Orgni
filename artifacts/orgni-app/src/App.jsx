@@ -1,6 +1,7 @@
 import {
   AlertTriangle,
   ArrowRight,
+  ArrowUpRight,
   Bot,
   Brain,
   Building2,
@@ -55,6 +56,8 @@ const navItems = [
   { id: 'assistant', label: 'Assistant', icon: Sparkles },
   { id: 'plugins', label: 'Plugins', icon: Plug }
 ];
+
+const ASSISTANT_NAME = 'Remi';
 
 const assistantStarters = [
   'How does this business run day to day?',
@@ -350,7 +353,13 @@ export function App() {
       });
       setChatMessages([
         ...history,
-        { role: 'assistant', content: data.answer, sources: data.sources || [], grounded: data.grounded }
+        {
+          role: 'assistant',
+          content: data.answer,
+          sources: data.sources || [],
+          grounded: data.grounded,
+          attachment: data.grounded ? buildAttachment(content, context) : null
+        }
       ]);
     } catch (error) {
       setChatMessages([
@@ -465,7 +474,7 @@ export function App() {
     <>
       {view === 'documents' && <Documents docs={docs} onUpload={uploadFiles} onDelete={deleteDocument} onIntake={runIntake} onConnect={(name) => toast(`${name} connections are coming soon — upload files for now.`, 'info')} />}
       {view === 'map' && <KnowledgeMap context={context} />}
-      {view === 'assistant' && <Assistant org={currentOrg} context={context} messages={chatMessages} sending={chatSending} onSend={sendChat} onReset={() => setChatMessages([])} onSource={() => setView('documents')} />}
+      {view === 'assistant' && <Assistant org={currentOrg} context={context} messages={chatMessages} sending={chatSending} onSend={sendChat} onReset={() => setChatMessages([])} onSource={() => setView('documents')} onOpenMap={() => setView('map')} />}
       {view === 'validation' && <Validation validation={validation} onReview={reviewFinding} />}
       {view === 'actions' && <Actions actionContext={actionContext} setActionContext={setActionContext} result={actionResult} onRun={runAction} />}
       {view === 'plugins' && <PluginsCatalog onOpen={setView} />}
@@ -558,7 +567,55 @@ function formatAssistant(text) {
   );
 }
 
-function Assistant({ org, context, messages, sending, onSend, onReset, onSource }) {
+function AssistantAttachment({ attachment, onOpenMap }) {
+  if (!attachment) return null;
+
+  if (attachment.kind === 'map') {
+    return (
+      <button type="button" className="assist-card assist-map" onClick={onOpenMap}>
+        <div className="assist-card-head">
+          <span className="assist-card-icon"><Map size={15} /></span>
+          <strong>{attachment.business.label} · operating map</strong>
+          <ArrowUpRight size={16} className="assist-card-open" />
+        </div>
+        <div className="assist-stats">
+          {attachment.business.stats.map((s) => (
+            <span key={s.label} className="assist-stat"><b>{s.value}</b><em>{s.label}</em></span>
+          ))}
+        </div>
+        <div className="assist-chips">
+          {attachment.groups.map((g) => (
+            <span key={g.key} className={`assist-chip ${g.key}`}>{g.label} · {g.count}</span>
+          ))}
+        </div>
+      </button>
+    );
+  }
+
+  const meta = CATEGORY_META[attachment.key] || { icon: Layers3 };
+  const Icon = meta.icon;
+  const shown = attachment.items.slice(0, 8);
+  const extra = attachment.count - shown.length;
+
+  return (
+    <div className={`assist-card assist-list ${attachment.key}`}>
+      <div className="assist-card-head">
+        <span className="assist-card-icon"><Icon size={15} /></span>
+        <strong>{attachment.label}</strong>
+        <span className="assist-card-count">{attachment.count}</span>
+      </div>
+      <ul className="assist-items">
+        {shown.map((label, i) => <li key={i}>{label}</li>)}
+      </ul>
+      {extra > 0 && <p className="assist-more">+{extra} more</p>}
+      <button type="button" className="assist-open-link" onClick={onOpenMap}>
+        Open in Knowledge map <ArrowRight size={13} />
+      </button>
+    </div>
+  );
+}
+
+function Assistant({ org, context, messages, sending, onSend, onReset, onSource, onOpenMap }) {
   const [draft, setDraft] = useState('');
   const scrollRef = useRef(null);
   const ready = Boolean(context);
@@ -587,10 +644,10 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource 
     <section className="chat-screen">
       <header className="chat-head">
         <div className="chat-head-id">
-          <span className="chat-avatar"><Sparkles size={18} /></span>
+          <span className="chat-avatar">{ASSISTANT_NAME.charAt(0)}</span>
           <div>
-            <h1>Assistant</h1>
-            <p>{org?.name ? `Ask anything about how ${org.name} runs` : 'Ask anything about how the business runs'}</p>
+            <h1>{ASSISTANT_NAME}</h1>
+            <p>{org?.name ? `Knows how ${org.name} runs · here to help` : 'Your operations partner · here to help'}</p>
           </div>
         </div>
         {!empty && (
@@ -601,12 +658,12 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource 
       <div className="chat-stream" ref={scrollRef}>
         {empty ? (
           <div className="chat-welcome">
-            <span className="chat-welcome-orb"><Sparkles size={26} /></span>
-            <h2>{ready ? `Hi — I know ${org?.name || 'this business'} inside out.` : `Let's get me up to speed first.`}</h2>
+            <span className="chat-welcome-orb">{ASSISTANT_NAME.charAt(0)}</span>
+            <h2>{ready ? `Hi, I'm ${ASSISTANT_NAME}.` : `Hi, I'm ${ASSISTANT_NAME} — let's get me up to speed.`}</h2>
             <p>
               {ready
-                ? 'Ask me about your people, workflows, rules, risks, or anything else. I answer from your own documents and knowledge map.'
-                : 'I answer from your business knowledge map. Add a few source documents and build the map, then I can talk through how everything works.'}
+                ? `I know ${org?.name || 'this business'} inside out. Ask me about your people, workflows, rules or risks — and I'll pull up the map and the details right here as we talk.`
+                : `I learn how your business runs from your own documents. Add a few sources and build the map, then I can walk you through everything.`}
             </p>
             {ready ? (
               <div className="chat-starters">
@@ -625,22 +682,27 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource 
           <div className="chat-thread">
             {messages.map((msg, i) => (
               <div key={i} className={`chat-row ${msg.role}`}>
-                {msg.role === 'assistant' && <span className="chat-bubble-avatar"><Sparkles size={15} /></span>}
-                <div className={`chat-bubble ${msg.role} ${msg.error ? 'error' : ''}`}>
-                  {msg.role === 'assistant' ? formatAssistant(msg.content) : <p>{msg.content}</p>}
-                  {msg.role === 'assistant' && msg.sources?.length > 0 && (
-                    <div className="chat-sources">
-                      {msg.sources.map((src) => (
-                        <span key={src.id} className="chat-source-chip"><FileText size={12} /> {src.name}</span>
-                      ))}
-                    </div>
+                {msg.role === 'assistant' && <span className="chat-bubble-avatar">{ASSISTANT_NAME.charAt(0)}</span>}
+                <div className="chat-bubble-col">
+                  <div className={`chat-bubble ${msg.role} ${msg.error ? 'error' : ''}`}>
+                    {msg.role === 'assistant' ? formatAssistant(msg.content) : <p>{msg.content}</p>}
+                    {msg.role === 'assistant' && msg.sources?.length > 0 && (
+                      <div className="chat-sources">
+                        {msg.sources.map((src) => (
+                          <span key={src.id} className="chat-source-chip"><FileText size={12} /> {src.name}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  {msg.role === 'assistant' && msg.attachment && (
+                    <AssistantAttachment attachment={msg.attachment} onOpenMap={onOpenMap} />
                   )}
                 </div>
               </div>
             ))}
             {sending && (
               <div className="chat-row assistant">
-                <span className="chat-bubble-avatar"><Sparkles size={15} /></span>
+                <span className="chat-bubble-avatar">{ASSISTANT_NAME.charAt(0)}</span>
                 <div className="chat-bubble assistant">
                   <span className="chat-typing"><i /><i /><i /></span>
                 </div>
@@ -1146,6 +1208,51 @@ function buildKnowledgeModel(context) {
     groups,
     nodeMap
   };
+}
+
+// Decide what Remi should "pull up" alongside an answer. Looks at what the
+// person asked and, when it maps to real extracted data, returns a panel that
+// gets shown inline — so it feels like a colleague opening the map or a file
+// on screen, never an empty placeholder.
+function buildAttachment(text, context) {
+  if (!context) return null;
+  let model;
+  try {
+    model = buildKnowledgeModel(context);
+  } catch {
+    return null;
+  }
+  if (!model) return null;
+
+  const q = ` ${String(text || '').toLowerCase()} `;
+  const has = (...words) => words.some((w) => q.includes(w));
+  const groupFor = (key) => {
+    const g = model.groups.find((grp) => grp.key === key);
+    if (!g || !g.count) return null;
+    return {
+      kind: 'list',
+      key: g.key,
+      label: g.label,
+      count: g.count,
+      items: g.items.map((i) => i.label)
+    };
+  };
+
+  if (has('overview', 'big picture', 'whole business', 'everything', 'structure',
+    'how the business', 'how does the business', 'how the company', 'how does the company',
+    'operating model', 'org chart', 'organi', ' map', 'snapshot', 'summary', 'summarise', 'summarize')) {
+    return {
+      kind: 'map',
+      business: model.business,
+      groups: model.groups.map((g) => ({ key: g.key, label: g.label, count: g.count }))
+    };
+  }
+  if (has('risk', 'problem', 'bottleneck', 'issue', 'gap', 'weak', 'threat', 'vulnerab', 'fragile')) return groupFor('risk');
+  if (has('rule', 'policy', 'policies', 'approval', 'compliance', 'spend', 'govern', 'sign-off', 'sign off')) return groupFor('rule');
+  if (has('workflow', 'process', 'procedure', ' steps', 'operation', 'pipeline', 'handoff', 'hand-off', 'day to day', 'day-to-day')) return groupFor('workflow');
+  if (has('role', ' who ', 'owner', 'owns', 'responsib', 'people', 'staff', 'position', 'team member', 'reports to', 'headcount')) return groupFor('role');
+  if (has('department', ' team', 'division', 'function', ' unit')) return groupFor('department');
+  return null;
 }
 
 function Validation({ validation, onReview }) {
