@@ -5,6 +5,7 @@ import {
   Brain,
   Building2,
   Check,
+  ChevronRight,
   ClipboardList,
   Database,
   FileText,
@@ -870,56 +871,60 @@ function BrandGlyph({ icon: Icon, iconData, mark, color, image }) {
 
 function Documents({ docs, onUpload, onDelete, onIntake, onConnect }) {
   return (
-    <section className="view-grid">
-      <div className="panel span-2">
-        <PanelHeader icon={Database} title="Add a knowledge source" />
-        <p className="lead">Give Orgni something to learn from — upload your files, or connect a tool where your knowledge already lives.</p>
+    <section className="ios-page">
+      <header className="ios-page-head">
+        <h2>Sources</h2>
+        <p>Give Orgni something to learn from — upload your files, or connect a tool where your knowledge already lives.</p>
+      </header>
 
-        <div className="source-options">
-          <label className="dropzone">
-            <UploadCloud size={28} />
-            <strong>Upload files</strong>
-            <span>.txt, .md, .csv, .json, .pdf, .docx</span>
-            <input type="file" multiple onChange={(event) => onUpload(event.target.files)} />
-          </label>
+      <label className="ios-dropzone">
+        <span className="ios-dropzone-icon"><UploadCloud size={26} /></span>
+        <span className="ios-dropzone-text">
+          <strong>Upload files</strong>
+          <span>.txt, .md, .csv, .json, .pdf, .docx</span>
+        </span>
+        <input type="file" multiple onChange={(event) => onUpload(event.target.files)} />
+      </label>
 
-          <div className="source-connect">
-            <p className="source-connect-title">Or connect a source</p>
-            <div className="source-grid">
-              {connectSources.map((src) => (
-                <button type="button" className="source-card" key={src.name} onClick={() => onConnect(src.name)}>
-                  <BrandGlyph icon={src.glyphIcon} iconData={src.iconData} image={src.image} color={src.color} />
-                  <span className="source-text">
-                    <strong>{src.name}</strong>
-                    <span>{src.detail}</span>
-                  </span>
-                  <span className="source-soon">Soon</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+      <p className="ios-section-label">Connect a source</p>
+      <div className="ios-list-group">
+        {connectSources.map((src) => (
+          <button type="button" className="ios-cell" key={src.name} onClick={() => onConnect(src.name)}>
+            <BrandGlyph icon={src.glyphIcon} iconData={src.iconData} image={src.image} color={src.color} />
+            <span className="ios-cell-text">
+              <strong>{src.name}</strong>
+              <span>{src.detail}</span>
+            </span>
+            <span className="ios-cell-soon">Soon</span>
+            <ChevronRight size={18} className="ios-cell-chevron" aria-hidden="true" />
+          </button>
+        ))}
       </div>
 
-      <div className="panel span-2">
-        <PanelHeader icon={FileText} title={`Your sources (${docs.length})`} />
-        <div className="doc-list">
-          {docs.length ? docs.map((doc) => (
-            <div className="doc-row" key={doc.id}>
-              <FileText size={18} />
-              <div>
+      <p className="ios-section-label">Your sources{docs.length ? ` · ${docs.length}` : ''}</p>
+      {docs.length ? (
+        <div className="ios-list-group">
+          {docs.map((doc) => (
+            <div className="ios-cell ios-cell-doc" key={doc.id}>
+              <span className="ios-doc-icon"><FileText size={18} /></span>
+              <span className="ios-cell-text">
                 <strong>{doc.name}</strong>
                 <span>{doc.fileType} · {Math.round((doc.fileSize || 0) / 1024)} KB · {doc.wordCount || 0} words</span>
                 {doc.parseError && <em>{doc.parseError}</em>}
-              </div>
+              </span>
               <span className={`pill ${doc.status}`}>{doc.status}</span>
               <button className="icon-btn danger" title="Remove source" onClick={() => onDelete(doc.id)}><Trash2 size={16} /></button>
             </div>
-          )) : <EmptyInline message="No sources added yet — upload a file or connect a tool above." />}
+          ))}
         </div>
-        <div className="inline-actions">
-          <button className="primary" onClick={onIntake} disabled={!docs.length}><Sparkles size={16} /> Build map</button>
+      ) : (
+        <div className="ios-list-group ios-empty">
+          <EmptyInline message="No sources added yet — upload a file or connect a tool above." />
         </div>
+      )}
+
+      <div className="ios-actions">
+        <button className="primary" onClick={onIntake} disabled={!docs.length}><Sparkles size={16} /> Build map</button>
       </div>
     </section>
   );

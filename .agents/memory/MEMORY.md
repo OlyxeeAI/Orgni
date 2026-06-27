@@ -1,3 +1,4 @@
 - [CJS engine in ESM api-server](cjs-engine-in-esm-apiserver.md) — embed CommonJS sub-app under the type:module esbuild api-server via a nested package.json + externalized deps + storage bootstrap.
 - [Cross-artifact trailing slash](cross-artifact-trailing-slash.md) — links to another artifact must include the trailing slash of its previewPath or they 404.
 - [Orgni AI service & assistant](orgni-ai-service.md) — reuse api-server's own ai.service.js (not the heavy template); point getConfig at the Replit Anthropic integration env vars; assistant grounding/source-chip pattern.
+- [orgni-app CSS namespace](orgni-app-css-namespace.md) — single global styles.css with generic reused class names (.ios-group etc.); grep before reusing a class, scope/rename new ones to avoid cross-surface bleed.
