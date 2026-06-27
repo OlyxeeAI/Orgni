@@ -210,7 +210,7 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="relative z-20 flex flex-col sm:flex-row items-center justify-center gap-4"
               >
-                <a href="/app" className="w-full sm:w-auto">
+                <a href="/app/" className="w-full sm:w-auto">
                   <Button size="lg" className="w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-base font-bold">Try it</Button>
                 </a>
                 <Button size="lg" variant="outline" onClick={open} className="w-full sm:w-auto rounded-sm h-14 px-8 border-white/30 text-white hover:bg-white hover:text-black bg-transparent text-base font-medium">Join the waitlist</Button>
@@ -647,7 +647,7 @@ export default function Home() {
                 </div>
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-8">Turn business knowledge into execution infrastructure.</h2>
                 <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8 md:mt-12 px-4">
-                  <a href="/app" className="w-full sm:w-auto">
+                  <a href="/app/" className="w-full sm:w-auto">
                     <Button size="lg" className="w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-base font-bold">Try it</Button>
                   </a>
                   <Button size="lg" variant="outline" onClick={open} className="w-full sm:w-auto rounded-sm h-14 px-8 border-white/30 text-white hover:bg-white hover:text-black bg-transparent text-base font-medium">Join the waitlist</Button>

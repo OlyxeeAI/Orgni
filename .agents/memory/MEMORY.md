@@ -1,1 +1,2 @@
 - [CJS engine in ESM api-server](cjs-engine-in-esm-apiserver.md) — embed CommonJS sub-app under the type:module esbuild api-server via a nested package.json + externalized deps + storage bootstrap.
+- [Cross-artifact trailing slash](cross-artifact-trailing-slash.md) — links to another artifact must include the trailing slash of its previewPath or they 404.
