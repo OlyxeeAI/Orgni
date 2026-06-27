@@ -1204,31 +1204,43 @@ function Profile({ profile, setProfile, onSave, currentOrg, onLogout }) {
   const displayName = (profile.name || currentOrg?.name || 'Your business').trim();
   const initial = displayName.charAt(0).toUpperCase() || 'O';
   return (
-    <div className="profile-view">
-      <section className="panel account-card">
-        <div className="account-identity">
-          <span className="account-avatar" aria-hidden="true">{initial}</span>
-          <div className="account-meta">
-            <strong>{displayName}</strong>
-            <span>{profile.businessType?.trim() || 'No business type set'}</span>
-          </div>
+    <section className="ios-page">
+      <header className="ios-page-head">
+        <h2>Profile</h2>
+        <p>Manage your business identity and the details Orgni uses to understand how you operate.</p>
+      </header>
+
+      <div className="profile-hero">
+        <span className="profile-avatar" aria-hidden="true">{initial}</span>
+        <div className="profile-hero-meta">
+          <strong>{displayName}</strong>
+          <span>{profile.businessType?.trim() || 'No business type set'}</span>
         </div>
-        <button type="button" className="danger-button" onClick={onLogout}>
+        <button type="button" className="profile-logout" onClick={onLogout}>
           <LogOut size={16} /> Log out
         </button>
-      </section>
+      </div>
 
-      <form className="panel form-panel" onSubmit={onSave}>
-        <PanelHeader icon={Building2} title="Business profile" />
-        <label>Company name<input value={profile.name} onChange={update('name')} /></label>
-        <label>Business type<input value={profile.businessType} onChange={update('businessType')} /></label>
-        <label>Departments<textarea value={profile.departmentsText} onChange={update('departmentsText')} /></label>
-        <label>Key workflows<textarea value={profile.workflowsText} onChange={update('workflowsText')} /></label>
-        <label>Current tools<textarea value={profile.toolsText} onChange={update('toolsText')} /></label>
-        <label>Main problems<textarea value={profile.problemsText} onChange={update('problemsText')} /></label>
-        <button className="primary"><Check size={16} /> Save profile</button>
+      <form onSubmit={onSave}>
+        <p className="ios-section-label">Business basics</p>
+        <div className="ios-list-group ios-form-group">
+          <label className="ios-field"><span>Company name</span><input value={profile.name} onChange={update('name')} placeholder="Your business" /></label>
+          <label className="ios-field"><span>Business type</span><input value={profile.businessType} onChange={update('businessType')} placeholder="Logistics, retail, finance…" /></label>
+        </div>
+
+        <p className="ios-section-label">Operating model</p>
+        <div className="ios-list-group ios-form-group">
+          <label className="ios-field"><span>Departments</span><textarea value={profile.departmentsText} onChange={update('departmentsText')} placeholder="One per line" /></label>
+          <label className="ios-field"><span>Key workflows</span><textarea value={profile.workflowsText} onChange={update('workflowsText')} placeholder="One per line" /></label>
+          <label className="ios-field"><span>Current tools</span><textarea value={profile.toolsText} onChange={update('toolsText')} placeholder="One per line" /></label>
+          <label className="ios-field"><span>Main problems</span><textarea value={profile.problemsText} onChange={update('problemsText')} placeholder="One per line" /></label>
+        </div>
+
+        <div className="ios-actions">
+          <button className="primary"><Check size={16} /> Save profile</button>
+        </div>
       </form>
-    </div>
+    </section>
   );
 }
 

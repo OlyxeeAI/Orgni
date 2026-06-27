@@ -1468,49 +1468,42 @@ pre {
   gap: 14px;
 }
 
-.profile-view {
-  display: grid;
-  gap: 16px;
-}
-
-.account-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.account-identity {
+.profile-hero {
   display: flex;
   align-items: center;
   gap: 14px;
-  min-width: 0;
+  margin-top: 22px;
+  padding: 16px 18px;
+  border-radius: var(--r-md);
+  background: var(--panel);
+  box-shadow: var(--shadow-sm);
 }
 
-.account-avatar {
+.profile-avatar {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   flex: none;
   border-radius: 50%;
   background: linear-gradient(180deg, #f47b34, var(--accent));
   color: white;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 22px;
   letter-spacing: -0.01em;
   box-shadow: 0 1px 1px rgba(255, 255, 255, 0.25) inset, 0 6px 16px rgba(242, 106, 27, 0.28);
 }
 
-.account-meta {
+.profile-hero-meta {
   display: grid;
   gap: 2px;
   min-width: 0;
+  flex: 1;
 }
 
-.account-meta strong {
-  font-size: 17px;
+.profile-hero-meta strong {
+  font-size: 18px;
+  font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ink);
   overflow: hidden;
@@ -1518,9 +1511,88 @@ pre {
   white-space: nowrap;
 }
 
-.account-meta span {
-  font-size: 13px;
+.profile-hero-meta span {
+  font-size: 14px;
   color: var(--muted);
+}
+
+.profile-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  padding: 9px 14px;
+  border-radius: var(--r-pill);
+  background: #fff1f1;
+  color: var(--danger);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease);
+}
+
+.profile-logout:hover {
+  background: #ffe3e3;
+}
+
+.ios-form-group .ios-field {
+  position: relative;
+  display: grid;
+  gap: 5px;
+  padding: 13px 16px;
+  font-weight: 400;
+}
+
+.ios-form-group .ios-field:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--line);
+}
+
+.ios-form-group .ios-field:focus-within {
+  background: var(--accent-soft);
+  border-radius: var(--r-sm);
+}
+
+.ios-form-group .ios-field:focus-within > span {
+  color: var(--accent);
+}
+
+.ios-form-group .ios-field > span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: -0.005em;
+}
+
+.ios-form-group .ios-field input,
+.ios-form-group .ios-field textarea {
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.ios-form-group .ios-field input:focus,
+.ios-form-group .ios-field textarea:focus {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.ios-form-group .ios-field textarea {
+  min-height: 76px;
+  font-weight: 400;
+  resize: vertical;
 }
 
 label {
