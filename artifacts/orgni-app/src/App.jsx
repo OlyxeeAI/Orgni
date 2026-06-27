@@ -525,7 +525,7 @@ export function App() {
         </button>
       </aside>
 
-      <main>
+      <main className={view === 'map' ? 'main--map' : ''}>
         {content}
       </main>
 
@@ -989,12 +989,17 @@ function KnowledgeMap({ context }) {
   const selected = model.nodeMap.get(selectedId) || model.nodeMap.get('business');
 
   return (
-    <section className="view-grid">
-      <div className="panel span-2 km-layout">
-        <div className="km-main">
-          <PanelHeader icon={Map} title="Knowledge map" />
-          <p className="network-hint">A living map of how {model.business.label} runs — its departments, roles, workflows, rules and risks, all extracted from your documents. Click any node to read the detail on the right.</p>
+    <section className="km-view">
+      <header className="km-view-head">
+        <span className="km-view-icon"><Map size={20} /></span>
+        <div className="km-view-heading">
+          <h2>Knowledge map</h2>
+          <p>A living map of how {model.business.label} runs — departments, roles, workflows, rules and risks, all extracted from your documents.</p>
+        </div>
+      </header>
 
+      <div className="km-body">
+        <div className="km-canvas">
           {!model.groups.length
             ? <p className="km-empty-note">No departments, roles, workflows, rules or risks have been extracted yet. Add more detailed source documents and rebuild the map to populate it.</p>
             : <ConceptMap model={model} selectedId={selectedId} onSelect={setSelectedId} />}
@@ -1087,11 +1092,12 @@ function ConceptMap({ model, selectedId, onSelect }) {
     e.currentTarget.setPointerCapture?.(e.pointerId);
   };
   const onPointerMove = (e) => {
-    if (!pan.current) return;
-    const dx = e.clientX - pan.current.sx;
-    const dy = e.clientY - pan.current.sy;
+    const p = pan.current;
+    if (!p) return;
+    const dx = e.clientX - p.sx;
+    const dy = e.clientY - p.sy;
     if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved.current = true;
-    setTf((v) => ({ ...v, x: pan.current.ox + dx, y: pan.current.oy + dy }));
+    setTf((v) => ({ ...v, x: p.ox + dx, y: p.oy + dy }));
   };
   const onPointerUp = (e) => {
     pan.current = null;
