@@ -69,6 +69,20 @@
       "knowledgeStatus": "ready",
       "createdAt": "2026-06-27T03:27:28.934Z",
       "updatedAt": "2026-06-27T03:27:29.307Z"
+    },
+    {
+      "id": "dea7e9dd-0daa-409d-8031-52133f4c9235",
+      "name": "Acme Co",
+      "businessType": "saas",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "empty",
+      "createdAt": "2026-06-27T23:54:27.405Z",
+      "updatedAt": "2026-06-27T23:54:27.405Z"
     }
   ],
   "documents": [
@@ -5231,6 +5245,14 @@
         "turns": 1
       },
       "createdAt": "2026-06-27T04:11:37.964Z"
+    },
+    {
+      "id": "da85521a-3a05-4066-a84a-55765bf2dc19",
+      "orgId": "dea7e9dd-0daa-409d-8031-52133f4c9235",
+      "type": "org_created",
+      "description": "Organization \"Acme Co\" created",
+      "meta": {},
+      "createdAt": "2026-06-27T23:54:27.408Z"
     }
   ]
 }
