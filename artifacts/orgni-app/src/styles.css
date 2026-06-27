@@ -1162,13 +1162,16 @@ button:disabled:active {
 .cmap-node {
   position: absolute;
   transform: translate(-50%, -50%);
-  cursor: pointer;
+  cursor: grab;
+  touch-action: none;
   font-family: inherit;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   user-select: none;
-  transition: transform var(--t-fast) var(--ease), box-shadow var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+  transition: box-shadow var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
 }
+
+.cmap-node:active { cursor: grabbing; }
 
 .cmap-node:hover { z-index: 5; }
 

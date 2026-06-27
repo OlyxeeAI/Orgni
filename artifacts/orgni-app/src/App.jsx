@@ -19,6 +19,7 @@ import {
   Minus,
   Plus,
   Plug,
+  RotateCcw,
   Scale,
   ShieldCheck,
   Sparkles,
@@ -1040,10 +1041,34 @@ function ConceptMap({ model, selectedId, onSelect }) {
   const { width, height, center, hubs } = layout;
   const viewportRef = useRef(null);
   const [tf, setTf] = useState({ scale: 1, x: 0, y: 0 });
+  const [pos, setPos] = useState({});
   const pan = useRef(null);
   const moved = useRef(false);
+  const nodeDrag = useRef(null);
 
   const clamp = (s) => Math.min(CMAP_MAX_SCALE, Math.max(CMAP_MIN_SCALE, s));
+
+  useEffect(() => { setPos({}); }, [layout]);
+
+  const startNodeDrag = (e, id, bx, by) => {
+    e.stopPropagation();
+    nodeDrag.current = { id, sx: e.clientX, sy: e.clientY, ox: bx, oy: by, moved: false };
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  };
+  const moveNodeDrag = (e) => {
+    const d = nodeDrag.current;
+    if (!d) return;
+    if (Math.abs(e.clientX - d.sx) > 3 || Math.abs(e.clientY - d.sy) > 3) d.moved = true;
+    const dx = (e.clientX - d.sx) / tf.scale;
+    const dy = (e.clientY - d.sy) / tf.scale;
+    setPos((p) => ({ ...p, [d.id]: { x: d.ox + dx, y: d.oy + dy } }));
+  };
+  const endNodeDrag = (e, id) => {
+    const d = nodeDrag.current;
+    nodeDrag.current = null;
+    e.currentTarget.releasePointerCapture?.(e.pointerId);
+    if (d && !d.moved) onSelect(id);
+  };
 
   const recenter = useCallback(() => {
     const el = viewportRef.current;
@@ -1107,6 +1132,13 @@ function ConceptMap({ model, selectedId, onSelect }) {
     if (!moved.current) onSelect(null);
   };
 
+  const cpos = pos.business || center;
+  const hubView = hubs.map((hub) => ({
+    ...hub,
+    ...(pos[`hub-${hub.key}`] || { x: hub.x, y: hub.y }),
+    leaves: hub.leaves.map((leaf) => ({ ...leaf, ...(pos[leaf.id] || { x: leaf.x, y: leaf.y }) }))
+  }));
+
   return (
     <div
       className={`cmap-viewport${pan.current ? ' panning' : ''}`}
@@ -1122,13 +1154,13 @@ function ConceptMap({ model, selectedId, onSelect }) {
         style={{ width, height, transform: `translate(${tf.x}px, ${tf.y}px) scale(${tf.scale})` }}
       >
         <svg className="cmap-edges" width={width} height={height} aria-hidden="true">
-          {hubs.map((hub) => {
+          {hubView.map((hub) => {
             const hubActive = selectedId === `hub-${hub.key}`;
             return (
               <g key={`edges-${hub.key}`} className={`cmap-edge-group ${hub.key}`}>
                 <path
                   className={`cmap-edge hub${hubActive ? ' active' : ''}`}
-                  d={edgePath(center, hub, 0.05, 18)}
+                  d={edgePath(cpos, hub, 0.05, 18)}
                   fill="none"
                 />
                 {hub.leaves.map((leaf) => (
@@ -1144,11 +1176,11 @@ function ConceptMap({ model, selectedId, onSelect }) {
           })}
         </svg>
 
-        {hubs.map((hub) => (
+        {hubView.map((hub) => (
           <span
             key={`lbl-${hub.key}`}
             className="cmap-elabel"
-            style={{ left: (center.x + hub.x) / 2, top: (center.y + hub.y) / 2 }}
+            style={{ left: (cpos.x + hub.x) / 2, top: (cpos.y + hub.y) / 2 }}
           >
             {hub.verb}
           </span>
@@ -1157,14 +1189,17 @@ function ConceptMap({ model, selectedId, onSelect }) {
         <button
           type="button"
           className={`cmap-node center${selectedId === 'business' ? ' active' : ''}`}
-          style={{ left: center.x, top: center.y }}
-          onClick={() => onSelect('business')}
+          style={{ left: cpos.x, top: cpos.y }}
+          onPointerDown={(e) => startNodeDrag(e, 'business', cpos.x, cpos.y)}
+          onPointerMove={moveNodeDrag}
+          onPointerUp={(e) => endNodeDrag(e, 'business')}
+          onClick={(e) => e.stopPropagation()}
         >
           <span className="cmap-center-kicker">Business</span>
           <span className="cmap-center-name">{model.business.label}</span>
         </button>
 
-        {hubs.map((hub) => {
+        {hubView.map((hub) => {
           const meta = CATEGORY_META[hub.key] || { label: hub.label, icon: Layers3 };
           const Icon = meta.icon;
           const hubId = `hub-${hub.key}`;
@@ -1174,7 +1209,10 @@ function ConceptMap({ model, selectedId, onSelect }) {
                 type="button"
                 className={`cmap-node hub ${hub.key}${selectedId === hubId ? ' active' : ''}`}
                 style={{ left: hub.x, top: hub.y }}
-                onClick={() => onSelect(hubId)}
+                onPointerDown={(e) => startNodeDrag(e, hubId, hub.x, hub.y)}
+                onPointerMove={moveNodeDrag}
+                onPointerUp={(e) => endNodeDrag(e, hubId)}
+                onClick={(e) => e.stopPropagation()}
               >
                 <span className="cmap-hub-icon"><Icon size={14} /></span>
                 <span className="cmap-hub-label">{meta.label}</span>
@@ -1186,7 +1224,10 @@ function ConceptMap({ model, selectedId, onSelect }) {
                   key={leaf.id}
                   className={`cmap-node leaf ${hub.key}${selectedId === leaf.id ? ' active' : ''}`}
                   style={{ left: leaf.x, top: leaf.y }}
-                  onClick={() => onSelect(leaf.id)}
+                  onPointerDown={(e) => startNodeDrag(e, leaf.id, leaf.x, leaf.y)}
+                  onPointerMove={moveNodeDrag}
+                  onPointerUp={(e) => endNodeDrag(e, leaf.id)}
+                  onClick={(e) => e.stopPropagation()}
                   title={leaf.label}
                 >
                   {leaf.label}
@@ -1209,9 +1250,12 @@ function ConceptMap({ model, selectedId, onSelect }) {
         <button type="button" className="cmap-ctrl" onClick={fit} aria-label="Fit to view" title="Fit to view">
           <Maximize2 size={15} />
         </button>
+        <button type="button" className="cmap-ctrl" onClick={() => { setPos({}); recenter(); }} aria-label="Reset layout" title="Reset layout">
+          <RotateCcw size={15} />
+        </button>
       </div>
 
-      <span className="cmap-hint">Drag to pan · Scroll to zoom</span>
+      <span className="cmap-hint">Drag a node to move it · Drag canvas to pan · Scroll to zoom</span>
     </div>
   );
 }
