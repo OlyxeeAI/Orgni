@@ -1366,7 +1366,7 @@ function DetailFields({ type, data }) {
     return value == null ? '' : String(value);
   };
 
-  const fields = (fieldMap[type] || []).map((field) => {
+  const curated = (fieldMap[type] || []).map((field) => {
     const raw = data[field.key];
     if (field.list) {
       const items = (Array.isArray(raw) ? raw : raw ? [raw] : []).map((v) => text(v.step || v)).filter(Boolean);
@@ -1376,6 +1376,33 @@ function DetailFields({ type, data }) {
     return value ? { ...field, value } : null;
   }).filter(Boolean);
 
+  // Surface any remaining extracted fields so clicking a node shows the full
+  // detail, not just the curated subset above.
+  const shownKeys = new Set((fieldMap[type] || []).map((f) => f.key));
+  const skipKeys = new Set([
+    ...shownKeys, 'id', 'name', 'label', 'kind', 'type', 'hubLabel',
+    'rule_name', 'workflow_name', 'risk', 'role', 'department', 'title'
+  ]);
+  const humanize = (key) => key
+    .replace(/_/g, ' ')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/^\w/, (c) => c.toUpperCase());
+
+  const extra = Object.keys(data)
+    .filter((key) => !skipKeys.has(key) && data[key] != null && data[key] !== '')
+    .map((key) => {
+      const raw = data[key];
+      if (Array.isArray(raw)) {
+        const items = raw.map((v) => text(v)).filter(Boolean);
+        return items.length ? { key, label: humanize(key), items } : null;
+      }
+      const value = text(raw).trim();
+      return value ? { key, label: humanize(key), value } : null;
+    })
+    .filter(Boolean);
+
+  const fields = [...curated, ...extra];
+
   if (!fields.length) return <p className="detail-summary">No additional detail extracted.</p>;
 
   return (
@@ -1383,7 +1410,7 @@ function DetailFields({ type, data }) {
       {fields.map((field) => (
         <div className="detail-field" key={field.key}>
           <span className="detail-field-label">{field.label}</span>
-          {field.list
+          {field.items
             ? <ul className="detail-bullets">{field.items.map((item, i) => <li key={i}>{item}</li>)}</ul>
             : <p>{field.value}</p>}
         </div>
