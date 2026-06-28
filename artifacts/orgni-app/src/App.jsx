@@ -11,6 +11,9 @@ import {
   Database,
   Download,
   FileText,
+  FileSpreadsheet,
+  FileJson,
+  FileCode,
   Globe,
   Layers3,
   LayoutDashboard,
@@ -1345,7 +1348,42 @@ function BrandGlyph({ icon: Icon, iconData, mark, color, image }) {
   );
 }
 
+function formatBytes(bytes) {
+  const b = bytes || 0;
+  if (b < 1024) return `${b} B`;
+  if (b < 1024 * 1024) return `${Math.round(b / 1024)} KB`;
+  return `${(b / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function compactNumber(n) {
+  const v = n || 0;
+  if (v < 1000) return `${v}`;
+  if (v < 1000000) return `${(v / 1000).toFixed(v < 10000 ? 1 : 0)}k`;
+  return `${(v / 1000000).toFixed(1)}m`;
+}
+
+function docIcon(fileType) {
+  const t = String(fileType || '').toLowerCase();
+  if (t.includes('csv') || t.includes('xls') || t.includes('sheet')) return FileSpreadsheet;
+  if (t.includes('json')) return FileJson;
+  if (t.includes('md') || t.includes('html') || t.includes('xml')) return FileCode;
+  return FileText;
+}
+
 function Documents({ docs, onUpload, onDelete, onIntake, onConnect }) {
+  const [dragging, setDragging] = useState(false);
+
+  const indexed = docs.filter((d) => d.status === 'parsed').length;
+  const pending = docs.filter((d) => d.status === 'pending').length;
+  const failed = docs.filter((d) => d.status === 'failed').length;
+  const totalWords = docs.reduce((sum, d) => sum + (d.wordCount || 0), 0);
+
+  function handleDrop(event) {
+    event.preventDefault();
+    setDragging(false);
+    if (event.dataTransfer?.files?.length) onUpload(event.dataTransfer.files);
+  }
+
   return (
     <section className="ios-page">
       <header className="ios-page-head">
@@ -1353,14 +1391,75 @@ function Documents({ docs, onUpload, onDelete, onIntake, onConnect }) {
         <p>Give Orgni something to learn from — upload your files, or connect a tool where your knowledge already lives.</p>
       </header>
 
-      <label className="ios-dropzone">
+      {docs.length > 0 && (
+        <div className="src-stats">
+          <div className="src-stat">
+            <span className="src-stat-num">{docs.length}</span>
+            <span className="src-stat-label">Source{docs.length === 1 ? '' : 's'}</span>
+          </div>
+          <div className="src-stat">
+            <span className="src-stat-num">{indexed}</span>
+            <span className="src-stat-label">Indexed</span>
+          </div>
+          <div className="src-stat">
+            <span className="src-stat-num">{compactNumber(totalWords)}</span>
+            <span className="src-stat-label">Words</span>
+          </div>
+          {(pending > 0 || failed > 0) && (
+            <div className="src-stat">
+              <span className="src-stat-num">{pending + failed}</span>
+              <span className="src-stat-label">{failed > 0 ? 'Needs attention' : 'Processing'}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      <label
+        className={`ios-dropzone ${dragging ? 'is-dragging' : ''}`}
+        onDragOver={(event) => { event.preventDefault(); if (!dragging) setDragging(true); }}
+        onDragLeave={(event) => { event.preventDefault(); if (!event.currentTarget.contains(event.relatedTarget)) setDragging(false); }}
+        onDrop={handleDrop}
+      >
         <span className="ios-dropzone-icon"><UploadCloud size={26} /></span>
         <span className="ios-dropzone-text">
-          <strong>Upload files</strong>
-          <span>.txt, .md, .csv, .json, .pdf, .docx</span>
+          <strong>{dragging ? 'Drop your files to upload' : 'Upload files'}</strong>
+          <span>Drag &amp; drop or click to browse · .txt, .md, .csv, .json, .pdf, .docx</span>
         </span>
         <input type="file" multiple onChange={(event) => onUpload(event.target.files)} />
       </label>
+
+      <div className="ios-section-row">
+        <p className="ios-section-label">Your sources{docs.length ? ` · ${docs.length}` : ''}</p>
+        {docs.length > 0 && (
+          <button className="src-build" onClick={onIntake}><Sparkles size={15} /> Build map</button>
+        )}
+      </div>
+      {docs.length ? (
+        <div className="ios-list-group">
+          {docs.map((doc) => {
+            const Icon = docIcon(doc.fileType);
+            return (
+              <div className="ios-cell ios-cell-doc" key={doc.id}>
+                <span className={`ios-doc-icon ${doc.status === 'failed' ? 'is-failed' : ''}`}><Icon size={18} /></span>
+                <span className="ios-cell-text">
+                  <strong>{doc.name}</strong>
+                  <span>{(doc.fileType || 'file').toUpperCase()} · {formatBytes(doc.fileSize)} · {compactNumber(doc.wordCount)} words</span>
+                  {doc.parseError && <em>{doc.parseError}</em>}
+                </span>
+                <span className={`pill ${doc.status}`}>{doc.status}</span>
+                <button className="icon-btn danger" title="Remove source" onClick={() => onDelete(doc.id)}><Trash2 size={16} /></button>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <label className="src-empty">
+          <span className="src-empty-icon"><UploadCloud size={22} /></span>
+          <strong>No sources yet</strong>
+          <span>Upload your first file above and Orgni will start learning how your business runs.</span>
+          <input type="file" multiple onChange={(event) => onUpload(event.target.files)} />
+        </label>
+      )}
 
       <p className="ios-section-label">Connect a source</p>
       <div className="ios-list-group">
@@ -1375,32 +1474,6 @@ function Documents({ docs, onUpload, onDelete, onIntake, onConnect }) {
             <ChevronRight size={18} className="ios-cell-chevron" aria-hidden="true" />
           </button>
         ))}
-      </div>
-
-      <p className="ios-section-label">Your sources{docs.length ? ` · ${docs.length}` : ''}</p>
-      {docs.length ? (
-        <div className="ios-list-group">
-          {docs.map((doc) => (
-            <div className="ios-cell ios-cell-doc" key={doc.id}>
-              <span className="ios-doc-icon"><FileText size={18} /></span>
-              <span className="ios-cell-text">
-                <strong>{doc.name}</strong>
-                <span>{doc.fileType} · {Math.round((doc.fileSize || 0) / 1024)} KB · {doc.wordCount || 0} words</span>
-                {doc.parseError && <em>{doc.parseError}</em>}
-              </span>
-              <span className={`pill ${doc.status}`}>{doc.status}</span>
-              <button className="icon-btn danger" title="Remove source" onClick={() => onDelete(doc.id)}><Trash2 size={16} /></button>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="ios-list-group ios-empty">
-          <EmptyInline message="No sources added yet — upload a file or connect a tool above." />
-        </div>
-      )}
-
-      <div className="ios-actions">
-        <button className="primary" onClick={onIntake} disabled={!docs.length}><Sparkles size={16} /> Build map</button>
       </div>
     </section>
   );

@@ -1565,6 +1565,141 @@ button:disabled:active {
   transform: scale(0.995);
 }
 
+.ios-dropzone.is-dragging {
+  outline: 2px dashed var(--accent);
+  outline-offset: -4px;
+  background: var(--accent-soft);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.ios-dropzone.is-dragging .ios-dropzone-icon {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Source overview stats */
+.src-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.src-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px;
+  background: var(--panel);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.src-stat-num {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.src-stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* Section header row with inline action */
+.ios-section-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ios-section-row .ios-section-label {
+  margin-bottom: 8px;
+}
+
+.src-build {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  color: var(--accent-2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease);
+}
+
+.src-build:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.ios-doc-icon.is-failed {
+  background: #fff1f1;
+  color: var(--danger);
+}
+
+/* Inviting empty state that doubles as an upload target */
+.src-empty {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 34px 24px;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--r-md);
+  background: var(--panel);
+  cursor: pointer;
+  transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+
+.src-empty:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.src-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--soft);
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.src-empty strong {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.src-empty span:not(.src-empty-icon) {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 340px;
+  line-height: 1.5;
+}
+
+.src-empty input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
 .ios-dropzone-icon {
   display: grid;
   place-items: center;
