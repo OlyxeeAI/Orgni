@@ -5748,6 +5748,17 @@
         "turns": 1
       },
       "createdAt": "2026-06-28T01:14:21.390Z"
+    },
+    {
+      "id": "6a6e71b9-4054-4c96-8bb1-cb725c570354",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "type": "assistant_chat",
+      "description": "Chat: How does this business run day to day?",
+      "meta": {
+        "grounded": true,
+        "turns": 1
+      },
+      "createdAt": "2026-06-28T01:16:40.193Z"
     }
   ],
   "chunks": [],
