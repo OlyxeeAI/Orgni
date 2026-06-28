@@ -19,11 +19,13 @@ if (!isBuild && !rawPort) {
   );
 }
 
-const port = Number(rawPort) || 5173;
+const parsedPort = Number(rawPort);
 
-if (!isBuild && (Number.isNaN(port) || port <= 0)) {
+if (!isBuild && rawPort && (Number.isNaN(parsedPort) || parsedPort <= 0)) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
+
+const port = parsedPort > 0 ? parsedPort : 5173;
 
 const basePath = process.env.BASE_PATH;
 
