@@ -9,10 +9,12 @@ const router  = express.Router();
 const orgResolver = require('../middleware/orgResolver');
 const { validate, createOrgSchema, updateOrgSchema, askSchema, chatSchema, actionSchema } = require('../validators');
 
-const orgCtrl    = require('../controllers/organization.controller');
-const docCtrl    = require('../controllers/document.controller');
-const intelCtrl  = require('../controllers/intelligence.controller');
-const engineCtrl = require('../controllers/engine.controller');
+const orgCtrl       = require('../controllers/organization.controller');
+const docCtrl       = require('../controllers/document.controller');
+const intelCtrl     = require('../controllers/intelligence.controller');
+const engineCtrl    = require('../controllers/engine.controller');
+const workflowCtrl  = require('../controllers/workflow.controller');
+const exceptionCtrl = require('../controllers/exception.controller');
 
 // ── File upload ──────────────────────────────────────────────────────────────
 // We accept all files here and let the parser service reject unsupported types
@@ -61,9 +63,24 @@ router.post('/orgs/:orgId/engine/chat',              orgResolver, validate(chatS
 router.get ('/orgs/:orgId/engine/validation',                                   orgResolver, engineCtrl.getValidation);
 router.post('/orgs/:orgId/engine/validation/:validationId/confirm',             orgResolver, engineCtrl.confirmFinding);
 router.post('/orgs/:orgId/engine/validation/:validationId/reject',              orgResolver, engineCtrl.rejectFinding);
+router.patch('/orgs/:orgId/engine/validation/:validationId',                    orgResolver, engineCtrl.editFinding);
 router.get ('/orgs/:orgId/engine/insights',                                     orgResolver, engineCtrl.getInsights);
 
 // Actions
 router.post('/orgs/:orgId/engine/actions',           orgResolver, validate(actionSchema), engineCtrl.runAction);
+
+// ── Workflows (human-editable operating record) ──────────────────────────────
+router.get   ('/orgs/:orgId/workflows',               orgResolver, workflowCtrl.list);
+router.post  ('/orgs/:orgId/workflows',               orgResolver, workflowCtrl.create);
+router.get   ('/orgs/:orgId/workflows/:workflowId',   orgResolver, workflowCtrl.get);
+router.patch ('/orgs/:orgId/workflows/:workflowId',   orgResolver, workflowCtrl.update);
+router.delete('/orgs/:orgId/workflows/:workflowId',   orgResolver, workflowCtrl.remove);
+
+// ── Exceptions (things needing a human's attention) ──────────────────────────
+router.get   ('/orgs/:orgId/exceptions',                orgResolver, exceptionCtrl.list);
+router.post  ('/orgs/:orgId/exceptions/scan',           orgResolver, exceptionCtrl.scan);
+router.post  ('/orgs/:orgId/exceptions',                orgResolver, exceptionCtrl.create);
+router.patch ('/orgs/:orgId/exceptions/:exceptionId',   orgResolver, exceptionCtrl.update);
+router.delete('/orgs/:orgId/exceptions/:exceptionId',   orgResolver, exceptionCtrl.remove);
 
 module.exports = router;

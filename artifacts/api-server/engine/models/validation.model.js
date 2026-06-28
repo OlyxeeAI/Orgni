@@ -72,6 +72,25 @@ async function humanReject(id, reviewedBy, reason) {
   });
 }
 
+/**
+ * Human edits a finding's claim and/or supporting excerpt. Records who edited
+ * it and marks it verified — a human has taken ownership of the corrected text.
+ */
+async function humanEdit(id, patch = {}, reviewedBy) {
+  const next = {
+    reviewedBy,
+    reviewedAt: new Date().toISOString()
+  };
+  if (patch.claim !== undefined) next.claim = String(patch.claim).trim();
+  if (patch.sourceExcerpt !== undefined) next.sourceExcerpt = String(patch.sourceExcerpt).trim();
+  if (patch.status !== undefined && ['verified', 'uncertain', 'rejected', 'needs_review'].includes(patch.status)) {
+    next.status = patch.status;
+  } else {
+    next.status = 'verified';
+  }
+  return db.update(C, id, next);
+}
+
 async function getStats(orgId) {
   const all = await findByOrg(orgId);
   return {
@@ -86,4 +105,4 @@ async function getStats(orgId) {
   };
 }
 
-module.exports = { create, findByMap, findByOrg, findNeedsReview, humanConfirm, humanReject, getStats };
+module.exports = { create, findByMap, findByOrg, findNeedsReview, humanConfirm, humanReject, humanEdit, getStats };

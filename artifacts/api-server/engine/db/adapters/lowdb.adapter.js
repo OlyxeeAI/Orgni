@@ -40,6 +40,8 @@ class LowdbAdapter extends RepositoryInterface {
       knowledgeMaps: [],
       validations: [],
       insights: [],
+      workflows: [],
+      exceptions: [],
       conversations: [],
       actions: [],
       activity: []

@@ -97,6 +97,34 @@
       "knowledgeStatus": "ready",
       "createdAt": "2026-06-28T00:19:40.069Z",
       "updatedAt": "2026-06-28T00:20:43.175Z"
+    },
+    {
+      "id": "36710bb5-d1b1-4493-b0c5-0c6d4e6925f0",
+      "name": "SmokeTest Co",
+      "businessType": "services",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "empty",
+      "createdAt": "2026-06-28T00:41:17.236Z",
+      "updatedAt": "2026-06-28T00:41:17.236Z"
+    },
+    {
+      "id": "7910e718-5866-475f-a48a-7eaee124f639",
+      "name": "Grounding Co",
+      "businessType": "services",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "empty",
+      "createdAt": "2026-06-28T00:41:55.488Z",
+      "updatedAt": "2026-06-28T00:41:55.488Z"
     }
   ],
   "documents": [
@@ -5505,7 +5533,133 @@
       "description": "Deleted \"1782524593086-2026_08_25_Diesel_Electric_Services__Pty__Ltd-Generic.pdf\"",
       "meta": {},
       "createdAt": "2026-06-28T00:21:00.800Z"
+    },
+    {
+      "id": "10ee7f59-57c5-4c2f-bd9f-0b5534c10a7d",
+      "orgId": "36710bb5-d1b1-4493-b0c5-0c6d4e6925f0",
+      "type": "org_created",
+      "description": "Organization \"SmokeTest Co\" created",
+      "meta": {},
+      "createdAt": "2026-06-28T00:41:17.239Z"
+    },
+    {
+      "id": "36a1a766-4b69-4c85-bb38-9fb8fb79a224",
+      "orgId": "36710bb5-d1b1-4493-b0c5-0c6d4e6925f0",
+      "type": "workflow_created",
+      "description": "Workflow \"Invoice approval\" created",
+      "meta": {
+        "workflowId": "f528a9e2-2f4e-4627-94a0-9333ac8c6706",
+        "source": "manual"
+      },
+      "createdAt": "2026-06-28T00:41:17.517Z"
+    },
+    {
+      "id": "e22a2a62-38ee-42c2-a29b-9fef3392390e",
+      "orgId": "36710bb5-d1b1-4493-b0c5-0c6d4e6925f0",
+      "type": "workflow_updated",
+      "description": "Workflow \"Invoice approval\" updated",
+      "meta": {
+        "workflowId": "f528a9e2-2f4e-4627-94a0-9333ac8c6706",
+        "status": "approved"
+      },
+      "createdAt": "2026-06-28T00:41:17.892Z"
+    },
+    {
+      "id": "4bd5e2cd-4613-4213-9e2c-b2c418448da8",
+      "orgId": "36710bb5-d1b1-4493-b0c5-0c6d4e6925f0",
+      "type": "exception_opened",
+      "description": "Exception \"Missing vendor contract\" opened",
+      "meta": {
+        "exceptionId": "d52cc4a3-0169-4748-a465-42e185e72ded",
+        "type": "missing_document"
+      },
+      "createdAt": "2026-06-28T00:41:18.279Z"
+    },
+    {
+      "id": "33c770df-52fa-4797-a067-a0707f8625db",
+      "orgId": "7910e718-5866-475f-a48a-7eaee124f639",
+      "type": "org_created",
+      "description": "Organization \"Grounding Co\" created",
+      "meta": {},
+      "createdAt": "2026-06-28T00:41:55.491Z"
+    },
+    {
+      "id": "ab5fc390-22f8-470e-b7ab-a96e0485643e",
+      "orgId": "7910e718-5866-475f-a48a-7eaee124f639",
+      "type": "assistant_chat",
+      "description": "Chat: What is the capital of France?",
+      "meta": {
+        "grounded": false,
+        "turns": 1
+      },
+      "createdAt": "2026-06-28T00:41:55.613Z"
+    },
+    {
+      "id": "bebeb749-3085-4750-88b5-e181e831c7c6",
+      "orgId": "7910e718-5866-475f-a48a-7eaee124f639",
+      "type": "assistant_chat",
+      "description": "Chat: What is the capital of France?",
+      "meta": {
+        "grounded": false,
+        "turns": 1
+      },
+      "createdAt": "2026-06-28T00:41:55.661Z"
     }
   ],
-  "chunks": []
+  "chunks": [],
+  "workflows": [
+    {
+      "id": "f528a9e2-2f4e-4627-94a0-9333ac8c6706",
+      "orgId": "36710bb5-d1b1-4493-b0c5-0c6d4e6925f0",
+      "name": "Invoice approval",
+      "description": "AP flow",
+      "steps": [
+        "receive",
+        "approve",
+        "pay"
+      ],
+      "status": "approved",
+      "source": "manual",
+      "sourceDocumentName": null,
+      "trigger": null,
+      "owner": null,
+      "confidence": null,
+      "createdAt": "2026-06-28T00:41:17.516Z",
+      "updatedAt": "2026-06-28T00:41:17.890Z"
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "d52cc4a3-0169-4748-a465-42e185e72ded",
+      "orgId": "36710bb5-d1b1-4493-b0c5-0c6d4e6925f0",
+      "title": "Missing vendor contract",
+      "type": "missing_document",
+      "severity": "high",
+      "status": "resolved",
+      "relatedType": null,
+      "relatedId": null,
+      "detail": "",
+      "dedupeKey": null,
+      "source": "manual",
+      "createdAt": "2026-06-28T00:41:18.278Z",
+      "updatedAt": "2026-06-28T00:41:18.477Z",
+      "resolvedAt": "2026-06-28T00:41:18.477Z"
+    },
+    {
+      "id": "45638a3f-2b9e-4049-a117-1785e5022829",
+      "orgId": "7910e718-5866-475f-a48a-7eaee124f639",
+      "title": "Assistant could not answer from sources",
+      "type": "unsupported_answer",
+      "severity": "low",
+      "status": "open",
+      "relatedType": "assistant",
+      "relatedId": null,
+      "detail": "Lucy could not confirm an answer to: \"What is the capital of France?\". Add a source document that covers this.",
+      "dedupeKey": "unsupported_answer:what is the capital of france?",
+      "source": "auto",
+      "createdAt": "2026-06-28T00:41:55.616Z",
+      "updatedAt": "2026-06-28T00:41:55.616Z",
+      "resolvedAt": null
+    }
+  ]
 }

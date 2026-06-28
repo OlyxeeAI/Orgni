@@ -94,6 +94,17 @@ const OrgniEngine = {
   getNeedsReview: (orgId) => validationModel.findNeedsReview(orgId),
 
   /**
+   * Get every validated finding for an org (all statuses) for the review queue.
+   */
+  getValidations: (orgId) => validationModel.findByOrg(orgId),
+
+  /**
+   * Human edits a finding's claim / excerpt.
+   */
+  editFinding: (validationId, patch, reviewedBy) =>
+    validationModel.humanEdit(validationId, patch, reviewedBy),
+
+  /**
    * Human confirms a finding is correct.
    */
   confirmFinding: (validationId, reviewedBy) =>

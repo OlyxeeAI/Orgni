@@ -9,16 +9,20 @@ import {
   ChevronRight,
   ClipboardList,
   Database,
+  Download,
   FileText,
   Globe,
   Layers3,
+  LayoutDashboard,
   Loader2,
   LogOut,
   Map,
   Maximize2,
   Minus,
+  Pencil,
   Plus,
   Plug,
+  RefreshCw,
   RotateCcw,
   Scale,
   ShieldCheck,
@@ -54,8 +58,12 @@ import logoJira from './assets/logos/jira.svg';
 import logoTrello from './assets/logos/trello.svg';
 
 const navItems = [
+  { id: 'home', label: 'Home', icon: LayoutDashboard },
   { id: 'documents', label: 'Sources', icon: Database },
   { id: 'map', label: 'Knowledge', icon: Map },
+  { id: 'review', label: 'Review', icon: ShieldCheck },
+  { id: 'workflows', label: 'Workflows', icon: Workflow },
+  { id: 'exceptions', label: 'Exceptions', icon: AlertTriangle },
   { id: 'assistant', label: 'Assistant', icon: Sparkles },
   { id: 'plugins', label: 'Plugins', icon: Plug }
 ];
@@ -240,7 +248,7 @@ function saveChat(orgId, messages) {
 }
 
 export function App() {
-  const [view, setView] = useState('documents');
+  const [view, setView] = useState('home');
   const [orgs, setOrgs] = useState([]);
   const [orgId, setOrgId] = useState('');
   const [docs, setDocs] = useState([]);
@@ -249,6 +257,8 @@ export function App() {
   const [workflowContext, setWorkflowContext] = useState(null);
   const [financeContext, setFinanceContext] = useState(null);
   const [validation, setValidation] = useState(null);
+  const [workflows, setWorkflows] = useState({ workflows: [], detected: [] });
+  const [exceptions, setExceptions] = useState({ exceptions: [], stats: {} });
   const [history, setHistory] = useState([]);
   const [notice, setNotice] = useState(null);
   const [busy, setBusy] = useState('');
@@ -314,11 +324,13 @@ export function App() {
   async function refreshOrgData(nextOrgId = orgId) {
     if (!nextOrgId) return;
     try {
-      const [dash, docData, valData, histData] = await Promise.all([
+      const [dash, docData, valData, histData, wfData, exData] = await Promise.all([
         api(`/api/orgs/${nextOrgId}/dashboard`),
         api(`/api/orgs/${nextOrgId}/documents`),
         api(`/api/orgs/${nextOrgId}/engine/validation`).catch(() => null),
-        api(`/api/orgs/${nextOrgId}/engine/history`).catch(() => ({ versions: [] }))
+        api(`/api/orgs/${nextOrgId}/engine/history`).catch(() => ({ versions: [] })),
+        api(`/api/orgs/${nextOrgId}/workflows`).catch(() => ({ workflows: [], detected: [] })),
+        api(`/api/orgs/${nextOrgId}/exceptions`).catch(() => ({ exceptions: [], stats: {} }))
       ]);
       const hasKnowledgeMap = dash.knowledge?.status === 'ready' || Boolean(dash.summary);
       const ctxData = hasKnowledgeMap
@@ -328,6 +340,8 @@ export function App() {
       setDocs(docData.documents || []);
       setContext(ctxData.context || null);
       setValidation(valData);
+      setWorkflows(wfData || { workflows: [], detected: [] });
+      setExceptions(exData || { exceptions: [], stats: {} });
       setHistory(histData.versions || []);
       if (ctxData.context) {
         const [workflow, finance] = await Promise.all([
@@ -493,7 +507,23 @@ export function App() {
     }
   }
 
-  async function reviewFinding(id, mode) {
+  async function reviewFinding(id, mode, patch) {
+    if (mode === 'edit') {
+      setBusy('Saving finding');
+      try {
+        await api(`/api/orgs/${orgId}/engine/validation/${id}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ reviewedBy: 'Orgni UI', ...patch })
+        });
+        await refreshOrgData();
+        toast('Finding updated', 'success');
+      } catch (error) {
+        toast(error.message, 'danger');
+      } finally {
+        setBusy('');
+      }
+      return;
+    }
     setBusy(mode === 'confirm' ? 'Confirming finding' : 'Rejecting finding');
     try {
       await api(`/api/orgs/${orgId}/engine/validation/${id}/${mode}`, {
@@ -509,12 +539,85 @@ export function App() {
     }
   }
 
+  async function saveWorkflow(payload, id) {
+    setBusy(id ? 'Saving workflow' : 'Creating workflow');
+    try {
+      if (id) {
+        await api(`/api/orgs/${orgId}/workflows/${id}`, { method: 'PATCH', body: JSON.stringify(payload) });
+      } else {
+        await api(`/api/orgs/${orgId}/workflows`, { method: 'POST', body: JSON.stringify(payload) });
+      }
+      await refreshOrgData();
+      toast(id ? 'Workflow saved' : 'Workflow created', 'success');
+    } catch (error) {
+      toast(error.message, 'danger');
+    } finally {
+      setBusy('');
+    }
+  }
+
+  async function deleteWorkflow(id) {
+    setBusy('Deleting workflow');
+    try {
+      await api(`/api/orgs/${orgId}/workflows/${id}`, { method: 'DELETE' });
+      await refreshOrgData();
+      toast('Workflow deleted', 'success');
+    } catch (error) {
+      toast(error.message, 'danger');
+    } finally {
+      setBusy('');
+    }
+  }
+
+  async function scanExceptions() {
+    setBusy('Scanning for exceptions');
+    try {
+      const result = await api(`/api/orgs/${orgId}/exceptions/scan`, { method: 'POST' });
+      await refreshOrgData();
+      toast(result.created ? `${result.created} new exception(s) found` : 'No new exceptions found', 'success');
+    } catch (error) {
+      toast(error.message, 'danger');
+    } finally {
+      setBusy('');
+    }
+  }
+
+  async function createException(payload) {
+    setBusy('Adding exception');
+    try {
+      await api(`/api/orgs/${orgId}/exceptions`, { method: 'POST', body: JSON.stringify(payload) });
+      await refreshOrgData();
+      toast('Exception added', 'success');
+    } catch (error) {
+      toast(error.message, 'danger');
+    } finally {
+      setBusy('');
+    }
+  }
+
+  async function updateException(id, payload) {
+    setBusy('Updating exception');
+    try {
+      await api(`/api/orgs/${orgId}/exceptions/${id}`, { method: 'PATCH', body: JSON.stringify(payload) });
+      await refreshOrgData();
+      toast('Exception updated', 'success');
+    } catch (error) {
+      toast(error.message, 'danger');
+    } finally {
+      setBusy('');
+    }
+  }
+
   const content = !currentOrg ? (
     <EmptyState title="Create your business" body="Orgni needs one business profile before documents can be mapped." action={<button className="primary" onClick={() => setShowCreate(true)}><Plus size={16} /> New business</button>} />
   ) : (
     <>
+      {view === 'home' && <Home dashboard={dashboard} onNavigate={setView} onIntake={runIntake} hasDocs={docs.length > 0} />}
       {view === 'documents' && <Documents docs={docs} onUpload={uploadFiles} onDelete={deleteDocument} onIntake={runIntake} onConnect={(name) => toast(`${name} connections are coming soon — upload files for now.`, 'info')} />}
       {view === 'map' && <KnowledgeMap context={context} />}
+      {view === 'review' && <Validation validation={validation} onReview={reviewFinding} />}
+      {view === 'workflows' && <Workflows data={workflows} onSave={saveWorkflow} onDelete={deleteWorkflow} />}
+      {view === 'exceptions' && <Exceptions data={exceptions} onScan={scanExceptions} onCreate={createException} onUpdate={updateException} />}
       {view === 'assistant' && <Assistant org={currentOrg} context={context} messages={chatMessages} sending={chatSending} onSend={sendChat} onReset={() => setChatMessages([])} onSource={() => setView('documents')} onOpenMap={() => setView('map')} />}
       {view === 'validation' && <Validation validation={validation} onReview={reviewFinding} />}
       {view === 'actions' && <Actions actionContext={actionContext} setActionContext={setActionContext} result={actionResult} onRun={runAction} />}

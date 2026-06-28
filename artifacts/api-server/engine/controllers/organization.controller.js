@@ -1,7 +1,10 @@
-const orgModel      = require('../models/organization.model');
-const activityModel = require('../models/activity.model');
-const docModel      = require('../models/document.model');
-const mapModel      = require('../models/knowledgeMap.model');
+const orgModel       = require('../models/organization.model');
+const activityModel  = require('../models/activity.model');
+const docModel       = require('../models/document.model');
+const mapModel       = require('../models/knowledgeMap.model');
+const validationModel = require('../models/validation.model');
+const workflowModel  = require('../models/workflow.model');
+const exceptionModel = require('../models/exception.model');
 const { asyncHandler } = require('../middleware/errorHandler');
 
 const create = asyncHandler(async (req, res) => {
@@ -41,10 +44,13 @@ const remove = asyncHandler(async (req, res) => {
 
 const dashboard = asyncHandler(async (req, res) => {
   const orgId = req.org.id;
-  const [docs, map, activity] = await Promise.all([
+  const [docs, map, activity, vStats, savedWorkflows, exStats] = await Promise.all([
     docModel.findByOrg(orgId),
     mapModel.getActive(orgId),
-    activityModel.findByOrg(orgId, 10)
+    activityModel.findByOrg(orgId, 10),
+    validationModel.getStats(orgId),
+    workflowModel.findByOrg(orgId),
+    exceptionModel.getStats(orgId)
   ]);
   res.json({
     organization: req.org,
@@ -53,6 +59,19 @@ const dashboard = asyncHandler(async (req, res) => {
       documentCount: docs.length,
       parsedDocuments: docs.filter(d => d.status === 'parsed').length,
       pendingDocuments: docs.filter(d => d.status === 'pending').length
+    },
+    counts: {
+      documents: docs.length,
+      failedDocuments: docs.filter(d => d.status === 'failed').length,
+      findingsTotal: vStats.total || 0,
+      findingsVerified: vStats.verified || 0,
+      findingsNeedingReview: vStats.needsReview || 0,
+      confidence: typeof vStats.averageConfidence === 'number' ? vStats.averageConfidence : null,
+      workflowsSaved: savedWorkflows.length,
+      workflowsApproved: savedWorkflows.filter(w => w.status === 'approved').length,
+      workflowsDetected: (map?.workflows || []).length,
+      exceptionsOpen: exStats.open || 0,
+      exceptionsTotal: exStats.total || 0
     },
     summary: map?.businessSummary || null,
     workflows: map?.workflows || [],
