@@ -3338,3 +3338,7 @@ main {
   color: var(--accent-2);
 }
 .lucy-mode:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Operating Model tabs */
+.model-tabs { margin-bottom: 4px; }
+.model-tab-actions { display: flex; justify-content: flex-end; margin-bottom: 12px; }

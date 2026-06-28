@@ -60,12 +60,8 @@ import logoTrello from './assets/logos/trello.svg';
 const navItems = [
   { id: 'home', label: 'Home', icon: LayoutDashboard },
   { id: 'documents', label: 'Sources', icon: Database },
-  { id: 'map', label: 'Knowledge', icon: Map },
-  { id: 'review', label: 'Review', icon: ShieldCheck },
-  { id: 'workflows', label: 'Workflows', icon: Workflow },
-  { id: 'exceptions', label: 'Exceptions', icon: AlertTriangle },
-  { id: 'assistant', label: 'Assistant', icon: Sparkles },
-  { id: 'plugins', label: 'Plugins', icon: Plug }
+  { id: 'model', label: 'Operating Model', icon: Layers3 },
+  { id: 'assistant', label: 'Lucy', icon: Sparkles }
 ];
 
 const ASSISTANT_NAME = 'Lucy';
@@ -256,8 +252,11 @@ function saveChat(orgId, messages) {
   }
 }
 
+const MODEL_LEGACY = { review: 'findings', validation: 'findings', workflows: 'workflows', exceptions: 'issues' };
+
 export function App() {
   const [view, setView] = useState('home');
+  const [modelTab, setModelTab] = useState('findings');
   const [orgs, setOrgs] = useState([]);
   const [orgId, setOrgId] = useState('');
   const [docs, setDocs] = useState([]);
@@ -443,6 +442,14 @@ export function App() {
     }
   }
 
+  // Navigate, mapping legacy view ids into the merged Operating Model tabs.
+  function goTo(target) {
+    const tab = MODEL_LEGACY[target];
+    if (tab) { setModelTab(tab); setView('model'); }
+    else if (target === 'findings' || target === 'workflows' || target === 'issues') { setModelTab(target); setView('model'); }
+    else setView(target);
+  }
+
   // Turn a Lucy suggested action into a real Orgni object using existing handlers.
   async function runAssistantAction(action, msg) {
     if (action.type === 'create_workflow' && msg.workflow) {
@@ -452,7 +459,7 @@ export function App() {
         status: 'review_needed',
         source: 'assistant'
       });
-      setView('workflows');
+      goTo('workflows');
     } else if (action.type === 'create_exception') {
       const hasMissing = msg.missing && msg.missing.length;
       await createException({
@@ -464,7 +471,7 @@ export function App() {
           ? `Missing or unclear from sources: ${msg.missing.join('; ')}`
           : `Lucy could not confirm an answer to: "${msg.question || ''}". Add a source that covers this.`
       });
-      setView('exceptions');
+      goTo('issues');
     } else if (action.type === 'create_risk_exception') {
       await createException({
         title: 'Risk flagged by Lucy',
@@ -473,9 +480,9 @@ export function App() {
         relatedType: 'assistant',
         detail: (msg.risks || []).join('; ') || 'Lucy flagged a control weakness for review.'
       });
-      setView('exceptions');
+      goTo('issues');
     } else if (action.type === 'review_findings') {
-      setView('review');
+      goTo('findings');
     } else if (action.type === 'find_missing') {
       sendChat(msg.question || 'What information is missing or unclear in our sources?', 'find_missing');
     }
@@ -625,11 +632,11 @@ export function App() {
   }
 
   async function scanExceptions() {
-    setBusy('Scanning for exceptions');
+    setBusy('Scanning for issues');
     try {
       const result = await api(`/api/orgs/${orgId}/exceptions/scan`, { method: 'POST' });
       await refreshOrgData();
-      toast(result.created ? `${result.created} new exception(s) found` : 'No new exceptions found', 'success');
+      toast(result.created ? `${result.created} new issue(s) found` : 'No new issues found', 'success');
     } catch (error) {
       toast(error.message, 'danger');
     } finally {
@@ -638,11 +645,11 @@ export function App() {
   }
 
   async function createException(payload) {
-    setBusy('Adding exception');
+    setBusy('Adding issue');
     try {
       await api(`/api/orgs/${orgId}/exceptions`, { method: 'POST', body: JSON.stringify(payload) });
       await refreshOrgData();
-      toast('Exception added', 'success');
+      toast('Issue added', 'success');
     } catch (error) {
       toast(error.message, 'danger');
     } finally {
@@ -651,11 +658,11 @@ export function App() {
   }
 
   async function updateException(id, payload) {
-    setBusy('Updating exception');
+    setBusy('Updating issue');
     try {
       await api(`/api/orgs/${orgId}/exceptions/${id}`, { method: 'PATCH', body: JSON.stringify(payload) });
       await refreshOrgData();
-      toast('Exception updated', 'success');
+      toast('Issue updated', 'success');
     } catch (error) {
       toast(error.message, 'danger');
     } finally {
@@ -667,14 +674,26 @@ export function App() {
     <EmptyState title="Create your business" body="Orgni needs one business profile before documents can be mapped." action={<button className="primary" onClick={() => setShowCreate(true)}><Plus size={16} /> New business</button>} />
   ) : (
     <>
-      {view === 'home' && <Home dashboard={dashboard} onNavigate={setView} onIntake={runIntake} hasDocs={docs.length > 0} />}
+      {view === 'home' && <Home dashboard={dashboard} onNavigate={goTo} onIntake={runIntake} hasDocs={docs.length > 0} />}
       {view === 'documents' && <Documents docs={docs} onUpload={uploadFiles} onDelete={deleteDocument} onIntake={runIntake} onConnect={(name) => toast(`${name} connections are coming soon — upload files for now.`, 'info')} />}
       {view === 'map' && <KnowledgeMap context={context} />}
-      {view === 'review' && <Validation validation={validation} onReview={reviewFinding} />}
-      {view === 'workflows' && <Workflows data={workflows} onSave={saveWorkflow} onDelete={deleteWorkflow} />}
-      {view === 'exceptions' && <Exceptions data={exceptions} onScan={scanExceptions} onCreate={createException} onUpdate={updateException} />}
+      {view === 'model' && (
+        <OperatingModel
+          tab={modelTab}
+          onTab={setModelTab}
+          validation={validation}
+          onReview={reviewFinding}
+          workflows={workflows}
+          onSaveWorkflow={saveWorkflow}
+          onDeleteWorkflow={deleteWorkflow}
+          exceptions={exceptions}
+          onScanExceptions={scanExceptions}
+          onCreateException={createException}
+          onUpdateException={updateException}
+          onOpenMap={() => setView('map')}
+        />
+      )}
       {view === 'assistant' && <Assistant org={currentOrg} context={context} messages={chatMessages} sending={chatSending} onSend={sendChat} onReset={() => setChatMessages([])} onSource={() => setView('documents')} onOpenMap={() => setView('map')} onAction={runAssistantAction} dashboard={dashboard} validation={validation} exceptions={exceptions} docCount={docs.length} />}
-      {view === 'validation' && <Validation validation={validation} onReview={reviewFinding} />}
       {view === 'actions' && <Actions actionContext={actionContext} setActionContext={setActionContext} result={actionResult} onRun={runAction} />}
       {view === 'plugins' && <PluginsCatalog onOpen={setView} />}
       {view === 'workflowPlugin' && <WorkflowPlugin context={workflowContext} onSource={() => setView('documents')} />}
@@ -860,6 +879,14 @@ const ACTION_ICON = {
   find_missing: Brain
 };
 
+const ACTION_LABEL = {
+  create_workflow: 'Create workflow',
+  create_exception: 'Mark as issue',
+  create_risk_exception: 'Mark as issue',
+  review_findings: 'Review finding',
+  find_missing: 'Find missing info'
+};
+
 function confidenceLabel(c) {
   if (c >= 0.8) return 'high';
   if (c >= 0.55) return 'medium';
@@ -936,7 +963,7 @@ function LucyAnalysis({ msg, onAction, onOpenMap }) {
             const Icon = ACTION_ICON[a.type] || ArrowRight;
             return (
               <button key={a.type} className="lucy-action" onClick={() => onAction(a, msg)}>
-                <Icon size={14} /> {a.label}
+                <Icon size={14} /> {ACTION_LABEL[a.type] || a.label}
               </button>
             );
           })}
@@ -1039,7 +1066,7 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
             <span>{typeof avgConfidence === 'number' ? `${Math.round(avgConfidence * 100)}%` : '—'}</span> knowledge confidence
           </div>
           <div className="lucy-stat"><span>{reviewNeeded}</span> review needed</div>
-          <div className="lucy-stat"><span>{openExceptions}</span> open exceptions</div>
+          <div className="lucy-stat"><span>{openExceptions}</span> open issues</div>
         </div>
       )}
 
@@ -2079,16 +2106,62 @@ function StatusBadge({ status }) {
   return <span className={`badge ${it.cls}`}>{it.label}</span>;
 }
 
+const MODEL_TABS = [
+  { id: 'findings', label: 'Findings' },
+  { id: 'workflows', label: 'Workflows' },
+  { id: 'issues', label: 'Issues' }
+];
+
+function OperatingModel({ tab, onTab, validation, onReview, workflows, onSaveWorkflow, onDeleteWorkflow, exceptions, onScanExceptions, onCreateException, onUpdateException, onOpenMap }) {
+  const active = MODEL_TABS.some((t) => t.id === tab) ? tab : 'findings';
+  return (
+    <section className="ios-page">
+      <header className="ios-page-head">
+        <h2>Operating Model</h2>
+        <p>What Orgni understood about your business — findings to verify, workflows, and issues to resolve.</p>
+      </header>
+      <div className="filter-row model-tabs" role="tablist" aria-label="Operating model sections">
+        {MODEL_TABS.map((t) => (
+          <button
+            key={t.id}
+            role="tab"
+            aria-selected={active === t.id}
+            className={`chip ${active === t.id ? 'chip-active' : ''}`}
+            onClick={() => onTab(t.id)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      {active === 'findings' && (
+        <>
+          <div className="model-tab-actions">
+            <button className="secondary" onClick={onOpenMap}><Map size={16} /> View visual map</button>
+          </div>
+          <Validation validation={validation} onReview={onReview} />
+        </>
+      )}
+      {active === 'workflows' && <Workflows data={workflows} onSave={onSaveWorkflow} onDelete={onDeleteWorkflow} />}
+      {active === 'issues' && <Exceptions data={exceptions} onScan={onScanExceptions} onCreate={onCreateException} onUpdate={onUpdateException} />}
+    </section>
+  );
+}
+
 function Home({ dashboard, onNavigate, onIntake, hasDocs }) {
   const c = dashboard?.counts || {};
   const activity = dashboard?.recentActivity || [];
   const cards = [
     { label: 'Sources', value: c.documents || 0, sub: c.failedDocuments ? `${c.failedDocuments} failed to read` : 'documents', icon: Database, view: 'documents' },
-    { label: 'Findings to review', value: c.findingsNeedingReview || 0, sub: `${c.findingsVerified || 0} verified`, icon: ShieldCheck, view: 'review' },
+    { label: 'Findings to review', value: c.findingsNeedingReview || 0, sub: `${c.findingsVerified || 0} verified`, icon: ShieldCheck, view: 'findings' },
     { label: 'Workflows', value: c.workflowsSaved || 0, sub: `${c.workflowsApproved || 0} approved · ${c.workflowsDetected || 0} detected`, icon: Workflow, view: 'workflows' },
-    { label: 'Open exceptions', value: c.exceptionsOpen || 0, sub: `${c.exceptionsTotal || 0} total`, icon: AlertTriangle, view: 'exceptions' },
-    { label: 'Confidence', value: pct(c.confidence), sub: `${c.findingsTotal || 0} findings`, icon: Scale, view: 'review' }
+    { label: 'Open issues', value: c.exceptionsOpen || 0, sub: `${c.exceptionsTotal || 0} total`, icon: AlertTriangle, view: 'issues' },
+    { label: 'Confidence', value: pct(c.confidence), sub: `${c.findingsTotal || 0} findings`, icon: Scale, view: 'findings' }
   ];
+  const nextStep = (dashboard?.recommendedNextSteps || [])[0]
+    || (!hasDocs ? 'Add your business documents so Orgni can build your operating model.' : null)
+    || (c.findingsNeedingReview ? `Review ${c.findingsNeedingReview} finding(s) in your Operating Model.` : null)
+    || (c.exceptionsOpen ? `Resolve ${c.exceptionsOpen} open issue(s) in your Operating Model.` : null);
+  const nextStepTarget = !hasDocs ? 'documents' : (c.findingsNeedingReview ? 'findings' : (c.exceptionsOpen ? 'issues' : 'assistant'));
   return (
     <section className="ios-page">
       <header className="ios-page-head">
@@ -2096,11 +2169,17 @@ function Home({ dashboard, onNavigate, onIntake, hasDocs }) {
         <p>{summaryText(dashboard?.summary) || 'A live snapshot of your operating model — what Orgni knows, what needs review, and what to do next.'}</p>
       </header>
 
-      {!hasDocs && (
+      {!hasDocs ? (
         <div className="panel callout">
           <strong>Start by adding sources.</strong>
           <span>Upload your business documents so Orgni can build your operating model.</span>
           <button className="primary" onClick={() => onNavigate('documents')}><UploadCloud size={16} /> Add sources</button>
+        </div>
+      ) : nextStep && (
+        <div className="panel callout">
+          <strong>Suggested next action</strong>
+          <span>{nextStep}</span>
+          <button className="primary" onClick={() => onNavigate(nextStepTarget)}><ArrowRight size={16} /> Take me there</button>
         </div>
       )}
 
@@ -2124,7 +2203,7 @@ function Home({ dashboard, onNavigate, onIntake, hasDocs }) {
           <List
             items={[
               c.findingsNeedingReview ? `${c.findingsNeedingReview} finding(s) need review` : null,
-              c.exceptionsOpen ? `${c.exceptionsOpen} open exception(s)` : null,
+              c.exceptionsOpen ? `${c.exceptionsOpen} open issue(s)` : null,
               c.failedDocuments ? `${c.failedDocuments} document(s) failed to read` : null,
               ...(dashboard?.recommendedNextSteps || [])
             ]}
@@ -2289,7 +2368,7 @@ function Exceptions({ data, onScan, onCreate, onUpdate }) {
       </div>
       <div className="panel span-2">
         <div className="panel-head-row">
-          <PanelHeader icon={AlertTriangle} title={`Exceptions (${filtered.length})`} />
+          <PanelHeader icon={AlertTriangle} title={`Issues (${filtered.length})`} />
           <div className="head-actions">
             <button className="secondary" onClick={onScan}><RefreshCw size={15} /> Scan</button>
             <button className="secondary" onClick={() => setAdding((v) => !v)}><Plus size={16} /> Add</button>
@@ -2317,7 +2396,7 @@ function Exceptions({ data, onScan, onCreate, onUpdate }) {
             </div>
             <label className="ios-field"><span>Detail</span><textarea value={form.detail} onChange={(e) => setForm((f) => ({ ...f, detail: e.target.value }))} placeholder="Optional context" /></label>
             <div className="review-actions">
-              <button className="secondary" onClick={submit}><Check size={16} /> Add exception</button>
+              <button className="secondary" onClick={submit}><Check size={16} /> Add issue</button>
               <button className="ghost-button" onClick={() => setAdding(false)}>Cancel</button>
             </div>
           </div>
@@ -2339,7 +2418,7 @@ function Exceptions({ data, onScan, onCreate, onUpdate }) {
                 : <button className="ghost-button" onClick={() => onUpdate(ex.id, { status: 'open' })}><RotateCcw size={15} /> Reopen</button>}
             </div>
           </div>
-        )) : <EmptyInline message="No exceptions in this view. Run a scan to detect issues." />}
+        )) : <EmptyInline message="No issues in this view. Run a scan to detect issues." />}
       </div>
     </section>
   );
