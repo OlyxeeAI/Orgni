@@ -63,8 +63,7 @@ import logoTrello from './assets/logos/trello.svg';
 const navItems = [
   { id: 'assistant', label: 'Lucy', icon: Sparkles },
   { id: 'documents', label: 'Sources', icon: Database },
-  { id: 'model', label: 'Operating Model', icon: Layers3 },
-  { id: 'home', label: 'Overview', icon: LayoutDashboard }
+  { id: 'model', label: 'Operating Model', icon: Layers3 }
 ];
 
 const ASSISTANT_NAME = 'Lucy';
