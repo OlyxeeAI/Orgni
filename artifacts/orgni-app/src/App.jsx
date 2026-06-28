@@ -259,7 +259,7 @@ const MODEL_LEGACY = { review: 'findings', validation: 'findings', workflows: 'w
 
 export function App() {
   const [view, setView] = useState('assistant');
-  const [modelTab, setModelTab] = useState('findings');
+  const [modelTab, setModelTab] = useState('map');
   const [orgs, setOrgs] = useState([]);
   const [orgId, setOrgId] = useState('');
   const [docs, setDocs] = useState([]);
@@ -449,7 +449,7 @@ export function App() {
   function goTo(target) {
     const tab = MODEL_LEGACY[target];
     if (tab) { setModelTab(tab); setView('model'); }
-    else if (target === 'findings' || target === 'workflows' || target === 'issues') { setModelTab(target); setView('model'); }
+    else if (target === 'map' || target === 'findings' || target === 'workflows' || target === 'issues') { setModelTab(target); setView('model'); }
     else setView(target);
   }
 
@@ -548,7 +548,7 @@ export function App() {
       const result = await api(`/api/orgs/${orgId}/engine/intake`, { method: 'POST' });
       toast(`Knowledge map v${result.version} created`, 'success');
       await refreshOrgData();
-      setView('map');
+      goTo('map');
     } catch (error) {
       toast(error.message, 'danger');
     } finally {
@@ -679,11 +679,11 @@ export function App() {
     <>
       {view === 'home' && <Home dashboard={dashboard} onNavigate={goTo} onIntake={runIntake} hasDocs={docs.length > 0} />}
       {view === 'documents' && <Documents docs={docs} onUpload={uploadFiles} onDelete={deleteDocument} onIntake={runIntake} onConnect={(name) => toast(`${name} connections are coming soon — upload files for now.`, 'info')} />}
-      {view === 'map' && <KnowledgeMap context={context} />}
       {view === 'model' && (
         <OperatingModel
           tab={modelTab}
           onTab={setModelTab}
+          context={context}
           validation={validation}
           onReview={reviewFinding}
           workflows={workflows}
@@ -693,10 +693,9 @@ export function App() {
           onScanExceptions={scanExceptions}
           onCreateException={createException}
           onUpdateException={updateException}
-          onOpenMap={() => setView('map')}
         />
       )}
-      {view === 'assistant' && <Assistant org={currentOrg} context={context} messages={chatMessages} sending={chatSending} onSend={sendChat} onReset={() => setChatMessages([])} onSource={() => setView('documents')} onOpenMap={() => setView('map')} onAction={runAssistantAction} dashboard={dashboard} validation={validation} exceptions={exceptions} docCount={docs.length} />}
+      {view === 'assistant' && <Assistant org={currentOrg} context={context} messages={chatMessages} sending={chatSending} onSend={sendChat} onReset={() => setChatMessages([])} onSource={() => setView('documents')} onOpenMap={() => goTo('map')} onAction={runAssistantAction} dashboard={dashboard} validation={validation} exceptions={exceptions} docCount={docs.length} />}
       {view === 'actions' && <Actions actionContext={actionContext} setActionContext={setActionContext} result={actionResult} onRun={runAction} />}
       {view === 'plugins' && <PluginsCatalog onOpen={setView} />}
       {view === 'workflowPlugin' && <WorkflowPlugin context={workflowContext} onSource={() => setView('documents')} />}
@@ -729,7 +728,7 @@ export function App() {
               <button
                 key={item.id}
                 className={`ios-item ${active ? 'active' : ''}`}
-                onClick={() => setView(item.id)}
+                onClick={() => (item.id === 'model' ? goTo('map') : setView(item.id))}
                 aria-pressed={active}
               >
                 <span className="ios-icon"><Icon size={17} /></span>
@@ -757,7 +756,7 @@ export function App() {
         </button>
       </aside>
 
-      <main className={view === 'map' ? 'main--map' : ''}>
+      <main className={view === 'model' && modelTab === 'map' ? 'main--map' : ''}>
         {content}
       </main>
 
@@ -1487,38 +1486,43 @@ const CATEGORY_META = {
   risk: { label: 'Risks', icon: AlertTriangle }
 };
 
-function KnowledgeMap({ context }) {
+function KnowledgeMap({ context, tabBar }) {
   const model = useMemo(() => (context ? buildKnowledgeModel(context) : null), [context]);
   const [selectedId, setSelectedId] = useState('business');
 
   useEffect(() => { setSelectedId('business'); }, [context]);
 
-  if (!context || !model) {
-    return <EmptyState title="No knowledge map yet" body="Upload source documents, then build the Knowledge Map." />;
-  }
-
-  const selected = model.nodeMap.get(selectedId) || model.nodeMap.get('business');
+  const selected = model ? (model.nodeMap.get(selectedId) || model.nodeMap.get('business')) : null;
 
   return (
     <section className="km-view">
       <header className="km-view-head">
         <span className="km-view-icon"><Map size={20} /></span>
         <div className="km-view-heading">
-          <h2>Knowledge map</h2>
-          <p>A living map of how {model.business.label} runs — departments, roles, workflows, rules and risks, all extracted from your documents.</p>
+          <h2>Operating Model</h2>
+          <p>A living map of how {model ? model.business.label : 'your business'} runs — departments, roles, workflows, rules and risks, all extracted from your documents.</p>
         </div>
       </header>
+      {tabBar}
 
-      <div className="km-body">
-        <div className="km-canvas">
-          {!model.groups.length
-            ? <p className="km-empty-note">No departments, roles, workflows, rules or risks have been extracted yet. Add more detailed source documents and rebuild the map to populate it.</p>
-            : <ConceptMap model={model} selectedId={selectedId} onSelect={setSelectedId} />}
+      {!model ? (
+        <div className="km-body">
+          <div className="km-canvas">
+            <p className="km-empty-note">No map yet. Upload source documents, then build the map to see how your business runs.</p>
+          </div>
         </div>
-        <aside className="km-detail">
-          <NodeDetail node={selected} context={context} onSelect={setSelectedId} />
-        </aside>
-      </div>
+      ) : (
+        <div className="km-body">
+          <div className="km-canvas">
+            {!model.groups.length
+              ? <p className="km-empty-note">No departments, roles, workflows, rules or risks have been extracted yet. Add more detailed source documents and rebuild the map to populate it.</p>
+              : <ConceptMap model={model} selectedId={selectedId} onSelect={setSelectedId} />}
+          </div>
+          <aside className="km-detail">
+            <NodeDetail node={selected} context={context} onSelect={setSelectedId} />
+          </aside>
+        </div>
+      )}
     </section>
   );
 }
@@ -2186,40 +2190,42 @@ function StatusBadge({ status }) {
 }
 
 const MODEL_TABS = [
+  { id: 'map', label: 'Map' },
   { id: 'findings', label: 'Findings' },
   { id: 'workflows', label: 'Workflows' },
   { id: 'issues', label: 'Issues' }
 ];
 
-function OperatingModel({ tab, onTab, validation, onReview, workflows, onSaveWorkflow, onDeleteWorkflow, exceptions, onScanExceptions, onCreateException, onUpdateException, onOpenMap }) {
-  const active = MODEL_TABS.some((t) => t.id === tab) ? tab : 'findings';
+function OperatingModel({ tab, onTab, context, validation, onReview, workflows, onSaveWorkflow, onDeleteWorkflow, exceptions, onScanExceptions, onCreateException, onUpdateException }) {
+  const active = MODEL_TABS.some((t) => t.id === tab) ? tab : 'map';
+  const tabBar = (
+    <div className="filter-row model-tabs" role="tablist" aria-label="Operating model sections">
+      {MODEL_TABS.map((t) => (
+        <button
+          key={t.id}
+          role="tab"
+          aria-selected={active === t.id}
+          className={`chip ${active === t.id ? 'chip-active' : ''}`}
+          onClick={() => onTab(t.id)}
+        >
+          {t.label}
+        </button>
+      ))}
+    </div>
+  );
+
+  if (active === 'map') {
+    return <KnowledgeMap context={context} tabBar={tabBar} />;
+  }
+
   return (
     <section className="ios-page">
       <header className="ios-page-head">
         <h2>Operating Model</h2>
         <p>What Orgni understood about your business — findings to verify, workflows, and issues to resolve.</p>
       </header>
-      <div className="filter-row model-tabs" role="tablist" aria-label="Operating model sections">
-        {MODEL_TABS.map((t) => (
-          <button
-            key={t.id}
-            role="tab"
-            aria-selected={active === t.id}
-            className={`chip ${active === t.id ? 'chip-active' : ''}`}
-            onClick={() => onTab(t.id)}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-      {active === 'findings' && (
-        <>
-          <div className="model-tab-actions">
-            <button className="secondary" onClick={onOpenMap}><Map size={16} /> View visual map</button>
-          </div>
-          <Validation validation={validation} onReview={onReview} />
-        </>
-      )}
+      {tabBar}
+      {active === 'findings' && <Validation validation={validation} onReview={onReview} />}
       {active === 'workflows' && <Workflows data={workflows} onSave={onSaveWorkflow} onDelete={onDeleteWorkflow} />}
       {active === 'issues' && <Exceptions data={exceptions} onScan={onScanExceptions} onCreate={onCreateException} onUpdate={onUpdateException} />}
     </section>
