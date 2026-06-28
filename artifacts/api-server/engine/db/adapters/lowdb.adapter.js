@@ -35,6 +35,7 @@ class LowdbAdapter extends RepositoryInterface {
     this.db.defaults({
       organizations: [],
       documents: [],
+      chunks: [],
       businessMaps: [],
       knowledgeMaps: [],
       validations: [],

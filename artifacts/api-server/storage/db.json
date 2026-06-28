@@ -83,6 +83,20 @@
       "knowledgeStatus": "empty",
       "createdAt": "2026-06-27T23:54:27.405Z",
       "updatedAt": "2026-06-27T23:54:27.405Z"
+    },
+    {
+      "id": "11a14736-ea4d-4dd2-9da1-2bb5b9282b3f",
+      "name": "Chunk Test Co",
+      "businessType": "services",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "ready",
+      "createdAt": "2026-06-28T00:19:40.069Z",
+      "updatedAt": "2026-06-28T00:20:43.175Z"
     }
   ],
   "documents": [
@@ -2439,6 +2453,111 @@
       ],
       "generatedAt": "2026-06-27T03:32:10.433Z",
       "updatedAt": "2026-06-27T03:32:10.433Z"
+    },
+    {
+      "id": "5ed52c46-b116-4f2c-b7fe-3771afc59733",
+      "orgId": "11a14736-ea4d-4dd2-9da1-2bb5b9282b3f",
+      "version": 1,
+      "status": "active",
+      "businessSummary": {
+        "business_name": "Chunk Test Co",
+        "business_type": "services",
+        "plain_english_summary": "Chunk Test Co is a services with 1 documented workflow and 0 extracted rules. The map was built deterministically from profile data and parsed source documents.",
+        "core_function": "services",
+        "key_operational_facts": [
+          "Workflow: Key workflows:"
+        ],
+        "systems_in_use": [],
+        "document_types_in_use": [
+          "pdf"
+        ],
+        "confidence": 0.55,
+        "confidence_reason": "Confidence is rule-based: higher when source text contains explicit workflow steps, approval rules, and source excerpts.",
+        "missing_information": []
+      },
+      "departments": [],
+      "roles": [],
+      "workflows": [
+        {
+          "workflow_name": "Key workflows:",
+          "trigger": "",
+          "steps": [],
+          "owner": "",
+          "required_documents": [],
+          "decision_points": [],
+          "approval_points": [],
+          "dependencies": [],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Business: Chunk Test Co\nType: services\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+          "_confidence": 0.58,
+          "_supported": true
+        }
+      ],
+      "rules": [],
+      "approvals": [],
+      "exceptions": [],
+      "risks": [
+        {
+          "risk": "Main problems:",
+          "severity": "low",
+          "reason": "Main problems:",
+          "affected_workflow": "Key workflows:",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Main problems:",
+          "_confidence": 0.68
+        }
+      ],
+      "bottlenecks": [],
+      "gaps": [],
+      "dependencies": [
+        {
+          "dependency": "Based on information provided to 4",
+          "_sourceDocName": "1782524593086-2026_08_25_Diesel_Electric_Services__Pty__Ltd-Generic.pdf",
+          "_sourceExcerpt": "Based on information provided to 4",
+          "_confidence": 0.62
+        },
+        {
+          "dependency": "Dimension Training Consultants and is an independent opinion based on verification, validation and audit",
+          "_sourceDocName": "1782524593086-2026_08_25_Diesel_Electric_Services__Pty__Ltd-Generic.pdf",
+          "_sourceExcerpt": "Dimension Training Consultants and is an independent opinion based on verification, validation and audit",
+          "_confidence": 0.62
+        }
+      ],
+      "aiOpportunities": [],
+      "readiness": [
+        {
+          "workflow": "Key workflows:",
+          "readiness_score": 35,
+          "reason": "Readiness is based on documented steps and rules, not AI interpretation.",
+          "blockers": [],
+          "required_integrations": []
+        }
+      ],
+      "blueprint": {
+        "blueprints": []
+      },
+      "missingInformation": [
+        "Business departments are not listed in the profile.",
+        "Approval rules are not clearly documented."
+      ],
+      "overallConfidence": 0.55,
+      "overallRiskScore": 0.28,
+      "sourceDocuments": [
+        {
+          "id": "e2421ec9-35ff-417a-90ae-cc5ddd19f5a5",
+          "name": "1782524593086-2026_08_25_Diesel_Electric_Services__Pty__Ltd-Generic.pdf"
+        }
+      ],
+      "recommendedNextSteps": [
+        "Review workflow: Key workflows: — Most clearly documented workflow."
+      ],
+      "generatedAt": "2026-06-28T00:20:43.108Z",
+      "updatedAt": "2026-06-28T00:20:43.108Z"
     }
   ],
   "validations": [
@@ -3359,6 +3478,40 @@
       "reviewedBy": null,
       "reviewedAt": null,
       "createdAt": "2026-06-27T03:32:10.687Z"
+    },
+    {
+      "id": "d5e39a69-ff31-4756-9b8b-15bea4d78e1b",
+      "orgId": "11a14736-ea4d-4dd2-9da1-2bb5b9282b3f",
+      "mapId": "5ed52c46-b116-4f2c-b7fe-3771afc59733",
+      "insightType": "workflow",
+      "claim": "Workflow: Key workflows:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Business: Chunk Test Co\nType: services\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+      "confidence": 0.58,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Extracted from Business profile",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-28T00:20:43.168Z"
+    },
+    {
+      "id": "cabe944a-8172-47c0-ab09-5e0debadac8a",
+      "orgId": "11a14736-ea4d-4dd2-9da1-2bb5b9282b3f",
+      "mapId": "5ed52c46-b116-4f2c-b7fe-3771afc59733",
+      "insightType": "risk",
+      "claim": "Risk: Main problems:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Main problems:",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-28T00:20:43.172Z"
     }
   ],
   "insights": [
@@ -4994,6 +5147,56 @@
       "sourceExcerpt": null,
       "confidence": 0.68,
       "createdAt": "2026-06-27T03:32:10.684Z"
+    },
+    {
+      "id": "b6192979-1758-42ad-bd10-29fa9b2e6c93",
+      "orgId": "11a14736-ea4d-4dd2-9da1-2bb5b9282b3f",
+      "mapId": "5ed52c46-b116-4f2c-b7fe-3771afc59733",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Key workflows:",
+        "trigger": "",
+        "steps": [],
+        "owner": "",
+        "required_documents": [],
+        "decision_points": [],
+        "approval_points": [],
+        "dependencies": [],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Business: Chunk Test Co\nType: services\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+        "_confidence": 0.58,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Business: Chunk Test Co\nType: services\nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+      "confidence": 0.58,
+      "createdAt": "2026-06-28T00:20:43.111Z"
+    },
+    {
+      "id": "2ec09612-cf77-498a-8d21-322b47cd28e3",
+      "orgId": "11a14736-ea4d-4dd2-9da1-2bb5b9282b3f",
+      "mapId": "5ed52c46-b116-4f2c-b7fe-3771afc59733",
+      "type": "risk",
+      "content": {
+        "risk": "Main problems:",
+        "severity": "low",
+        "reason": "Main problems:",
+        "affected_workflow": "Key workflows:",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Main problems:",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-28T00:20:43.170Z"
     }
   ],
   "conversations": [],
@@ -5253,6 +5456,56 @@
       "description": "Organization \"Acme Co\" created",
       "meta": {},
       "createdAt": "2026-06-27T23:54:27.408Z"
+    },
+    {
+      "id": "23e96401-d175-43fd-82ee-60301000f6c1",
+      "orgId": "11a14736-ea4d-4dd2-9da1-2bb5b9282b3f",
+      "type": "org_created",
+      "description": "Organization \"Chunk Test Co\" created",
+      "meta": {},
+      "createdAt": "2026-06-28T00:19:40.071Z"
+    },
+    {
+      "id": "6a6227f7-92db-49b0-aa6d-17c16469ba54",
+      "orgId": "11a14736-ea4d-4dd2-9da1-2bb5b9282b3f",
+      "type": "document_uploaded",
+      "description": "Uploaded \"1782524593086-2026_08_25_Diesel_Electric_Services__Pty__Ltd-Generic.pdf\"",
+      "meta": {
+        "docId": "e2421ec9-35ff-417a-90ae-cc5ddd19f5a5"
+      },
+      "createdAt": "2026-06-28T00:19:40.900Z"
+    },
+    {
+      "id": "77d95316-2f26-454d-b86b-aae5a9163799",
+      "orgId": "11a14736-ea4d-4dd2-9da1-2bb5b9282b3f",
+      "type": "engine_intake_complete",
+      "description": "Knowledge Map built",
+      "meta": {
+        "mapId": "5ed52c46-b116-4f2c-b7fe-3771afc59733",
+        "version": 1,
+        "docCount": 1
+      },
+      "createdAt": "2026-06-28T00:20:43.177Z"
+    },
+    {
+      "id": "1504f0fc-de53-4c79-9c13-ffc91942301e",
+      "orgId": "11a14736-ea4d-4dd2-9da1-2bb5b9282b3f",
+      "type": "assistant_chat",
+      "description": "Chat: What does this certificate cover?",
+      "meta": {
+        "grounded": true,
+        "turns": 1
+      },
+      "createdAt": "2026-06-28T00:20:43.209Z"
+    },
+    {
+      "id": "637b3588-39d1-4e62-b882-7b337dca57e2",
+      "orgId": "11a14736-ea4d-4dd2-9da1-2bb5b9282b3f",
+      "type": "document_deleted",
+      "description": "Deleted \"1782524593086-2026_08_25_Diesel_Electric_Services__Pty__Ltd-Generic.pdf\"",
+      "meta": {},
+      "createdAt": "2026-06-28T00:21:00.800Z"
     }
-  ]
+  ],
+  "chunks": []
 }

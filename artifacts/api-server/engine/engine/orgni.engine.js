@@ -16,6 +16,8 @@ const logger = require('../db/logger');
 const ai     = require('../services/ai.service');
 const { AIError } = require('../services/ai.service');
 
+const retrieval = require('../services/retrieval.service');
+
 const workflowExtractor    = require('./extractors/workflow.extractor');
 const roleExtractor        = require('./extractors/role.extractor');
 const ruleExtractor        = require('./extractors/rule.extractor');
@@ -31,7 +33,12 @@ const orgModel        = require('../models/organization.model');
 
 // ── Corpus builder ─────────────────────────────────────────────────────────
 
-function buildCorpus(org, documents = []) {
+// Intake corpus budget (chars). Large by default so full documents are covered;
+// bounded only to protect LLM context limits, and any truncation is LOGGED — never
+// a silent drop. Override via ORGNI_INTAKE_CORPUS_CHARS.
+const INTAKE_CORPUS_CHARS = Number(process.env.ORGNI_INTAKE_CORPUS_CHARS || 120000);
+
+async function buildCorpus(org, documents = []) {
   const profile = [
     '[SOURCE: organization_profile]',
     `Company: ${org.name}`,
@@ -44,12 +51,28 @@ function buildCorpus(org, documents = []) {
     '[END SOURCE: organization_profile]'
   ].join('\n');
 
-  const docs = documents
-    .filter(d => d.status === 'parsed' && d.content)
-    .map(d => `[SOURCE: ${d.id} | ${d.originalName}]\n${d.content.slice(0, 8000)}\n[END SOURCE: ${d.id}]`)
-    .join('\n\n');
+  // Assemble from chunks (preserving page/section provenance) in document order
+  // rather than slicing each document at a fixed offset.
+  const chunks = await retrieval.getOrgChunks(org.id, documents);
 
-  return docs ? `${profile}\n\n${docs}` : profile;
+  const parts = [];
+  let total = 0;
+  let skipped = 0;
+  for (const c of chunks) {
+    const loc = c.page != null ? ` | p.${c.page}` : '';
+    const block = `[SOURCE: ${c.documentId} | ${c.documentName}${loc}]\n${c.text}\n[END SOURCE: ${c.documentId}]`;
+    if (total + block.length > INTAKE_CORPUS_CHARS && parts.length > 0) { skipped++; continue; }
+    parts.push(block);
+    total += block.length;
+  }
+
+  if (skipped > 0) {
+    logger.warn('Intake corpus truncated by budget', {
+      orgId: org.id, includedChunks: parts.length, skippedChunks: skipped, budgetChars: INTAKE_CORPUS_CHARS
+    });
+  }
+
+  return parts.length ? `${profile}\n\n${parts.join('\n\n')}` : profile;
 }
 
 // ── Full intake ────────────────────────────────────────────────────────────
@@ -59,7 +82,7 @@ async function runFullIntake(orgId, documents = []) {
   if (!org) throw new Error(`Organisation not found: ${orgId}`);
 
   const parsedDocs = documents.filter(d => d.status === 'parsed');
-  const corpus     = buildCorpus(org, parsedDocs);
+  const corpus     = await buildCorpus(org, parsedDocs);
 
   logger.info('Engine: full intake started', {
     orgId, docs: parsedDocs.length, corpusWords: corpus.split(/\s+/).length
@@ -123,7 +146,7 @@ async function runIncrementalUpdate(orgId, newDocument, allDocuments = []) {
   logger.info('Engine: incremental update started', { orgId, doc: newDocument.originalName });
 
   const extraction = shouldUseLlmExtraction()
-    ? await runLlmExtraction(buildCorpus(org, [newDocument]), org.name)
+    ? await runLlmExtraction(await buildCorpus(org, [newDocument]), org.name)
     : deterministicExtractor.extractKnowledge(org, [newDocument]);
   const newWorkflows = extraction.workflows || {};
   const newRules = extraction.rules || {};
@@ -347,18 +370,16 @@ async function chat(orgId, messages = [], documents = []) {
 
   const brief = buildBusinessBrief(org, ctx);
 
-  // Each document gets a short stable id so the model can cite exactly which
-  // ones it drew on, and we map chips back to those — not the whole corpus.
-  const docMap = new Map();
-  parsed.forEach((d, i) => {
-    const sid = `D${i + 1}`;
-    docMap.set(sid, { id: d.id, name: d.originalName || d.name });
+  // Retrieve the chunks most relevant to the question across ALL of the document
+  // (not just its first few thousand chars), bounded by a char budget. Each
+  // chunk carries page/section provenance so the model can ground its answer in
+  // a specific location, and docMap resolves citations back to real documents.
+  const allChunks = await retrieval.getOrgChunks(orgId, parsed);
+  const pickedChunks = retrieval.retrieve(question, allChunks, {
+    maxChars:  Number(process.env.ORGNI_CHAT_CORPUS_CHARS || 16000),
+    maxChunks: Number(process.env.ORGNI_CHAT_MAX_CHUNKS || 10)
   });
-
-  const corpus = parsed
-    .map((d, i) => `<<DOC D${i + 1} | ${d.originalName || d.name}>>\n${(d.content || '').slice(0, 4000)}\n<<END D${i + 1}>>`)
-    .join('\n\n')
-    .slice(0, 16000);
+  const { corpus, docMap } = retrieval.buildPromptCorpus(pickedChunks);
 
   const history = messages
     .slice(-12)

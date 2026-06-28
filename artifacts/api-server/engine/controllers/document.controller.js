@@ -4,9 +4,11 @@
 
 const path          = require('path');
 const docModel      = require('../models/document.model');
+const chunkModel    = require('../models/chunk.model');
 const orgModel      = require('../models/organization.model');
 const activityModel = require('../models/activity.model');
 const OrgniEngine   = require('../sdk/engine.sdk');
+const { chunkText } = require('../services/chunker.service');
 const { parseBuffer, ParserError, SUPPORTED_EXTENSIONS } = require('../services/parser.service');
 const { asyncHandler } = require('../middleware/errorHandler');
 const logger        = require('../db/logger');
@@ -71,7 +73,13 @@ async function parseAndUpdate(doc, orgId, buffer) {
       status:    'parsed',
       parsedAt:  new Date().toISOString()
     });
-    logger.info('Document parsed', { docId: doc.id, name: doc.originalName, words: updated.wordCount });
+
+    // Chunk the parsed text for retrieval, preserving page/section provenance.
+    // Replace (not append) so a re-parse never leaves stale chunks behind.
+    const chunks = chunkText(content);
+    await chunkModel.replaceForDocument(orgId, doc.id, doc.originalName, chunks);
+
+    logger.info('Document parsed', { docId: doc.id, name: doc.originalName, words: updated.wordCount, chunks: chunks.length });
 
     // Trigger incremental engine update if knowledge map already exists
     const allDocs = await docModel.findByOrg(orgId);
@@ -121,6 +129,7 @@ const remove = asyncHandler(async (req, res) => {
   if (!doc || doc.orgId !== req.org.id) {
     return res.status(404).json({ error: 'Document not found' });
   }
+  await chunkModel.removeByDocument(doc.id);
   await docModel.remove(doc.id);
   await activityModel.log(req.org.id, 'document_deleted', `Deleted "${doc.originalName}"`);
   res.json({ message: 'Document deleted' });
