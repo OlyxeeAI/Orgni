@@ -5,30 +5,36 @@ import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { mockupPreviewPlugin } from "./mockupPreviewPlugin";
 
+// This is a Replit-only canvas/dev tool. The dev server requires PORT and
+// BASE_PATH (injected by Replit), but `vite build` (e.g. on Vercel) does not —
+// so only enforce those when actually serving, and fall back to safe defaults
+// for build so a recursive workspace build never fails on this package.
+const isBuild = process.argv.includes("build");
+
 const rawPort = process.env.PORT;
 
-if (!rawPort) {
+if (!isBuild && !rawPort) {
   throw new Error(
     "PORT environment variable is required but was not provided.",
   );
 }
 
-const port = Number(rawPort);
+const port = Number(rawPort) || 5173;
 
-if (Number.isNaN(port) || port <= 0) {
+if (!isBuild && (Number.isNaN(port) || port <= 0)) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
 const basePath = process.env.BASE_PATH;
 
-if (!basePath) {
+if (!isBuild && !basePath) {
   throw new Error(
     "BASE_PATH environment variable is required but was not provided.",
   );
 }
 
 export default defineConfig({
-  base: basePath,
+  base: basePath || "/",
   plugins: [
     mockupPreviewPlugin(),
     react(),

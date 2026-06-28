@@ -55,7 +55,18 @@ async function findNeedsReview(orgId) {
   return all.filter(v => v.status === 'needs_review' || v.status === 'uncertain');
 }
 
-async function humanConfirm(id, reviewedBy) {
+// Resolve a validation record but only if it belongs to the given org.
+// Returns null when the record is missing or owned by another org, so that
+// callers can return 404 instead of mutating across org boundaries.
+async function findByIdForOrg(orgId, id) {
+  const record = await db.findOne(C, { id });
+  if (!record || record.orgId !== orgId) return null;
+  return record;
+}
+
+async function humanConfirm(orgId, id, reviewedBy) {
+  const existing = await findByIdForOrg(orgId, id);
+  if (!existing) return null;
   return db.update(C, id, {
     status: 'verified',
     reviewedBy,
@@ -63,7 +74,9 @@ async function humanConfirm(id, reviewedBy) {
   });
 }
 
-async function humanReject(id, reviewedBy, reason) {
+async function humanReject(orgId, id, reviewedBy, reason) {
+  const existing = await findByIdForOrg(orgId, id);
+  if (!existing) return null;
   return db.update(C, id, {
     status: 'rejected',
     reviewedBy,
@@ -76,7 +89,9 @@ async function humanReject(id, reviewedBy, reason) {
  * Human edits a finding's claim and/or supporting excerpt. Records who edited
  * it and marks it verified — a human has taken ownership of the corrected text.
  */
-async function humanEdit(id, patch = {}, reviewedBy) {
+async function humanEdit(orgId, id, patch = {}, reviewedBy) {
+  const existing = await findByIdForOrg(orgId, id);
+  if (!existing) return null;
   const next = {
     reviewedBy,
     reviewedAt: new Date().toISOString()

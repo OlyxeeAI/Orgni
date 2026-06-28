@@ -1,6 +1,2 @@
-- [CJS engine in ESM api-server](cjs-engine-in-esm-apiserver.md) — embed CommonJS sub-app under the type:module esbuild api-server via a nested package.json + externalized deps + storage bootstrap.
-- [Cross-artifact trailing slash](cross-artifact-trailing-slash.md) — links to another artifact must include the trailing slash of its previewPath or they 404.
-- [Orgni AI service & assistant](orgni-ai-service.md) — reuse api-server's own ai.service.js (not the heavy template); point getConfig at the Replit Anthropic integration env vars; assistant grounding/source-chip pattern.
-- [Vercel single-project deploy](vercel-fullstack-deploy.md) — marketing `/` + app `/app/` + engine `/api` serverless function in ONE Vercel project; storage→Postgres, mem uploads, await-parse. User NEVER deploys on Replit.
-- [orgni-app CSS namespace](orgni-app-css-namespace.md) — single global styles.css with generic reused class names (.ios-group etc.); grep before reusing a class, scope/rename new ones to avoid cross-surface bleed.
-- [Orgni chunking & retrieval](orgni-chunking-retrieval.md) — engine avoids silent data loss via chunked storage + keyword retrieval with page/section provenance; truncation budgets are env-tunable and LOGGED, never silent.
+- [Orgni multi-artifact build](orgni-vercel-build.md) — one Vercel project builds all artifacts; mockup-sandbox vite config must not throw on missing PORT during `vite build`.
+- [Org-scoped mutations](org-scoped-mutations.md) — every per-org mutation must verify record ownership at the model layer, not just route `:orgId`, or it's an IDOR.

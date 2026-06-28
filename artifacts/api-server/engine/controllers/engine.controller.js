@@ -159,7 +159,7 @@ const getValidation = asyncHandler(async (req, res) => {
 const confirmFinding = asyncHandler(async (req, res) => {
   const { validationId } = req.params;
   const reviewedBy       = req.body.reviewedBy || 'user';
-  const result           = await OrgniEngine.confirmFinding(validationId, reviewedBy);
+  const result           = await OrgniEngine.confirmFinding(req.org.id, validationId, reviewedBy);
   if (!result) return res.status(404).json({ error: `Validation record not found: ${validationId}` });
   await activityModel.log(req.org.id, 'finding_approved', `Finding approved: ${(result.claim || '').slice(0, 80)}`, {
     validationId, reviewedBy
@@ -170,7 +170,7 @@ const confirmFinding = asyncHandler(async (req, res) => {
 const rejectFinding = asyncHandler(async (req, res) => {
   const { validationId }         = req.params;
   const { reviewedBy = 'user', reason = '' } = req.body;
-  const result = await OrgniEngine.rejectFinding(validationId, reviewedBy, reason);
+  const result = await OrgniEngine.rejectFinding(req.org.id, validationId, reviewedBy, reason);
   if (!result) return res.status(404).json({ error: `Validation record not found: ${validationId}` });
   await activityModel.log(req.org.id, 'finding_rejected', `Finding rejected: ${(result.claim || '').slice(0, 80)}`, {
     validationId, reviewedBy
@@ -181,7 +181,7 @@ const rejectFinding = asyncHandler(async (req, res) => {
 const editFinding = asyncHandler(async (req, res) => {
   const { validationId } = req.params;
   const { reviewedBy = 'user', claim, sourceExcerpt, status } = req.body;
-  const result = await OrgniEngine.editFinding(validationId, { claim, sourceExcerpt, status }, reviewedBy);
+  const result = await OrgniEngine.editFinding(req.org.id, validationId, { claim, sourceExcerpt, status }, reviewedBy);
   if (!result) return res.status(404).json({ error: `Validation record not found: ${validationId}` });
   await activityModel.log(req.org.id, 'finding_edited', `Finding edited: ${(result.claim || '').slice(0, 80)}`, {
     validationId, reviewedBy

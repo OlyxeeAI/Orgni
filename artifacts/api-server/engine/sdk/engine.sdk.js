@@ -101,20 +101,20 @@ const OrgniEngine = {
   /**
    * Human edits a finding's claim / excerpt.
    */
-  editFinding: (validationId, patch, reviewedBy) =>
-    validationModel.humanEdit(validationId, patch, reviewedBy),
+  editFinding: (orgId, validationId, patch, reviewedBy) =>
+    validationModel.humanEdit(orgId, validationId, patch, reviewedBy),
 
   /**
    * Human confirms a finding is correct.
    */
-  confirmFinding: (validationId, reviewedBy) =>
-    validationModel.humanConfirm(validationId, reviewedBy),
+  confirmFinding: (orgId, validationId, reviewedBy) =>
+    validationModel.humanConfirm(orgId, validationId, reviewedBy),
 
   /**
    * Human rejects a finding.
    */
-  rejectFinding: (validationId, reviewedBy, reason) =>
-    validationModel.humanReject(validationId, reviewedBy, reason),
+  rejectFinding: (orgId, validationId, reviewedBy, reason) =>
+    validationModel.humanReject(orgId, validationId, reviewedBy, reason),
 
   /**
    * Get all insights for an org, optionally filtered by type.

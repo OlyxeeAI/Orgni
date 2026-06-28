@@ -214,6 +214,15 @@ function pct(value) {
   return `${Math.round((Number(value) || 0) * 100)}%`;
 }
 
+function summaryText(summary) {
+  if (!summary) return '';
+  if (typeof summary === 'string') return summary;
+  return summary.plain_english_summary
+    || summary.core_function
+    || summary.business_name
+    || '';
+}
+
 function time(value) {
   if (!value) return 'Never';
   return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
@@ -1784,7 +1793,33 @@ function buildAttachment(text, context) {
 
 function Validation({ validation, onReview }) {
   const stats = validation?.stats || {};
-  const needsReview = validation?.needsReview || [];
+  const items = validation?.items || validation?.needsReview || [];
+  const [filter, setFilter] = useState('all');
+  const [editing, setEditing] = useState(null);
+  const [draft, setDraft] = useState({ claim: '', sourceExcerpt: '' });
+
+  const filtered = items.filter((item) => {
+    if (filter === 'all') return true;
+    if (filter === 'needs_review') return item.status === 'needs_review' || item.status === 'uncertain';
+    return item.status === filter;
+  });
+
+  function startEdit(item) {
+    setEditing(item.id);
+    setDraft({ claim: item.claim || '', sourceExcerpt: item.sourceExcerpt || '' });
+  }
+  function saveEdit(id) {
+    onReview(id, 'edit', { claim: draft.claim, sourceExcerpt: draft.sourceExcerpt });
+    setEditing(null);
+  }
+
+  const filters = [
+    { id: 'all', label: 'All' },
+    { id: 'needs_review', label: 'Needs review' },
+    { id: 'verified', label: 'Verified' },
+    { id: 'rejected', label: 'Rejected' }
+  ];
+
   return (
     <section className="view-grid">
       <div className="stats">
@@ -1794,20 +1829,329 @@ function Validation({ validation, onReview }) {
         <Metric label="Average confidence" value={pct(stats.averageConfidence)} />
       </div>
       <div className="panel span-2">
-        <PanelHeader icon={ShieldCheck} title={`Review queue (${needsReview.length})`} />
-        {needsReview.length ? needsReview.map((item) => (
-          <div className="review-row" key={item.id}>
-            <div>
-              <strong>{item.claim}</strong>
-              <span>{item.sourceExcerpt || 'No source excerpt.'}</span>
-            </div>
-            <button className="secondary" onClick={() => onReview(item.id, 'confirm')}><Check size={16} /> Confirm</button>
-            <button className="danger-button" onClick={() => onReview(item.id, 'reject')}><X size={16} /> Reject</button>
+        <PanelHeader icon={ShieldCheck} title={`Findings (${filtered.length})`} />
+        <div className="filter-row">
+          {filters.map((f) => (
+            <button key={f.id} className={`chip ${filter === f.id ? 'chip-active' : ''}`} onClick={() => setFilter(f.id)}>{f.label}</button>
+          ))}
+        </div>
+        {filtered.length ? filtered.map((item) => (
+          <div className="review-card" key={item.id}>
+            {editing === item.id ? (
+              <div className="review-edit">
+                <label className="ios-field"><span>Claim</span><textarea value={draft.claim} onChange={(e) => setDraft((d) => ({ ...d, claim: e.target.value }))} /></label>
+                <label className="ios-field"><span>Source excerpt</span><textarea value={draft.sourceExcerpt} onChange={(e) => setDraft((d) => ({ ...d, sourceExcerpt: e.target.value }))} /></label>
+                <div className="review-actions">
+                  <button className="secondary" onClick={() => saveEdit(item.id)}><Check size={16} /> Save</button>
+                  <button className="ghost-button" onClick={() => setEditing(null)}>Cancel</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="review-head">
+                  <strong>{item.claim}</strong>
+                  <span className="badges">
+                    <StatusBadge status={item.status} />
+                    {typeof item.confidence === 'number' && <span className="badge badge-muted">{pct(item.confidence)}</span>}
+                    {item.source && <span className="badge badge-muted">{String(item.source).replaceAll('_', ' ')}</span>}
+                  </span>
+                </div>
+                <p className="review-excerpt">{item.sourceExcerpt || 'No source excerpt.'}</p>
+                {item.documentName && <p className="review-source"><FileText size={13} /> {item.documentName}</p>}
+                <div className="review-actions">
+                  <button className="secondary" onClick={() => onReview(item.id, 'confirm')}><Check size={16} /> Approve</button>
+                  <button className="danger-button" onClick={() => onReview(item.id, 'reject')}><X size={16} /> Reject</button>
+                  <button className="ghost-button" onClick={() => startEdit(item)}><Pencil size={15} /> Edit</button>
+                </div>
+              </>
+            )}
           </div>
-        )) : <EmptyInline message="No findings need review." />}
+        )) : <EmptyInline message="No findings in this view." />}
       </div>
     </section>
   );
+}
+
+function StatusBadge({ status }) {
+  const map = {
+    verified: { label: 'Verified', cls: 'badge-ok' },
+    rejected: { label: 'Rejected', cls: 'badge-bad' },
+    needs_review: { label: 'Needs review', cls: 'badge-warn' },
+    uncertain: { label: 'Uncertain', cls: 'badge-warn' }
+  };
+  const it = map[status] || { label: status || 'Unknown', cls: 'badge-muted' };
+  return <span className={`badge ${it.cls}`}>{it.label}</span>;
+}
+
+function Home({ dashboard, onNavigate, onIntake, hasDocs }) {
+  const c = dashboard?.counts || {};
+  const activity = dashboard?.recentActivity || [];
+  const cards = [
+    { label: 'Sources', value: c.documents || 0, sub: c.failedDocuments ? `${c.failedDocuments} failed to read` : 'documents', icon: Database, view: 'documents' },
+    { label: 'Findings to review', value: c.findingsNeedingReview || 0, sub: `${c.findingsVerified || 0} verified`, icon: ShieldCheck, view: 'review' },
+    { label: 'Workflows', value: c.workflowsSaved || 0, sub: `${c.workflowsApproved || 0} approved · ${c.workflowsDetected || 0} detected`, icon: Workflow, view: 'workflows' },
+    { label: 'Open exceptions', value: c.exceptionsOpen || 0, sub: `${c.exceptionsTotal || 0} total`, icon: AlertTriangle, view: 'exceptions' },
+    { label: 'Confidence', value: pct(c.confidence), sub: `${c.findingsTotal || 0} findings`, icon: Scale, view: 'review' }
+  ];
+  return (
+    <section className="ios-page">
+      <header className="ios-page-head">
+        <h2>Home</h2>
+        <p>{summaryText(dashboard?.summary) || 'A live snapshot of your operating model — what Orgni knows, what needs review, and what to do next.'}</p>
+      </header>
+
+      {!hasDocs && (
+        <div className="panel callout">
+          <strong>Start by adding sources.</strong>
+          <span>Upload your business documents so Orgni can build your operating model.</span>
+          <button className="primary" onClick={() => onNavigate('documents')}><UploadCloud size={16} /> Add sources</button>
+        </div>
+      )}
+
+      <div className="home-cards">
+        {cards.map((card) => {
+          const Icon = card.icon;
+          return (
+            <button key={card.label} className="home-card" onClick={() => onNavigate(card.view)}>
+              <span className="home-card-icon"><Icon size={18} /></span>
+              <strong className="home-card-value">{card.value}</strong>
+              <span className="home-card-label">{card.label}</span>
+              <span className="home-card-sub">{card.sub}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="home-lower">
+        <div className="panel">
+          <PanelHeader icon={AlertTriangle} title="Needs your attention" />
+          <List
+            items={[
+              c.findingsNeedingReview ? `${c.findingsNeedingReview} finding(s) need review` : null,
+              c.exceptionsOpen ? `${c.exceptionsOpen} open exception(s)` : null,
+              c.failedDocuments ? `${c.failedDocuments} document(s) failed to read` : null,
+              ...(dashboard?.recommendedNextSteps || [])
+            ]}
+            fallback="Nothing needs attention right now."
+          />
+          {hasDocs && !dashboard?.summary && (
+            <button className="primary" onClick={onIntake}><Brain size={16} /> Build knowledge map</button>
+          )}
+        </div>
+        <div className="panel">
+          <PanelHeader icon={ClipboardList} title="Recent activity" />
+          {activity.length ? (
+            <ul className="activity-list">
+              {activity.map((a) => (
+                <li key={a.id}>
+                  <span className="activity-dot" aria-hidden="true" />
+                  <span className="activity-text">{a.description}</span>
+                  <span className="activity-time">{time(a.createdAt)}</span>
+                </li>
+              ))}
+            </ul>
+          ) : <EmptyInline message="No activity yet." />}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const WF_STATUSES = ['draft', 'review_needed', 'approved'];
+
+function Workflows({ data, onSave, onDelete }) {
+  const saved = data?.workflows || [];
+  const detected = data?.detected || [];
+  const [editing, setEditing] = useState(null); // id | 'new' | null
+
+  function exportJson(wf) {
+    const blob = new Blob([JSON.stringify(wf, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${(wf.name || 'workflow').replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  return (
+    <section className="view-grid">
+      <div className="panel span-2">
+        <div className="panel-head-row">
+          <PanelHeader icon={Workflow} title={`Saved workflows (${saved.length})`} />
+          <button className="secondary" onClick={() => setEditing('new')}><Plus size={16} /> New workflow</button>
+        </div>
+        {editing === 'new' && (
+          <WorkflowEditor onCancel={() => setEditing(null)} onSave={(payload) => { onSave(payload); setEditing(null); }} />
+        )}
+        {saved.length ? saved.map((wf) => (
+          editing === wf.id ? (
+            <WorkflowEditor key={wf.id} workflow={wf} onCancel={() => setEditing(null)} onSave={(payload) => { onSave(payload, wf.id); setEditing(null); }} />
+          ) : (
+            <div className="wf-card" key={wf.id}>
+              <div className="wf-card-head">
+                <strong>{wf.name}</strong>
+                <StatusBadge status={wf.status} />
+              </div>
+              {wf.description && <p className="wf-desc">{wf.description}</p>}
+              {(wf.steps || []).length > 0 && (
+                <ol className="wf-steps">{wf.steps.map((s, i) => <li key={i}>{s}</li>)}</ol>
+              )}
+              <div className="review-actions">
+                <button className="ghost-button" onClick={() => setEditing(wf.id)}><Pencil size={15} /> Edit</button>
+                {wf.status !== 'approved' && <button className="secondary" onClick={() => onSave({ status: 'approved' }, wf.id)}><Check size={16} /> Approve</button>}
+                {wf.status === 'approved' && <button className="ghost-button" onClick={() => onSave({ status: 'draft' }, wf.id)}><RotateCcw size={15} /> Reopen</button>}
+                <button className="ghost-button" onClick={() => exportJson(wf)}><Download size={15} /> Export</button>
+                <button className="danger-button" onClick={() => onDelete(wf.id)}><Trash2 size={15} /> Delete</button>
+              </div>
+            </div>
+          )
+        )) : (editing !== 'new' && <EmptyInline message="No saved workflows yet. Create one, or save a detected workflow below." />)}
+      </div>
+
+      <div className="panel span-2">
+        <PanelHeader icon={Layers3} title={`Detected from your documents (${detected.length})`} />
+        {detected.length ? detected.map((wf, i) => (
+          <div className="wf-card wf-detected" key={i}>
+            <div className="wf-card-head">
+              <strong>{wf.name}</strong>
+              <span className="badge badge-muted">detected</span>
+            </div>
+            {wf.description && <p className="wf-desc">{wf.description}</p>}
+            {(wf.steps || []).length > 0 && (
+              <ol className="wf-steps">{wf.steps.map((s, j) => <li key={j}>{s}</li>)}</ol>
+            )}
+            <div className="review-actions">
+              <button className="secondary" onClick={() => onSave({ name: wf.name, description: wf.description, steps: wf.steps, trigger: wf.trigger, owner: wf.owner, source: 'detected', sourceDocumentName: wf.sourceDocumentName, confidence: wf.confidence })}><Plus size={16} /> Save to edit</button>
+            </div>
+          </div>
+        )) : <EmptyInline message="No workflows detected yet. Add sources and build the knowledge map." />}
+      </div>
+    </section>
+  );
+}
+
+function WorkflowEditor({ workflow, onCancel, onSave }) {
+  const [name, setName] = useState(workflow?.name || '');
+  const [description, setDescription] = useState(workflow?.description || '');
+  const [stepsText, setStepsText] = useState((workflow?.steps || []).join('\n'));
+  const [status, setStatus] = useState(workflow?.status || 'draft');
+
+  function submit() {
+    if (!name.trim()) return;
+    onSave({
+      name: name.trim(),
+      description: description.trim(),
+      steps: stepsText.split('\n').map((s) => s.trim()).filter(Boolean),
+      status
+    });
+  }
+
+  return (
+    <div className="wf-card wf-editor">
+      <label className="ios-field"><span>Name</span><input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Invoice approval" autoFocus /></label>
+      <label className="ios-field"><span>Description</span><textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="What this workflow is for" /></label>
+      <label className="ios-field"><span>Steps (one per line)</span><textarea value={stepsText} onChange={(e) => setStepsText(e.target.value)} placeholder={'Receive invoice\nManager approves\nFinance pays'} /></label>
+      <label className="ios-field"><span>Status</span>
+        <select value={status} onChange={(e) => setStatus(e.target.value)}>
+          {WF_STATUSES.map((s) => <option key={s} value={s}>{s.replaceAll('_', ' ')}</option>)}
+        </select>
+      </label>
+      <div className="review-actions">
+        <button className="secondary" onClick={submit}><Check size={16} /> Save</button>
+        <button className="ghost-button" onClick={onCancel}>Cancel</button>
+      </div>
+    </div>
+  );
+}
+
+const EXCEPTION_TYPES = ['low_confidence', 'parse_failure', 'missing_document', 'conflicting_rule', 'approval_gap', 'unsupported_answer', 'other'];
+const EXCEPTION_SEVERITIES = ['low', 'medium', 'high'];
+
+function Exceptions({ data, onScan, onCreate, onUpdate }) {
+  const list = data?.exceptions || [];
+  const stats = data?.stats || {};
+  const [filter, setFilter] = useState('open');
+  const [adding, setAdding] = useState(false);
+  const [form, setForm] = useState({ title: '', type: 'other', severity: 'medium', detail: '' });
+
+  const filtered = list.filter((e) => (filter === 'all' ? true : e.status === filter));
+
+  function submit() {
+    if (!form.title.trim()) return;
+    onCreate({ ...form, title: form.title.trim(), detail: form.detail.trim() });
+    setForm({ title: '', type: 'other', severity: 'medium', detail: '' });
+    setAdding(false);
+  }
+
+  return (
+    <section className="view-grid">
+      <div className="stats">
+        <Metric label="Open" value={stats.open || 0} />
+        <Metric label="Resolved" value={stats.resolved || 0} />
+        <Metric label="Total" value={stats.total || 0} />
+      </div>
+      <div className="panel span-2">
+        <div className="panel-head-row">
+          <PanelHeader icon={AlertTriangle} title={`Exceptions (${filtered.length})`} />
+          <div className="head-actions">
+            <button className="secondary" onClick={onScan}><RefreshCw size={15} /> Scan</button>
+            <button className="secondary" onClick={() => setAdding((v) => !v)}><Plus size={16} /> Add</button>
+          </div>
+        </div>
+        <div className="filter-row">
+          {['open', 'resolved', 'all'].map((f) => (
+            <button key={f} className={`chip ${filter === f ? 'chip-active' : ''}`} onClick={() => setFilter(f)}>{f[0].toUpperCase() + f.slice(1)}</button>
+          ))}
+        </div>
+        {adding && (
+          <div className="wf-card wf-editor">
+            <label className="ios-field"><span>Title</span><input value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} placeholder="What needs attention" autoFocus /></label>
+            <div className="ios-form-group">
+              <label className="ios-field"><span>Type</span>
+                <select value={form.type} onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}>
+                  {EXCEPTION_TYPES.map((t) => <option key={t} value={t}>{t.replaceAll('_', ' ')}</option>)}
+                </select>
+              </label>
+              <label className="ios-field"><span>Severity</span>
+                <select value={form.severity} onChange={(e) => setForm((f) => ({ ...f, severity: e.target.value }))}>
+                  {EXCEPTION_SEVERITIES.map((s) => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </label>
+            </div>
+            <label className="ios-field"><span>Detail</span><textarea value={form.detail} onChange={(e) => setForm((f) => ({ ...f, detail: e.target.value }))} placeholder="Optional context" /></label>
+            <div className="review-actions">
+              <button className="secondary" onClick={submit}><Check size={16} /> Add exception</button>
+              <button className="ghost-button" onClick={() => setAdding(false)}>Cancel</button>
+            </div>
+          </div>
+        )}
+        {filtered.length ? filtered.map((ex) => (
+          <div className="ex-card" key={ex.id}>
+            <div className="ex-head">
+              <strong>{ex.title}</strong>
+              <span className="badges">
+                <SeverityBadge severity={ex.severity} />
+                <span className="badge badge-muted">{String(ex.type).replaceAll('_', ' ')}</span>
+                {ex.status === 'resolved' && <span className="badge badge-ok">resolved</span>}
+              </span>
+            </div>
+            {ex.detail && <p className="ex-detail">{ex.detail}</p>}
+            <div className="review-actions">
+              {ex.status === 'open'
+                ? <button className="secondary" onClick={() => onUpdate(ex.id, { status: 'resolved' })}><Check size={16} /> Resolve</button>
+                : <button className="ghost-button" onClick={() => onUpdate(ex.id, { status: 'open' })}><RotateCcw size={15} /> Reopen</button>}
+            </div>
+          </div>
+        )) : <EmptyInline message="No exceptions in this view. Run a scan to detect issues." />}
+      </div>
+    </section>
+  );
+}
+
+function SeverityBadge({ severity }) {
+  const cls = severity === 'high' ? 'badge-bad' : severity === 'medium' ? 'badge-warn' : 'badge-muted';
+  return <span className={`badge ${cls}`}>{severity}</span>;
 }
 
 function Actions({ actionContext, setActionContext, result, onRun }) {
