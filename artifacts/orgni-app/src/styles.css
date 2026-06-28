@@ -2402,24 +2402,24 @@ label {
   box-shadow: 0 2px 6px -2px var(--accent-ring);
 }
 
-/* Selected row — soft accent pill, filled accent icon tile */
+/* Selected row — soft light-grey pill */
 .ios-item.active {
-  background: var(--accent-soft);
+  background: rgba(60, 60, 67, 0.09);
 }
 
 .ios-item.active .ios-icon {
-  background: linear-gradient(180deg, #f47b34, var(--accent));
-  color: #fff;
+  background: #e2e2e8;
+  color: var(--ink);
 }
 
 .ios-item.active .ios-label {
-  color: var(--accent-2);
+  color: var(--ink);
   font-weight: 600;
 }
 
 .ios-item.active .ios-badge {
   background: rgba(255, 255, 255, 0.7);
-  color: var(--accent-2);
+  color: var(--ink-2);
 }
 
 .ios-item.active .ios-badge.attention {
@@ -2474,7 +2474,7 @@ main {
   }
 
   .ios-item.active {
-    background: var(--accent-soft);
+    background: rgba(60, 60, 67, 0.09);
     border-color: transparent;
   }
 
