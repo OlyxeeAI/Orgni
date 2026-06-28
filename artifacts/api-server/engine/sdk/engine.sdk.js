@@ -76,7 +76,7 @@ const OrgniEngine = {
    * Accepts the full chat history so answers stay coherent across turns.
    * Answers are grounded in the knowledge map and source documents.
    */
-  chat: (orgId, messages, documents) => engine.chat(orgId, messages, documents),
+  chat: (orgId, messages, documents, mode) => engine.chat(orgId, messages, documents, mode),
 
   /**
    * Get the knowledge map history for an org (all versions).

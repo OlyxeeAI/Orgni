@@ -3149,3 +3149,192 @@ main {
 @media (max-width: 720px) {
   .home-lower { grid-template-columns: 1fr; }
 }
+
+/* ── Lucy: operations-analyst layout ─────────────────────────────────── */
+.chat-head-role {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-top: 1px;
+}
+
+.lucy-context-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  max-width: 760px;
+  margin: 12px auto 0;
+}
+
+.lucy-stat {
+  flex: 1 1 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.lucy-stat span {
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+/* Analysis block under Lucy's prose answer */
+.lucy-analysis {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 100%;
+}
+
+.lucy-evidence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.lucy-confidence {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.lucy-confidence.high   { background: rgba(34, 160, 94, 0.12);  color: #1d8a52; }
+.lucy-confidence.medium { background: rgba(242, 106, 27, 0.12); color: var(--accent-2); }
+.lucy-confidence.low    { background: rgba(60, 60, 67, 0.1);    color: var(--muted); }
+
+.lucy-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  padding: 12px 14px;
+}
+.lucy-card.warn {
+  border-color: rgba(242, 106, 27, 0.32);
+  background: rgba(242, 106, 27, 0.05);
+}
+
+.lucy-card-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--ink);
+  margin-bottom: 9px;
+}
+.lucy-card-head svg { color: var(--accent); flex: none; }
+.lucy-card.warn .lucy-card-head svg { color: var(--accent-2); }
+
+.lucy-steps,
+.lucy-list {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+.lucy-steps li::marker { color: var(--accent); font-weight: 650; }
+
+.lucy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lucy-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--panel);
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.lucy-action svg { color: var(--accent); flex: none; }
+.lucy-action:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+.lucy-trail { margin-top: 1px; }
+.lucy-trail-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 2px;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.lucy-trail-toggle svg { flex: none; }
+.lucy-trail-toggle svg.open { transform: rotate(90deg); }
+.lucy-trail-list {
+  margin: 7px 0 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* Dock: modes row + composer */
+.chat-dock {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lucy-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.lucy-mode {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--panel);
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.lucy-mode:hover:not(:disabled) { border-color: var(--line-strong); }
+.lucy-mode.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-2);
+}
+.lucy-mode:disabled { opacity: 0.5; cursor: not-allowed; }

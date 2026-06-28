@@ -113,13 +113,13 @@ const ask = asyncHandler(async (req, res) => {
 });
 
 const chat = asyncHandler(async (req, res) => {
-  const { messages } = req.body;
+  const { messages, mode } = req.body;
   const orgId        = req.org.id;
   const documents    = (await docModel.findByOrg(orgId)).filter(d => d.status === 'parsed');
 
   let result;
   try {
-    result = await OrgniEngine.chat(orgId, messages, documents);
+    result = await OrgniEngine.chat(orgId, messages, documents, mode);
   } catch (err) {
     return handleAIError(err, res);
   }

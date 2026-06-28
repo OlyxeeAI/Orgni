@@ -1,0 +1,119 @@
+The current Orgni app navigation is too overwhelming for an MVP.
+
+Do not rebuild the app. Do not touch the landing page. Make an incremental UI simplification only.
+
+Current sidebar has too many items:
+
+* Home
+* Sources
+* Knowledge
+* Review
+* Workflows
+* Exceptions
+* Assistant
+* Plugins
+
+Simplify the MVP navigation to only:
+
+* Home
+* Sources
+* Operating Model
+* Lucy
+
+Rules:
+
+* Do not remove existing functionality.
+* Do not delete current pages unless clearly unused.
+* Hide or merge navigation items into the new structure.
+* Preserve routes/components where possible.
+* Keep the app stable.
+
+New structure:
+
+1. Home
+   Purpose: command center.
+   Show simple summary cards:
+
+* documents uploaded/processed
+* findings found
+* items needing review
+* workflows detected
+* issues open
+* suggested next action
+
+Home should help the user know what to do next.
+
+2. Sources
+   Purpose: files only.
+   Keep:
+
+* upload files
+* processed files
+* failed files
+* document status
+* source details
+
+Do not mix review/workflow concepts heavily here.
+
+3. Operating Model
+   Purpose: what Orgni understood about the business.
+   Merge Knowledge, Review, Workflows, and Exceptions into this area using tabs.
+
+Tabs inside Operating Model:
+
+* Findings
+* Workflows
+* Issues
+
+Findings tab:
+
+* roles
+* departments
+* rules
+* approvals
+* risks
+* opportunities
+* approve/edit/reject actions
+* confidence and source evidence
+
+Workflows tab:
+
+* detected workflows
+* saved workflows
+* edit workflow
+* approve workflow
+* export JSON
+
+Issues tab:
+Rename “Exceptions” to “Issues” for the user-facing UI.
+Show:
+
+* low-confidence findings
+* missing documents
+* unclear approvers
+* conflicting rules
+* failed document parses
+* unsupported assistant answers
+
+4. Lucy
+   Purpose: assistant.
+   Rename Assistant to Lucy in the sidebar.
+   Lucy should remain grounded in uploaded sources and operating model.
+   Where possible, Lucy responses should offer actions:
+
+* Show evidence
+* Add to Operating Model
+* Create workflow
+* Mark as issue
+* Review finding
+
+Remove or hide Plugins from the MVP sidebar.
+Plugins can come back later under Settings or Integrations, but not now.
+
+Also avoid using too many technical terms in the UI:
+Use “Issues” instead of “Exceptions.”
+Use “Operating Model” instead of “Knowledge Map.”
+Use “Findings” instead of “Extracted Knowledge.”
+
+Definition of done:
+The app feels simpler for a first-time user. A user sees only Home, Sources, Operating Model, and Lucy in the main sidebar, while existing functionality is preserved inside the new structure.

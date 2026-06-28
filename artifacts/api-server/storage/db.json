@@ -5693,6 +5693,61 @@
         "reviewedBy": "Orgni UI"
       },
       "createdAt": "2026-06-28T00:56:36.874Z"
+    },
+    {
+      "id": "d1dd96a6-8b5f-4b44-a445-05d4eb540b47",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "type": "assistant_chat",
+      "description": "Chat: How do we handle deliveries?",
+      "meta": {
+        "grounded": true,
+        "turns": 1
+      },
+      "createdAt": "2026-06-28T01:04:35.365Z"
+    },
+    {
+      "id": "9b46fc2f-cf94-47a5-9d00-57baf773d101",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "type": "assistant_chat",
+      "description": "Chat: How do we onboard a supplier?",
+      "meta": {
+        "grounded": true,
+        "turns": 1
+      },
+      "createdAt": "2026-06-28T01:04:35.424Z"
+    },
+    {
+      "id": "f3b47167-1c73-4e99-89ed-7034db87c8d8",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "type": "assistant_chat",
+      "description": "Chat: How do we onboard a supplier?",
+      "meta": {
+        "grounded": true,
+        "turns": 1
+      },
+      "createdAt": "2026-06-28T01:10:45.590Z"
+    },
+    {
+      "id": "fbc9aa75-35e9-485a-bdf0-426a229d91c2",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "type": "assistant_chat",
+      "description": "Chat: How do we onboard a supplier?",
+      "meta": {
+        "grounded": true,
+        "turns": 1
+      },
+      "createdAt": "2026-06-28T01:14:21.319Z"
+    },
+    {
+      "id": "a8f44ac9-786a-40be-bbc4-db540359474a",
+      "orgId": "056f28d0-3a30-4a38-9f15-f38fe4de0f1f",
+      "type": "assistant_chat",
+      "description": "Chat: hi there",
+      "meta": {
+        "grounded": true,
+        "turns": 1
+      },
+      "createdAt": "2026-06-28T01:14:21.390Z"
     }
   ],
   "chunks": [],

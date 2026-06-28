@@ -31,7 +31,10 @@ const chatSchema = Joi.object({
   messages: Joi.array().items(Joi.object({
     role: Joi.string().valid('user', 'assistant').required(),
     content: Joi.string().min(1).max(4000).required()
-  })).min(1).max(50).required()
+  })).min(1).max(50).required(),
+  mode: Joi.string()
+    .valid('ask', 'explain', 'evidence', 'summarize', 'create_workflow', 'check_risk', 'find_missing')
+    .optional()
 });
 
 const actionSchema = Joi.object({

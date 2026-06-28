@@ -403,17 +403,17 @@ export function App() {
     window.location.href = '/';
   }
 
-  async function sendChat(text) {
+  async function sendChat(text, mode = 'ask') {
     const content = text.trim();
     if (!content || chatSending || !orgId) return;
 
-    const history = [...chatMessages, { role: 'user', content }];
+    const history = [...chatMessages, { role: 'user', content, mode }];
     setChatMessages(history);
     setChatSending(true);
     try {
       const data = await api(`/api/orgs/${orgId}/engine/chat`, {
         method: 'POST',
-        body: JSON.stringify({ messages: history.map(({ role, content }) => ({ role, content })) })
+        body: JSON.stringify({ messages: history.map(({ role, content }) => ({ role, content })), mode })
       });
       setChatMessages([
         ...history,
@@ -422,6 +422,14 @@ export function App() {
           content: data.answer,
           sources: data.sources || [],
           grounded: data.grounded,
+          confidence: data.confidence ?? null,
+          workflow: data.workflow || null,
+          rules: data.rules || [],
+          risks: data.risks || [],
+          missing: data.missing || [],
+          suggestedActions: data.suggestedActions || [],
+          trail: data.trail || null,
+          question: content,
           attachment: data.grounded ? buildAttachment(content, context) : null
         }
       ]);
@@ -432,6 +440,44 @@ export function App() {
       ]);
     } finally {
       setChatSending(false);
+    }
+  }
+
+  // Turn a Lucy suggested action into a real Orgni object using existing handlers.
+  async function runAssistantAction(action, msg) {
+    if (action.type === 'create_workflow' && msg.workflow) {
+      await saveWorkflow({
+        name: msg.workflow.name,
+        steps: msg.workflow.steps || [],
+        status: 'review_needed',
+        source: 'assistant'
+      });
+      setView('workflows');
+    } else if (action.type === 'create_exception') {
+      const hasMissing = msg.missing && msg.missing.length;
+      await createException({
+        title: 'Missing information for review',
+        type: hasMissing ? 'missing_document' : 'unsupported_answer',
+        severity: 'low',
+        relatedType: 'assistant',
+        detail: hasMissing
+          ? `Missing or unclear from sources: ${msg.missing.join('; ')}`
+          : `Lucy could not confirm an answer to: "${msg.question || ''}". Add a source that covers this.`
+      });
+      setView('exceptions');
+    } else if (action.type === 'create_risk_exception') {
+      await createException({
+        title: 'Risk flagged by Lucy',
+        type: 'approval_gap',
+        severity: 'medium',
+        relatedType: 'assistant',
+        detail: (msg.risks || []).join('; ') || 'Lucy flagged a control weakness for review.'
+      });
+      setView('exceptions');
+    } else if (action.type === 'review_findings') {
+      setView('review');
+    } else if (action.type === 'find_missing') {
+      sendChat(msg.question || 'What information is missing or unclear in our sources?', 'find_missing');
     }
   }
 
@@ -627,7 +673,7 @@ export function App() {
       {view === 'review' && <Validation validation={validation} onReview={reviewFinding} />}
       {view === 'workflows' && <Workflows data={workflows} onSave={saveWorkflow} onDelete={deleteWorkflow} />}
       {view === 'exceptions' && <Exceptions data={exceptions} onScan={scanExceptions} onCreate={createException} onUpdate={updateException} />}
-      {view === 'assistant' && <Assistant org={currentOrg} context={context} messages={chatMessages} sending={chatSending} onSend={sendChat} onReset={() => setChatMessages([])} onSource={() => setView('documents')} onOpenMap={() => setView('map')} />}
+      {view === 'assistant' && <Assistant org={currentOrg} context={context} messages={chatMessages} sending={chatSending} onSend={sendChat} onReset={() => setChatMessages([])} onSource={() => setView('documents')} onOpenMap={() => setView('map')} onAction={runAssistantAction} dashboard={dashboard} validation={validation} exceptions={exceptions} docCount={docs.length} />}
       {view === 'validation' && <Validation validation={validation} onReview={reviewFinding} />}
       {view === 'actions' && <Actions actionContext={actionContext} setActionContext={setActionContext} result={actionResult} onRun={runAction} />}
       {view === 'plugins' && <PluginsCatalog onOpen={setView} />}
@@ -796,11 +842,138 @@ function AssistantAttachment({ attachment, onOpenMap }) {
   );
 }
 
-function Assistant({ org, context, messages, sending, onSend, onReset, onSource, onOpenMap }) {
+const LUCY_MODES = [
+  { id: 'ask', label: 'Ask' },
+  { id: 'explain', label: 'Explain' },
+  { id: 'evidence', label: 'Find evidence' },
+  { id: 'summarize', label: 'Summarize' },
+  { id: 'create_workflow', label: 'Create workflow' },
+  { id: 'check_risk', label: 'Check risk' },
+  { id: 'find_missing', label: 'Find missing info' }
+];
+
+const ACTION_ICON = {
+  create_workflow: Workflow,
+  create_exception: AlertTriangle,
+  create_risk_exception: ShieldCheck,
+  review_findings: ShieldCheck,
+  find_missing: Brain
+};
+
+function confidenceLabel(c) {
+  if (c >= 0.8) return 'high';
+  if (c >= 0.55) return 'medium';
+  return 'low';
+}
+
+// The structured analysis Lucy attaches under her conversational answer:
+// evidence, confidence, workflow, missing info, actions and the audit trail.
+function LucyAnalysis({ msg, onAction, onOpenMap }) {
+  const [showTrail, setShowTrail] = useState(false);
+  const hasConfidence = typeof msg.confidence === 'number';
+  const sources = msg.sources || [];
+  const workflow = msg.workflow;
+  const missing = msg.missing || [];
+  const risks = msg.risks || [];
+  const rules = msg.rules || [];
+  const actions = msg.suggestedActions || [];
+  const trail = msg.trail;
+
+  const nothing = !hasConfidence && !sources.length && !workflow && !missing.length
+    && !risks.length && !rules.length && !actions.length && !trail;
+  if (nothing) return null;
+
+  return (
+    <div className="lucy-analysis">
+      {(hasConfidence || sources.length > 0) && (
+        <div className="lucy-evidence">
+          {hasConfidence && (
+            <span className={`lucy-confidence ${confidenceLabel(msg.confidence)}`}>
+              <ShieldCheck size={12} /> Confidence {Math.round(msg.confidence * 100)}%
+            </span>
+          )}
+          {sources.map((src, idx) => (
+            <span key={src.id || idx} className="chat-source-chip">
+              <FileText size={12} /> {src.name}{src.location ? ` · ${src.location}` : ''}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {workflow && workflow.steps?.length > 0 && (
+        <div className="lucy-card">
+          <div className="lucy-card-head"><Workflow size={14} /> Workflow found · {workflow.name}</div>
+          <ol className="lucy-steps">
+            {workflow.steps.map((s, idx) => <li key={idx}>{s}</li>)}
+          </ol>
+        </div>
+      )}
+
+      {rules.length > 0 && (
+        <div className="lucy-card">
+          <div className="lucy-card-head"><Scale size={14} /> Rules found</div>
+          <ul className="lucy-list">{rules.map((r, idx) => <li key={idx}>{r}</li>)}</ul>
+        </div>
+      )}
+
+      {risks.length > 0 && (
+        <div className="lucy-card warn">
+          <div className="lucy-card-head"><AlertTriangle size={14} /> Risks &amp; control gaps</div>
+          <ul className="lucy-list">{risks.map((r, idx) => <li key={idx}>{r}</li>)}</ul>
+        </div>
+      )}
+
+      {missing.length > 0 && (
+        <div className="lucy-card warn">
+          <div className="lucy-card-head"><AlertTriangle size={14} /> Missing / unclear</div>
+          <ul className="lucy-list">{missing.map((m, idx) => <li key={idx}>{m}</li>)}</ul>
+        </div>
+      )}
+
+      {actions.length > 0 && (
+        <div className="lucy-actions">
+          {actions.map((a) => {
+            const Icon = ACTION_ICON[a.type] || ArrowRight;
+            return (
+              <button key={a.type} className="lucy-action" onClick={() => onAction(a, msg)}>
+                <Icon size={14} /> {a.label}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {trail && (
+        <div className="lucy-trail">
+          <button className="lucy-trail-toggle" onClick={() => setShowTrail((v) => !v)}>
+            <Brain size={13} /> How Lucy reached this
+            <ChevronRight size={13} className={showTrail ? 'open' : ''} />
+          </button>
+          {showTrail && (
+            <ul className="lucy-trail-list">
+              <li>Searched {trail.documentsSearched} document{trail.documentsSearched === 1 ? '' : 's'}</li>
+              <li>Used {trail.sectionsUsed} relevant section{trail.sectionsUsed === 1 ? '' : 's'}</li>
+              <li>Found {trail.conflicts} conflict{trail.conflicts === 1 ? '' : 's'} between sources</li>
+              {typeof msg.confidence === 'number' && <li>Confidence: {Math.round(msg.confidence * 100)}%</li>}
+            </ul>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Assistant({ org, context, messages, sending, onSend, onReset, onSource, onOpenMap, onAction, dashboard, validation, exceptions, docCount }) {
   const [draft, setDraft] = useState('');
+  const [mode, setMode] = useState('ask');
   const scrollRef = useRef(null);
   const ready = Boolean(context);
   const empty = messages.length === 0;
+
+  const sourcesIndexed = docCount ?? (dashboard?.documents ?? 0);
+  const avgConfidence = validation?.stats?.averageConfidence;
+  const reviewNeeded = validation?.stats?.needsReview ?? 0;
+  const openExceptions = (exceptions?.exceptions || []).filter((e) => e.status !== 'resolved' && e.status !== 'dismissed').length;
 
   // Reveal each new assistant reply character-by-character (client-side
   // "typing" — the backend returns the whole answer at once).
@@ -835,7 +1008,7 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
   function submit(event) {
     event.preventDefault();
     if (!draft.trim()) return;
-    onSend(draft);
+    onSend(draft, mode);
     setDraft('');
   }
 
@@ -848,14 +1021,26 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
 
   return (
     <section className="chat-screen">
-      {!empty && (
-        <header className="chat-head">
-          <div className="chat-head-id">
-            <span className="chat-avatar">{ASSISTANT_NAME.charAt(0)}</span>
+      <header className="chat-head">
+        <div className="chat-head-id">
+          <span className="chat-avatar">{ASSISTANT_NAME.charAt(0)}</span>
+          <div>
             <h1>{ASSISTANT_NAME}</h1>
+            <span className="chat-head-role">Operations analyst</span>
           </div>
-          <button className="ghost chat-reset" onClick={onReset}><Plus size={15} /> New chat</button>
-        </header>
+        </div>
+        {!empty && <button className="ghost chat-reset" onClick={onReset}><Plus size={15} /> New chat</button>}
+      </header>
+
+      {ready && (
+        <div className="lucy-context-strip">
+          <div className="lucy-stat"><span>{sourcesIndexed}</span> sources indexed</div>
+          <div className="lucy-stat">
+            <span>{typeof avgConfidence === 'number' ? `${Math.round(avgConfidence * 100)}%` : '—'}</span> knowledge confidence
+          </div>
+          <div className="lucy-stat"><span>{reviewNeeded}</span> review needed</div>
+          <div className="lucy-stat"><span>{openExceptions}</span> open exceptions</div>
+        </div>
       )}
 
       <div className={`chat-stream ${empty ? 'is-empty' : ''}`} ref={scrollRef}>
@@ -865,13 +1050,13 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
             <h2>{ready ? `Hi, I'm ${ASSISTANT_NAME}.` : `Hi, I'm ${ASSISTANT_NAME} — let's get me up to speed.`}</h2>
             <p>
               {ready
-                ? `I know ${org?.name || 'this business'} inside out. Ask me about your people, workflows, rules or risks — and I'll pull up the map and the details right here as we talk.`
-                : `I learn how your business runs from your own documents. Add a few sources and build the map, then I can walk you through everything.`}
+                ? `I'm your operations analyst for ${org?.name || 'this business'}. Ask me about a process, rule or risk and I'll give you a grounded answer — with evidence, what's still unclear, and the next action you can take.`
+                : `I don't have enough business context yet. Upload an SOP, policy, invoice, spreadsheet or process document and build the map, then I can map your workflows and rules.`}
             </p>
             {ready ? (
               <div className="chat-starters">
                 {assistantStarters.map((s) => (
-                  <button key={s} className="chat-starter" onClick={() => onSend(s)}>
+                  <button key={s} className="chat-starter" onClick={() => onSend(s, mode)}>
                     <span>{s}</span>
                     <ArrowRight size={15} />
                   </button>
@@ -893,14 +1078,10 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
                   <div className="chat-bubble-col">
                     <div className={`chat-bubble ${msg.role} ${msg.error ? 'error' : ''}`}>
                       {isAssistant ? formatAssistant(shown, typingThis) : <p>{msg.content}</p>}
-                      {isAssistant && !typingThis && msg.sources?.length > 0 && (
-                        <div className="chat-sources">
-                          {msg.sources.map((src) => (
-                            <span key={src.id} className="chat-source-chip"><FileText size={12} /> {src.name}</span>
-                          ))}
-                        </div>
-                      )}
                     </div>
+                    {isAssistant && !typingThis && !msg.error && (
+                      <LucyAnalysis msg={msg} onAction={onAction} onOpenMap={onOpenMap} />
+                    )}
                     {isAssistant && !typingThis && msg.attachment && (
                       <AssistantAttachment attachment={msg.attachment} onOpenMap={onOpenMap} />
                     )}
@@ -920,19 +1101,34 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
         )}
       </div>
 
-      <form className="chat-composer" onSubmit={submit}>
-        <textarea
-          rows={1}
-          value={draft}
-          placeholder={ready ? 'Ask about your business…' : 'Add sources to start chatting…'}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={onKeyDown}
-          disabled={!ready || sending}
-        />
-        <button type="submit" className="chat-send" disabled={!ready || sending || !draft.trim()} aria-label="Send">
-          {sending ? <Loader2 size={18} className="spin" /> : <ArrowRight size={18} />}
-        </button>
-      </form>
+      <div className="chat-dock">
+        <div className="lucy-modes" role="tablist" aria-label="Lucy modes">
+          {LUCY_MODES.map((m) => (
+            <button
+              key={m.id}
+              className={`lucy-mode ${mode === m.id ? 'active' : ''}`}
+              onClick={() => setMode(m.id)}
+              disabled={!ready}
+              type="button"
+            >
+              {m.label}
+            </button>
+          ))}
+        </div>
+        <form className="chat-composer" onSubmit={submit}>
+          <textarea
+            rows={1}
+            value={draft}
+            placeholder={ready ? `Ask Lucy to ${(LUCY_MODES.find((m) => m.id === mode)?.label || 'Ask').toLowerCase()}…` : 'Add sources to start chatting…'}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={onKeyDown}
+            disabled={!ready || sending}
+          />
+          <button type="submit" className="chat-send" disabled={!ready || sending || !draft.trim()} aria-label="Send">
+            {sending ? <Loader2 size={18} className="spin" /> : <ArrowRight size={18} />}
+          </button>
+        </form>
+      </div>
     </section>
   );
 }
