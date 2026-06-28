@@ -2242,19 +2242,54 @@ label {
   white-space: nowrap;
 }
 
-/* Selected row — soft grey pill, graphite icon tile */
+/* Count / attention badge on a nav row */
+.ios-badge {
+  margin-left: auto;
+  flex-shrink: 0;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--ink-2);
+  background: #e6e6ec;
+}
+
+.ios-badge.attention {
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 2px 6px -2px var(--accent-ring);
+}
+
+/* Selected row — soft accent pill, filled accent icon tile */
 .ios-item.active {
-  background: rgba(60, 60, 67, 0.1);
+  background: var(--accent-soft);
 }
 
 .ios-item.active .ios-icon {
-  background: #e2e2e8;
-  color: var(--ink);
+  background: linear-gradient(180deg, #f47b34, var(--accent));
+  color: #fff;
 }
 
 .ios-item.active .ios-label {
-  color: var(--ink);
+  color: var(--accent-2);
   font-weight: 600;
+}
+
+.ios-item.active .ios-badge {
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--accent-2);
+}
+
+.ios-item.active .ios-badge.attention {
+  background: var(--accent);
+  color: #fff;
 }
 
 .ios-group {
@@ -2304,7 +2339,7 @@ main {
   }
 
   .ios-item.active {
-    background: rgba(60, 60, 67, 0.1);
+    background: var(--accent-soft);
     border-color: transparent;
   }
 

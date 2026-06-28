@@ -702,6 +702,10 @@ export function App() {
     </>
   );
 
+  const modelAttention = (dashboard?.counts?.findingsNeedingReview || 0) + (dashboard?.counts?.exceptionsOpen || 0);
+  const navBadge = { documents: docs.length || 0, model: modelAttention };
+  const navTone = { model: 'attention' };
+
   return (
     <div className="shell">
       <aside className="ios-rail" aria-label="Sidebar">
@@ -709,7 +713,7 @@ export function App() {
           <span className="ios-logo"><img src={orgniLogo} alt="Orgni logo" /></span>
           <span className="ios-brand-text">
             <strong>Orgni</strong>
-            <small>Operating model</small>
+            <small>{currentOrg?.name || 'Operating model'}</small>
           </span>
         </div>
 
@@ -717,6 +721,7 @@ export function App() {
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = view === item.id;
+            const badge = navBadge[item.id] || 0;
             return (
               <button
                 key={item.id}
@@ -726,6 +731,14 @@ export function App() {
               >
                 <span className="ios-icon"><Icon size={17} /></span>
                 <span className="ios-label">{item.label}</span>
+                {badge > 0 && (
+                  <span
+                    className={`ios-badge ${navTone[item.id] || ''}`}
+                    aria-label={navTone[item.id] === 'attention' ? `${badge} item${badge === 1 ? '' : 's'} need attention` : `${badge}`}
+                  >
+                    {badge}
+                  </span>
+                )}
               </button>
             );
           })}
