@@ -58,10 +58,10 @@ import logoJira from './assets/logos/jira.svg';
 import logoTrello from './assets/logos/trello.svg';
 
 const navItems = [
-  { id: 'home', label: 'Home', icon: LayoutDashboard },
+  { id: 'assistant', label: 'Lucy', icon: Sparkles },
   { id: 'documents', label: 'Sources', icon: Database },
   { id: 'model', label: 'Operating Model', icon: Layers3 },
-  { id: 'assistant', label: 'Lucy', icon: Sparkles }
+  { id: 'home', label: 'Overview', icon: LayoutDashboard }
 ];
 
 const ASSISTANT_NAME = 'Lucy';
@@ -255,7 +255,7 @@ function saveChat(orgId, messages) {
 const MODEL_LEGACY = { review: 'findings', validation: 'findings', workflows: 'workflows', exceptions: 'issues' };
 
 export function App() {
-  const [view, setView] = useState('home');
+  const [view, setView] = useState('assistant');
   const [modelTab, setModelTab] = useState('findings');
   const [orgs, setOrgs] = useState([]);
   const [orgId, setOrgId] = useState('');
