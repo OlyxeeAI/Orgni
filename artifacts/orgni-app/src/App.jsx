@@ -568,7 +568,7 @@ export function App() {
         {content}
       </main>
 
-      {showCreate && <CreateOrgModal onClose={() => setShowCreate(false)} onSubmit={createOrg} locked={!orgs.length} />}
+      {showCreate && <CreateOrgModal onClose={() => setShowCreate(false)} onSubmit={createOrg} />}
       {notice && <div className={`toast ${notice.tone}`}>{notice.message}</div>}
       {busy && <div className="busy"><Loader2 size={20} /> {busy}</div>}
     </div>
@@ -1775,13 +1775,13 @@ function Profile({ profile, setProfile, onSave, currentOrg, onLogout }) {
   );
 }
 
-function CreateOrgModal({ onClose, onSubmit, locked }) {
+function CreateOrgModal({ onClose, onSubmit }) {
   return (
-    <div className="modal-backdrop">
+    <div className="modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <form className="modal" onSubmit={onSubmit}>
         <div className="modal-head">
           <h2>New business</h2>
-          {!locked && <button type="button" className="icon-btn" onClick={onClose}><X size={16} /></button>}
+          <button type="button" className="icon-btn" onClick={onClose} aria-label="Close"><X size={16} /></button>
         </div>
         <label>Company name<input name="name" required minLength={2} autoFocus /></label>
         <label>Business type<input name="businessType" required minLength={2} placeholder="Logistics, retail, finance..." /></label>
