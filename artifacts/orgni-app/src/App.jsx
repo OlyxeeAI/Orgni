@@ -37,6 +37,7 @@ import {
   X
 } from 'lucide-react';
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { localApi } from './localApi.js';
 import orgniLogo from './assets/orgni-logo.png';
 import orgniWorkflowLogo from './assets/orgni-workflow.png';
 import orgniFinanceLogo from './assets/orgni-finance.png';
@@ -174,10 +175,21 @@ const productExposes = {
 
 async function api(path, options = {}) {
   const isForm = options.body instanceof FormData;
-  const response = await fetch(path, {
-    ...options,
-    headers: isForm ? options.headers : { 'Content-Type': 'application/json', ...(options.headers || {}) }
-  });
+  let response;
+  try {
+    response = await fetch(path, {
+      ...options,
+      headers: isForm ? options.headers : { 'Content-Type': 'application/json', ...(options.headers || {}) }
+    });
+  } catch {
+    // Backend unreachable (e.g. frontend-only deployment) — use on-device storage.
+    return localApi(path, options);
+  }
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    // No JSON API responding here (static host / SPA fallback) — use on-device storage.
+    return localApi(path, options);
+  }
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
     const detail = data.details?.join(', ') || data.error || data.message || response.statusText;

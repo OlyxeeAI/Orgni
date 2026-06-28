@@ -1,3 +1,1 @@
-- [Orgni multi-artifact build](orgni-vercel-build.md) — one Vercel project builds all artifacts; mockup-sandbox vite config must not throw on missing PORT during `vite build`.
-- [Org-scoped mutations](org-scoped-mutations.md) — every per-org mutation must verify record ownership at the model layer, not just route `:orgId`, or it's an IDOR.
-- [Request validation strips unknown fields](orgni-request-validation.md) — api-server Joi `validate()` uses `stripUnknown:true`; new request body fields must be added to the schema or they silently vanish.
+- [Orgni offline fallback](orgni-offline-fallback.md) — orgni-app falls back to localStorage when /api returns non-JSON; keep localApi shapes in lockstep with backend; real engine lives in artifacts/api-server/engine/ (not src).
