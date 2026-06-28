@@ -49,9 +49,11 @@ function extOf(name = '') {
 function dashboardFor(store, orgId) {
   const b = orgBucket(store, orgId);
   const exceptionsOpen = b.exceptions.filter((e) => e.status !== 'resolved').length;
+  const ctx = b.context || null;
+  const summary = ctx ? (ctx.summary?.plain_english_summary || '') : '';
   return {
-    summary: '',
-    knowledge: { status: 'empty' },
+    summary,
+    knowledge: { status: ctx ? 'ready' : 'empty' },
     counts: {
       documents: b.documents.length,
       failedDocuments: 0,
@@ -63,11 +65,61 @@ function dashboardFor(store, orgId) {
       workflowsDetected: 0,
       exceptionsTotal: b.exceptions.length,
       exceptionsOpen,
-      confidence: 0
+      confidence: ctx ? (ctx.confidence || 0) : 0
     },
     recentActivity: [],
-    recommendedNextSteps: []
+    recommendedNextSteps: ctx ? (ctx.recommendedNextSteps || []) : []
   };
+}
+
+function domainContext(ctx, domain) {
+  if (!ctx) return null;
+  if (domain === 'workflow') {
+    return {
+      workflows: ctx.workflows,
+      roles: ctx.roles,
+      dependencies: ctx.dependencies,
+      bottlenecks: ctx.bottlenecks,
+      blueprint: ctx.blueprint,
+      missingInformation: ctx.missingInformation
+    };
+  }
+  if (domain === 'finance') {
+    return {
+      rules: ctx.rules,
+      approvals: ctx.approvals,
+      exceptions: ctx.exceptions,
+      risks: ctx.risks,
+      gaps: ctx.gaps
+    };
+  }
+  return null;
+}
+
+// Builds the operating model by calling the Vercel serverless AI function
+// (/api/build). Called directly (not through api()) so it never recurses into
+// this fallback layer. Throws a clear error when AI is unavailable.
+async function buildModel(org, documents) {
+  let res;
+  try {
+    res = await fetch('/api/build', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        org,
+        documents: documents.map((d) => ({ id: d.id, name: d.name, text: d.content || '' }))
+      })
+    });
+  } catch {
+    throw new Error('Building the operating model needs the AI service, which is not reachable from this deployment.');
+  }
+  const ct = res.headers.get('content-type') || '';
+  if (!ct.includes('application/json')) {
+    throw new Error('Building the operating model needs an AI endpoint that is not deployed here. Add the /api/build serverless function and an AI API key.');
+  }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Failed to build the operating model.');
+  return data.context;
 }
 
 function exceptionStats(list) {
@@ -143,7 +195,9 @@ export async function localApi(path, options = {}) {
 
     // /api/orgs/:id/documents ...
     if (sub[0] === 'documents') {
-      if (sub.length === 1 && method === 'GET') return { documents: b.documents };
+      if (sub.length === 1 && method === 'GET') {
+        return { documents: b.documents.map(({ content, ...rest }) => rest) };
+      }
       if (sub.length === 1 && method === 'POST') {
         const files = options.body instanceof FormData ? options.body.getAll('files') : [];
         let added = 0;
@@ -156,14 +210,17 @@ export async function localApi(path, options = {}) {
           } catch {
             wordCount = 0;
           }
+          let content = '';
+          try { content = await file.text(); } catch { content = ''; }
           b.documents.push({
             id: newId(),
             name: file.name,
             fileType: extOf(file.name),
             fileSize: file.size || 0,
             wordCount,
-            status: 'ready',
-            parseError: null
+            status: 'parsed',
+            parseError: null,
+            content
           });
           added += 1;
         }
@@ -221,8 +278,27 @@ export async function localApi(path, options = {}) {
     if (sub[0] === 'engine') {
       const eng = sub.slice(1);
       if (eng[0] === 'validation' && eng.length === 1) return { stats: {}, items: [] };
-      if (eng[0] === 'history') return { versions: [] };
-      if (eng[0] === 'context') return { context: null };
+      if (eng[0] === 'history') return { versions: b.versions || [] };
+      if (eng[0] === 'context') {
+        if (eng.length === 1) return { context: b.context || null };
+        if (eng[1] === 'workflow' || eng[1] === 'finance') {
+          return { context: domainContext(b.context, eng[1]) };
+        }
+        return { context: null };
+      }
+      if (eng[0] === 'intake' && method === 'POST') {
+        if (!org) throw new Error('Business not found');
+        const context = await buildModel(org, b.documents.filter((d) => d.status === 'parsed'));
+        const version = (b.version || 0) + 1;
+        b.version = version;
+        b.context = { ...context, version };
+        b.versions = [
+          { version, generatedAt: new Date().toISOString(), confidence: context.confidence || 0 },
+          ...(b.versions || [])
+        ];
+        saveStore(store);
+        return { version };
+      }
       if (eng[0] === 'chat') {
         return {
           answer: `${OFFLINE_AI_MESSAGE} Your sources and notes are still saved on this device.`,

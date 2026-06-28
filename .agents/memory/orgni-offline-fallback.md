@@ -23,9 +23,23 @@ backend returns (e.g. `{organizations}`, `{organization}`, `{documents}`,
 `{answer,grounded,sources,...}`). If the backend response shape changes, update
 `localApi` in lockstep or offline mode silently breaks.
 
-**Known limitation (accepted):** AI-only endpoints (operating-model build /
-engine intake, Lucy real answers, scans) cannot run client-side — `localApi`
-returns a graceful offline message or throws a friendly error.
+**Operating-model build on Vercel (the one AI step that DOES run):** a Vercel
+serverless function at `api/build.js` (repo root) runs the AI extraction with the
+key server-side (`AI_API_KEY`/`ANTHROPIC_API_KEY` set as Vercel env vars, never
+in the browser). It returns a `context` object matching `getContext()`'s shape.
+`localApi`'s `engine/intake` handler calls `/api/build` via a RAW fetch (not
+through `api()`, to avoid recursing into the fallback), stores the returned
+context + version, and the dashboard then reports `knowledge.status:'ready'`.
+`vercel.json` must exclude `/api/` from the SPA rewrite (`/((?!api/).*)`) so the
+function is reachable; other `/api/*` paths then 404 (HTML) and fall back to
+`localApi` as before.
+
+**Why server-side, not a browser key:** user explicitly chose the secure path —
+an embedded AI key would be publicly visible to any site visitor.
+
+**Still offline (accepted):** Lucy's per-question chat and finding/exception
+scans still need AI per call and remain offline-stubbed in `localApi`. Only the
+model build was wired to the serverless function.
 
 # Where the Orgni backend actually lives
 
