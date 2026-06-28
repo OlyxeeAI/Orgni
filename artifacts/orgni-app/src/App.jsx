@@ -1050,11 +1050,7 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
     <section className="chat-screen">
       <header className="chat-head">
         <div className="chat-head-id">
-          <span className="chat-avatar">{ASSISTANT_NAME.charAt(0)}</span>
-          <div>
-            <h1>{ASSISTANT_NAME}</h1>
-            <span className="chat-head-role">Operations analyst</span>
-          </div>
+          <h1>Operations analyst</h1>
         </div>
         {!empty && <button className="ghost chat-reset" onClick={onReset}><Plus size={15} /> New chat</button>}
       </header>
@@ -1073,8 +1069,7 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
       <div className={`chat-stream ${empty ? 'is-empty' : ''}`} ref={scrollRef}>
         {empty ? (
           <div className="chat-welcome">
-            <span className="chat-welcome-orb">{ASSISTANT_NAME.charAt(0)}</span>
-            <h2>{ready ? `Hi, I'm ${ASSISTANT_NAME}.` : `Hi, I'm ${ASSISTANT_NAME} — let's get me up to speed.`}</h2>
+            <h2>{ready ? 'How can I help?' : "Let's get me up to speed."}</h2>
             <p>
               {ready
                 ? `I'm your operations analyst for ${org?.name || 'this business'}. Ask me about a process, rule or risk and I'll give you a grounded answer — with evidence, what's still unclear, and the next action you can take.`
@@ -1101,7 +1096,6 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
               const shown = typingThis ? msg.content.slice(0, typed) : msg.content;
               return (
                 <div key={i} className={`chat-row ${msg.role}`}>
-                  {isAssistant && <span className="chat-bubble-avatar">{ASSISTANT_NAME.charAt(0)}</span>}
                   <div className="chat-bubble-col">
                     <div className={`chat-bubble ${msg.role} ${msg.error ? 'error' : ''}`}>
                       {isAssistant ? formatAssistant(shown, typingThis) : <p>{msg.content}</p>}
@@ -1118,7 +1112,6 @@ function Assistant({ org, context, messages, sending, onSend, onReset, onSource,
             })}
             {sending && (
               <div className="chat-row assistant">
-                <span className="chat-bubble-avatar">{ASSISTANT_NAME.charAt(0)}</span>
                 <div className="chat-bubble assistant">
                   <span className="chat-typing"><i /><i /><i /></span>
                 </div>
