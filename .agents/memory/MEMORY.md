@@ -1,3 +1,4 @@
 - [Orgni offline fallback](orgni-offline-fallback.md) — orgni-app falls back to localStorage when /api returns non-JSON; keep localApi shapes in lockstep with backend; real engine lives in artifacts/api-server/engine/ (not src).
 - [AI provider config](ai-provider-config.md) — engine auto-detects Grok/xAI (Bearer at api.x.ai) vs Anthropic; key comes from deploy env, not Replit dev.
 - [iOS monochrome palette](ios-palette-decision.md) — orange brand retired for neutral graphite/grey iOS look; landing hero stays dark by design; keep new UI consistent.
+- [Vercel deploy shape](vercel-deploy.md) — Vercel serves static frontends only (orgni `/`, app `/app/`); app MUST build with BASE_PATH=/app/; API excluded (not serverless-friendly).
