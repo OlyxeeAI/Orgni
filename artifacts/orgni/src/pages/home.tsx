@@ -221,7 +221,7 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.2, delay: 0.4 }}
-                className="w-full mt-16 md:mt-24 -mb-20 sm:-mb-32 md:-mb-52 lg:-mb-64 relative z-0 aspect-video md:aspect-[21/9]"
+                className="w-full mt-16 md:mt-24 -mb-12 sm:-mb-16 md:-mb-24 relative z-0 aspect-video md:aspect-[21/9] overflow-hidden"
               >
                 <motion.div
                   style={{ scale: earthScale, opacity: earthOpacity, transformOrigin: "center center" }}
@@ -239,6 +239,7 @@ export default function Home() {
                     aria-hidden="true"
                   />
                 </motion.div>
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-b from-transparent to-black" />
               </motion.div>
             </div>
           </div>
