@@ -123,7 +123,7 @@ export default function Home() {
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const earthScale = useTransform(scrollYProgress, [0, 1], [1.7, 1]);
+  const earthScale = useTransform(scrollYProgress, [0, 1], [2.8, 1]);
   const earthOpacity = useTransform(scrollYProgress, [0, 0.85, 1], [1, 1, 0.6]);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -233,7 +233,7 @@ export default function Home() {
                 className="w-full mt-16 md:mt-24 relative z-0 aspect-video md:aspect-[21/9]"
               >
                 <motion.div
-                  style={{ scale: earthScale, opacity: earthOpacity }}
+                  style={{ scale: earthScale, opacity: earthOpacity, transformOrigin: "center top" }}
                   className="absolute inset-0"
                 >
                   <video
