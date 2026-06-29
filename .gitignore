@@ -47,8 +47,3 @@ Thumbs.db
 # Replit
 .cache/
 .local/
-
-# Runtime / user data — never commit (lowdb state + uploaded source documents)
-artifacts/api-server/storage/db.json
-artifacts/api-server/storage/uploads/
-artifacts/api-server/data/db.json
