@@ -1,0 +1,67 @@
+Yes. Important correction:
+
+**Orgni is the product.**
+There should not be separate products called **Orgni Workflow**, **Orgni Finance**, **Orgni Controls**, etc.
+
+Those should be described as **capabilities inside Orgni**, not separate products.
+
+Use this structure:
+
+| Level                         | Meaning                                          |
+| ----------------------------- | ------------------------------------------------ |
+| **Olyxee**                    | Company                                          |
+| **Orgni**                     | Product/platform                                 |
+| **Capabilities inside Orgni** | Context, memory, decisions, operations, controls |
+
+So on the website, say:
+
+> **Orgni is Olyxee’s product for live business context.**
+
+Not:
+
+> “Orgni Context, Orgni Memory, Orgni Operations…”
+
+Better wording:
+
+### What Orgni does
+
+Orgni helps organizations build live business context by connecting:
+
+* company knowledge
+* decisions
+* processes
+* systems
+* responsibilities
+* operating history
+* permissions
+
+### Capabilities
+
+Use capability names, not product names:
+
+| Capability     | Description                                                     |
+| -------------- | --------------------------------------------------------------- |
+| **Context**    | Structure company knowledge into usable business context.       |
+| **Memory**     | Capture decisions, changes, outcomes, and operating history.    |
+| **Operations** | Connect context to real processes, teams, and systems.          |
+| **Controls**   | Define what intelligent systems can access, suggest, or act on. |
+
+### Updated Replit instruction
+
+Replace any section that creates “Orgni Context,” “Orgni Memory,” “Orgni Operations,” or “Orgni Controls” as product modules.
+
+Instead, create one product:
+
+> **Orgni**
+
+Then describe its capabilities:
+
+> **Context, Memory, Operations, Controls**
+
+Clean website line:
+
+> **Orgni is one product: a live business context platform for modern operations.**
+
+Subline:
+
+> **It brings together company knowledge, decisions, processes, systems, and responsibilities so intelligent tools can operate with the right context.**

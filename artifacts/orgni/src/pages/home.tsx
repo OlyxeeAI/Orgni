@@ -66,22 +66,22 @@ const comparison = {
 
 const modules = [
   {
-    name: "Orgni Context",
+    name: "Context",
     icon: Network,
     desc: "Structure company knowledge into usable business context.",
   },
   {
-    name: "Orgni Memory",
+    name: "Memory",
     icon: History,
     desc: "Capture decisions, changes, outcomes, and operating history.",
   },
   {
-    name: "Orgni Operations",
+    name: "Operations",
     icon: Workflow,
     desc: "Connect context to real processes, teams, and systems.",
   },
   {
-    name: "Orgni Controls",
+    name: "Controls",
     icon: ShieldCheck,
     desc: "Define what intelligent systems can access, suggest, or act on.",
   },
@@ -427,10 +427,13 @@ export default function Home() {
         <section className="border-t border-white/10 py-16 md:py-24 bg-black scroll-mt-20 relative overflow-hidden" id="modules">
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative">
             <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">04</span> / PLATFORM</div>
+              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">04</span> / CAPABILITIES</div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-                The context layer for intelligent operations.
+                Orgni is one product. These are its capabilities.
               </h2>
+              <p className="text-lg text-white/60 mt-4">
+                A single live business context platform, not a suite of separate tools. Context, memory, operations, and controls work together inside Orgni.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

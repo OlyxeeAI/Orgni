@@ -25,8 +25,8 @@ const navGroups = Array.from(new Set(sections.map((s) => s.group))).map((group) 
 }));
 
 const usableBy = [
-  "Orgni Workflows",
-  "Orgni Finance",
+  "Operational workflows",
+  "Finance teams",
   "Internal dashboards",
   "External AI systems",
   "Business applications",
