@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, Command, ChevronDown, Menu, X, Network, Layers, Boxes, Clock } from "lucide-react";
+import { Search, Command, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useWaitlist } from "@/components/waitlist-dialog";
 import { useCommandPalette } from "@/components/command-palette";
@@ -32,9 +32,6 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
     ? "sticky top-0 z-50 w-full bg-black text-white transition-colors duration-300"
     : "sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-colors duration-300";
   const dividerClass = isDark ? "h-4 w-[1px] bg-white/20 hidden md:block" : "h-4 w-[1px] bg-border hidden md:block";
-  const navTrigger = isDark
-    ? "relative group px-3 py-2 flex items-center gap-1.5 cursor-pointer text-white hover:bg-white/10 transition-colors rounded-sm"
-    : "relative group px-3 py-2 flex items-center gap-1.5 cursor-pointer text-foreground hover:bg-muted transition-colors rounded-sm";
   const navLink = isDark
     ? "px-3 py-2 text-white/70 hover:text-white hover:bg-white/10 transition-colors rounded-sm"
     : "px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors rounded-sm";
@@ -63,52 +60,6 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
           <div className={dividerClass}></div>
 
           <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
-            <div className={navTrigger}>
-              <span>Product</span>
-              <ChevronDown className={isDark ? "h-3 w-3 text-white/60" : "h-3 w-3 text-muted-foreground"} />
-
-              {/* Mega Menu Dropdown */}
-              <div className="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                <div className="bg-background text-foreground border border-border shadow-xl p-2 rounded-none flex flex-col gap-1">
-                  <Link href="/#what" className="p-2 hover:bg-muted transition-colors flex items-start gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center border border-border bg-muted text-primary">
-                      <Network className="h-4 w-4" />
-                    </span>
-                    <span className="flex flex-col gap-0.5">
-                      <span className="font-mono text-xs font-bold">What Orgni does</span>
-                      <span className="text-xs text-muted-foreground">Map your operating context</span>
-                    </span>
-                  </Link>
-                  <Link href="/#modules" className="p-2 hover:bg-muted transition-colors flex items-start gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center border border-border bg-muted text-primary">
-                      <Layers className="h-4 w-4" />
-                    </span>
-                    <span className="flex flex-col gap-0.5">
-                      <span className="font-mono text-xs font-bold">Product modules</span>
-                      <span className="text-xs text-muted-foreground">The context layer platform</span>
-                    </span>
-                  </Link>
-                  <Link href="/#use-cases" className="p-2 hover:bg-muted transition-colors flex items-start gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center border border-border bg-muted text-primary">
-                      <Boxes className="h-4 w-4" />
-                    </span>
-                    <span className="flex flex-col gap-0.5">
-                      <span className="font-mono text-xs font-bold">Use cases</span>
-                      <span className="text-xs text-muted-foreground">Where context matters</span>
-                    </span>
-                  </Link>
-                  <Link href="/#modules" className="p-2 hover:bg-muted transition-colors flex items-start gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center border border-border bg-muted text-primary">
-                      <Clock className="h-4 w-4" />
-                    </span>
-                    <span className="flex flex-col gap-0.5">
-                      <span className="font-mono text-xs font-bold">Orgni Memory</span>
-                      <span className="text-xs text-muted-foreground">Decisions and operating history</span>
-                    </span>
-                  </Link>
-                </div>
-              </div>
-            </div>
             <Link href="/docs" className={navLink}>Docs</Link>
             <Link href="/api-reference" className={navLink}>API</Link>
             <Link href="/pricing" className={navLink}>Pricing</Link>
