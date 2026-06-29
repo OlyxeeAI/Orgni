@@ -1,10 +1,15 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm run typecheck && pnpm --filter @workspace/orgni run build && BASE_PATH=/app/ pnpm --filter @workspace/orgni-app run build && node ./vercel-build.mjs",
+  "buildCommand": "pnpm run typecheck && pnpm --filter @workspace/orgni run build && BASE_PATH=/app/ pnpm --filter @workspace/orgni-app run build && pnpm --filter @workspace/api-server run build && node ./vercel-build.mjs",
   "outputDirectory": "public",
+  "functions": {
+    "api/*.js": {
+      "maxDuration": 60
+    }
+  },
   "rewrites": [
     { "source": "/app", "destination": "/app/index.html" },
     { "source": "/app/:path*", "destination": "/app/index.html" },
-    { "source": "/:path*", "destination": "/index.html" }
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }

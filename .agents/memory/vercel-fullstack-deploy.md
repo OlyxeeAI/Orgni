@@ -1,66 +1,68 @@
 ---
 name: Vercel single-project full-stack deploy
-description: How the Orgni monorepo (marketing + app SPA + Express engine) deploys as ONE Vercel project. User NEVER deploys on Replit.
+description: How the Orgni monorepo (marketing + app SPA + Express engine) deploys as ONE Vercel project.
 ---
 
 # Orgni on Vercel (one project)
 
-**Hard constraint:** user is adamant — NEVER deploy on Replit. Vercel only.
+**Deploy target:** the user deploys this repo on Vercel (GitHub → Vercel), not on
+Replit. Keep the Vercel path working.
 
-Layout served from a single Vercel project:
+Everything is served from a single Vercel project:
 - `/`        → orgni marketing SPA (built with base `/`)
 - `/app/`    → orgni-app dashboard SPA (built with `BASE_PATH=/app/`)
 - `/api/*`   → Express "engine" backend as ONE serverless function
 
-**Why this shape:** frontends fetch root-relative `/api/...`, so everything must
+**Why this shape:** both SPAs fetch root-relative `/api/...`, so everything must
 live under one origin. The app SPA is served under `/app/` but its API calls use
 absolute `/api/...` (not base-relative), which correctly hit the function.
 
-## The moving parts
-- Root `package.json` `build` builds orgni → orgni-app (BASE_PATH=/app/) →
-  api-server `build:vercel`, then `collect:public` copies into `public/` and
-  `public/app/`. `vercel.json` outputDirectory is `public`.
-- `vercel.json` rewrites: `/app`, `/app/(.*)`, then `/(.*)` → respective
-  `index.html`. Rewrites only fire when no file/function matches, so static
-  assets and the `/api` function are safe; list `/app` rules BEFORE the catch-all.
-- `api/[[...path]].js` (repo root) requires the bundle's default export (Express
-  app). Optional catch-all matches `/api` and `/api/*`; Vercel forwards the full
-  URL and Express is mounted at `/api`, so paths line up with no stripping.
-- `artifacts/api-server/build-vercel.mjs` esbuilds `src/app.ts` → `dist/vercel.cjs`
-  (CJS, self-contained). Externalize ONLY `*.node`, `pg-native`, `pg-cloudflare`,
-  `pino-pretty`. Entry is app.ts because it default-exports the app with NO
-  `.listen()` (index.ts is the one that listens — do not use it as the entry).
+## The moving parts (all at repo root)
+- `vercel.json`: `buildCommand` builds orgni (base `/`), orgni-app
+  (`BASE_PATH=/app/`), then api-server, then `node ./vercel-build.mjs`.
+  `outputDirectory` = `public`. `functions` sets `api/*.js` maxDuration 60.
+  `rewrites`: `/app`, `/app/:path*` → their index.html, then SPA catch-all
+  `/((?!api/).*)` → `/index.html` (excludes `/api`; functions resolve before
+  rewrites anyway).
+- `vercel-build.mjs`: copies `artifacts/orgni/dist/public` → `public/` and
+  `artifacts/orgni-app/dist/public` → `public/app/`. `public/` is gitignored.
+- `api/[...path].js` + `api/index.js`: tiny CJS shims, both
+  `module.exports = require("../artifacts/api-server/dist/vercel.cjs").default`.
+  Vercel forwards the full URL; the app is mounted at `/api`, so no path stripping.
 
-## Serverless-safety rules (read-only FS, freeze-after-response)
-- Storage (MVP = NO DATABASE): `engine/db/index.js` defaults to lowdb; Postgres
-  is OPT-IN only via `ORGNI_DB_DRIVER=postgres` (it does NOT auto-switch on
-  `DATABASE_URL`). The user explicitly wants no database for the MVP.
-  - lowdb writes a JSON file; on Vercel the FS is read-only except the OS temp
-    dir, so `bootstrap.js` anchors storage at `os.tmpdir()/orgni-storage` when
-    `process.env.VERCEL` is set (else `artifacts/api-server/storage`). This means
-    data on Vercel is EPHEMERAL (per-instance, lost on cold start) — fine for an
-    MVP/demo, NOT real persistence. Flip to Postgres later for durability.
-  - Postgres path (when opted in) reuses the SAME Replit `DATABASE_URL` as
-    lib/db's waitlist. `postgres.adapter.js` auto-creates per-collection tables
-    (`id TEXT PK, data JSONB, created_at, updated_at`) via `CREATE TABLE IF NOT
-    EXISTS` — race-safe across cold starts.
-- Uploads: multer `memoryStorage` (no disk). Parsing is buffer-based
-  (`parser.service.parseBuffer`) and AWAITED in the controller — serverless may
-  freeze right after responding, so fire-and-forget parsing is unreliable.
-- Logger (`engine/db/logger.js`): console-only by default; file transports only
-  if `ORGNI_LOG_TO_FILE=true`. Keep it unset on Vercel.
-- pino (`src/lib/logger.ts`): pretty transport only when NODE_ENV!=production, so
-  the prod JSON path needs no worker files — safe to bundle without the plugin.
-- PG pool tuned for serverless fan-out: low `max` (default 3), short idle/connect
-  timeouts, `allowExitOnIdle: true`. Override via `PG_POOL_MAX` etc.
+## The two api-server bundles (artifacts/api-server/build.mjs)
+One `build.mjs` emits BOTH, from different entries:
+- `dist/index.mjs` — ESM, entry `src/index.ts` (calls `app.listen`). Used by the
+  Replit dev workflow / any always-on host. Externalizes many pure-JS deps
+  (lowdb/winston/mammoth/pdf-parse) because they don't bundle cleanly into ESM.
+- `dist/vercel.cjs` — **CJS, self-contained**, entry `src/app.ts` (exports the
+  app, NO listen). Externalize ONLY `*.node`, `pg-native`, `pg-cloudflare`,
+  `pino-pretty`. CJS handles the engine's dynamic requires, so EVERYTHING else is
+  bundled in and the function does NOT depend on node_modules tracing at runtime.
+  **Why CJS self-contained:** an ESM bundle with externals forces Vercel to trace
+  mammoth/pdf-parse/winston from node_modules (fragile); bundling them in CJS is
+  robust. Bundle is ~15MB (well under Vercel's 250MB unzipped limit).
 
-**Required Vercel env:** `DATABASE_URL` (and `NODE_ENV=production`, which Vercel
-sets automatically). AI assistant is optional (Anthropic integration env vars).
+## Serverless-safety facts (already true in the engine code)
+- Uploads: multer `memoryStorage()` (no disk); parsing is buffer-based and AWAITED
+  in the controller (serverless may freeze right after responding).
+- winston logger (`engine/db/logger.js`): Console only; file transports opt-in via
+  `ORGNI_LOG_TO_FILE=true` — keep unset on Vercel.
+- pino (`src/lib/logger.ts`): pretty transport only when `NODE_ENV!=production`, so
+  prod needs no worker-thread transport files. (A local require WITHOUT
+  NODE_ENV=production WILL crash trying to load a thread-stream worker — test the
+  bundle with `NODE_ENV=production`.)
+- Storage driver (`engine/db/index.js`): defaults to lowdb; Postgres is OPT-IN via
+  `ORGNI_DB_DRIVER=postgres` (does NOT auto-switch on `DATABASE_URL`). On Vercel
+  lowdb writes to `os.tmpdir()` (bootstrap.js anchors there when `process.env.VERCEL`
+  is set) — EPHEMERAL per-instance. Use Postgres for real persistence.
+- `postgres.adapter.js` auto-creates per-collection tables (`CREATE TABLE IF NOT
+  EXISTS`, race-safe). PG pool tuned low for serverless fan-out.
 
-**AI must never break the app without a key.** Default intake extraction is
-deterministic (`ORGNI_USE_LLM_EXTRACTION` is off by default) and `ask` uses the
-deterministic extractor — neither needs a key. The only default AI runtime path
-is `chat`; it checks `ai.isConfigured()` and falls back to the same deterministic
-context answerer (and also catches MISSING_API_KEY/AUTH_ERROR at call time), so
-chat degrades to grounded retrieval instead of 5xx. Intake's opt-in LLM path
-still fails loudly without a key by design (a fake empty knowledge map is worse).
+## Required Vercel env for a fully-working app
+- `ORGNI_DB_DRIVER=postgres` + `DATABASE_URL` (with provider SSL) → real persistence.
+- AI key: `AI_API_KEY` (aliases: `XAI_API_KEY`/`GROK_API_KEY`/`ANTHROPIC_API_KEY`);
+  optional `AI_PROVIDER` (default `grok`), `AI_MODEL`. Without a key the app still
+  works: chat/ask fall back to the deterministic extractor; only the opt-in LLM
+  intake path (`ORGNI_USE_LLM_EXTRACTION`) fails loudly by design.
+- `NODE_ENV=production` is set by Vercel automatically.
