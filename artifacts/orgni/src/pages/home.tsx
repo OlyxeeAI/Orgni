@@ -251,7 +251,6 @@ export default function Home() {
 
         {/* 2. Problem Section */}
         <section className="py-20 md:py-28 relative z-10 overflow-hidden">
-          <div className="pointer-events-none absolute -top-20 -left-20 h-80 w-80 rounded-full bg-primary/10 blur-3xl"></div>
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 md:gap-16 items-start">
               <div>
@@ -406,7 +405,7 @@ export default function Home() {
               </Card>
 
               {/* Live */}
-              <Card className="p-6 md:p-8 rounded-sm border-white/10 bg-white/[0.05] text-white border-t-4 border-t-primary shadow-2xl shadow-primary/20">
+              <Card className="p-6 md:p-8 rounded-sm border-white/10 bg-white/[0.05] text-white border-t-4 border-t-primary">
                 <div className="font-mono text-xs font-bold uppercase tracking-widest text-primary mb-6">
                   Live business context
                 </div>
@@ -427,7 +426,6 @@ export default function Home() {
 
         {/* 5. Product Modules Section */}
         <section className="border-t border-white/10 py-16 md:py-24 bg-black scroll-mt-20 relative overflow-hidden" id="modules">
-          <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 h-64 w-[700px] bg-primary/[0.07] blur-3xl"></div>
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative">
             <div className="max-w-2xl mb-10 md:mb-12">
               <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">04</span> / PLATFORM</div>
@@ -521,7 +519,6 @@ export default function Home() {
                 transition={{ duration: 0.8 }}
                 className="relative"
               >
-                <div className="pointer-events-none absolute inset-0 -z-10 bg-primary/10 blur-3xl rounded-full"></div>
                 <img
                   src={architectureImg}
                   alt="Orgni context layer connecting business knowledge, processes, decisions, and systems to intelligent operations"
@@ -537,7 +534,6 @@ export default function Home() {
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto">
             <div className="relative overflow-hidden border border-white/10 bg-white/5 rounded-sm py-16 md:py-24 px-6 text-center max-w-4xl mx-auto">
               <div className="absolute inset-0 opacity-[0.07] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:48px_48px]"></div>
-              <div className="pointer-events-none absolute -bottom-24 left-1/2 -translate-x-1/2 h-72 w-[520px] bg-primary/15 blur-3xl rounded-full"></div>
               <div className="relative z-10">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-6">
                   Build your business context layer.
