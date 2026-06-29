@@ -171,8 +171,8 @@ export default function Home() {
 
       <main className="flex-1 overflow-hidden">
         {/* 1. Hero Section */}
-        <section ref={heroRef} className="bg-black text-white relative overflow-hidden">
-          <div className="container max-w-screen-xl px-4 md:px-8 pt-20 md:pt-32 pb-24 md:pb-40 mx-auto relative z-10">
+        <section ref={heroRef} className="bg-black text-white relative">
+          <div className="container max-w-screen-xl px-4 md:px-8 pt-20 md:pt-32 pb-0 mx-auto relative z-10">
             <div className="flex flex-col items-center text-center space-y-8 max-w-4xl mx-auto">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
@@ -230,7 +230,7 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.2, delay: 0.4 }}
-                className="w-full mt-16 md:mt-24 relative z-0 aspect-video md:aspect-[21/9]"
+                className="w-full mt-16 md:mt-24 -mb-20 sm:-mb-32 md:-mb-52 lg:-mb-64 relative z-0 aspect-video md:aspect-[21/9]"
               >
                 <motion.div
                   style={{ scale: earthScale, opacity: earthOpacity, transformOrigin: "center top" }}
@@ -254,7 +254,7 @@ export default function Home() {
         </section>
 
         {/* 2. Problem Section */}
-        <section className="border-t border-white/10 py-16 md:py-24 relative bg-black">
+        <section className="py-16 md:py-24 relative z-10">
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 md:gap-16 items-start">
               <div>
