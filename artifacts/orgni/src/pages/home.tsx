@@ -192,7 +192,7 @@ export default function Home() {
                 <Button
                   size="lg"
                   onClick={open}
-                  className="w-full sm:w-auto rounded-sm bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)] h-14 px-8 text-base font-bold"
+                  className="w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-base font-bold"
                 >
                   Request access
                 </Button>
