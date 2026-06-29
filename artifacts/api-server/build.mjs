@@ -29,15 +29,6 @@ async function buildAll() {
     // - use path traversal to read files (e.g. @google-cloud/secret-manager loads sibling .proto files)
     external: [
       "*.node",
-      // Ported Orgni engine deps that don't bundle cleanly into ESM:
-      // - pdf-parse / mammoth read sibling files at runtime
-      // - lowdb v1 / winston use dynamic requires
-      "pdf-parse",
-      "pdf-parse/*",
-      "mammoth",
-      "lowdb",
-      "lowdb/*",
-      "winston",
       "sharp",
       "better-sqlite3",
       "sqlite3",
@@ -126,23 +117,6 @@ globalThis.__filename = __bannerUrl.fileURLToPath(import.meta.url);
 globalThis.__dirname = __bannerPath.dirname(globalThis.__filename);
     `,
     },
-  });
-
-  // Self-contained CommonJS bundle for the Vercel serverless function.
-  // Entry is src/app.ts (exports the Express app; NO app.listen). Everything is
-  // bundled in — CJS handles the ported engine's dynamic requires (lowdb v1,
-  // winston, mammoth, pdf-parse) that the ESM build above must externalize — so
-  // the deployed function does NOT rely on node_modules tracing at runtime.
-  // Only truly-native or dev-only modules are externalized.
-  await esbuild({
-    entryPoints: [path.resolve(artifactDir, "src/app.ts")],
-    platform: "node",
-    bundle: true,
-    format: "cjs",
-    outfile: path.resolve(distDir, "vercel.cjs"),
-    logLevel: "info",
-    external: ["*.node", "pg-native", "pg-cloudflare", "pino-pretty"],
-    sourcemap: "linked",
   });
 }
 
