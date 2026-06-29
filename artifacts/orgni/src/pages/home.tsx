@@ -123,7 +123,6 @@ export default function Home() {
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const earthScale = useTransform(scrollYProgress, [0, 1], [1.8, 1]);
   const earthOpacity = useTransform(scrollYProgress, [0, 0.85, 1], [1, 1, 0.6]);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -219,16 +218,16 @@ export default function Home() {
                 Built by Olyxee, a research and infrastructure company for operational intelligence.
               </motion.p>
 
-              {/* Earth video - blended into the black background, zooms on scroll.
-                  Sits behind the heading (z-0 vs z-20) so a scaled-up video never obstructs the text. */}
+              {/* Earth video - blended into the black background, fades on scroll.
+                  Sits behind the heading (z-0 vs z-20) so it never obstructs the text. */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.2, delay: 0.4 }}
-                className="w-full mt-16 md:mt-24 -mb-12 sm:-mb-16 md:-mb-24 relative z-0 aspect-video md:aspect-[21/9] overflow-hidden"
+                className="w-full mt-16 md:mt-24 -mb-12 sm:-mb-16 md:-mb-24 relative z-0 aspect-square sm:aspect-video md:aspect-[16/9] overflow-hidden"
               >
                 <motion.div
-                  style={{ scale: earthScale, opacity: earthOpacity, transformOrigin: "center center" }}
+                  style={{ opacity: earthOpacity, transformOrigin: "center center" }}
                   className="absolute inset-0"
                 >
                   <video
