@@ -1346,7 +1346,7 @@ function BrandGlyph({ icon: Icon, iconData, mark, color, image }) {
   if (image) {
     return <span className="brand-glyph brand-glyph-image"><img src={image} alt="" /></span>;
   }
-  const brand = color || `#${iconData?.hex || 'f26a1b'}`;
+  const brand = color || `#${iconData?.hex || '1d1d1f'}`;
   return (
     <span className="brand-glyph brand-glyph-solid" style={{ '--brand': brand }}>
       {Icon ? <Icon size={20} /> : iconData ? (

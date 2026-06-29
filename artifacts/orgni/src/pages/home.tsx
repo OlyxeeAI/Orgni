@@ -293,7 +293,7 @@ export default function Home() {
                 {/* Core */}
                 <div className="shrink-0 h-24 w-24 md:h-32 md:w-32 bg-primary flex items-center justify-center shadow-2xl shadow-primary/40 relative group my-4 md:my-0 rounded-sm">
                   <div className="absolute inset-0 border border-primary/50 animate-ping rounded-none"></div>
-                  <img src={`${import.meta.env.BASE_URL}orgni-logo.png`} alt="Orgni" className="h-12 w-12 md:h-16 md:w-16 object-contain" />
+                  <img src={`${import.meta.env.BASE_URL}orgni-logo.png`} alt="Orgni" className="h-12 w-12 md:h-16 md:w-16 object-contain grayscale" />
                   <span className="absolute -bottom-8 font-mono text-[10px] md:text-sm font-bold text-white whitespace-nowrap bg-black/40 px-2 py-0.5 rounded md:bg-transparent md:px-0">ORGNI CORE</span>
                   
                   {/* Connectors (visible only on desktop) */}

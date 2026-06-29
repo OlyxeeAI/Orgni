@@ -56,7 +56,7 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
       <div className="flex h-14 items-center px-4 md:px-6 w-full justify-between">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2.5">
-            <img src={`${import.meta.env.BASE_URL}orgni-logo.png`} alt="Orgni logo" className="h-6 w-6 rounded object-cover" />
+            <img src={`${import.meta.env.BASE_URL}orgni-logo.png`} alt="Orgni logo" className="h-6 w-6 rounded object-cover grayscale" />
             <span className="font-mono font-bold tracking-tight text-base">ORGNI</span>
           </Link>
 
