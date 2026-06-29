@@ -1,0 +1,165 @@
+Update the current Orgni website/repo to reflect the new product positioning.
+
+Goal:
+Orgni should be positioned as a product for “live business context,” not as a generic AI workflow, chatbot, or document assistant.
+
+Core message:
+“Live business context for modern operations.”
+
+Product definition:
+Orgni maps how a business works — its knowledge, processes, decisions, systems, and responsibilities — so intelligent tools can operate with the right context.
+
+Company/product distinction:
+
+* Olyxee is the company.
+* Orgni is the product/platform.
+* Olyxee builds research and infrastructure for operational intelligence.
+* Orgni is Olyxee’s first product for live business context.
+
+Update the homepage copy and structure to match this:
+
+1. Hero section
+
+Headline:
+Live business context for modern operations.
+
+Subheadline:
+Orgni helps teams turn business knowledge, decisions, processes, and systems into a living context layer for intelligent operations.
+
+Primary CTA:
+Request access
+
+Secondary CTA:
+Explore Orgni
+
+Small line under CTA:
+Built by Olyxee, a research and infrastructure company for operational intelligence.
+
+2. Problem section
+
+Title:
+Your business changes faster than your systems understand.
+
+Body:
+Company knowledge lives across documents, chats, spreadsheets, tools, and people. Decisions are made every day, but the context behind them is rarely captured. Processes change, responsibilities shift, and teams lose operational memory.
+
+Orgni creates a live context layer that keeps your business understandable as it operates.
+
+3. What Orgni does section
+
+Title:
+Orgni maps the operating context of your business.
+
+Create four cards:
+
+Knowledge
+Documents, policies, records, notes, and internal knowledge.
+
+Processes
+How work moves across teams, systems, and approvals.
+
+Decisions
+What was decided, why, by whom, and with what evidence.
+
+Systems
+The tools, data, and records your operations depend on.
+
+4. Comparison section
+
+Title:
+From static knowledge to live operational context.
+
+Create a two-column comparison:
+
+Static knowledge:
+
+* Documents stored somewhere
+* Answers without memory
+* Scattered decisions
+* Manual process understanding
+* AI that guesses
+
+Live business context:
+
+* Knowledge connected to operations
+* Context that improves over time
+* Traceable decision history
+* Structured operating logic
+* Intelligent systems with business context
+
+5. Product modules section
+
+Title:
+The context layer for intelligent operations.
+
+Create four modules:
+
+Orgni Context
+Structure company knowledge into usable business context.
+
+Orgni Memory
+Capture decisions, changes, outcomes, and operating history.
+
+Orgni Operations
+Connect context to real processes, teams, and systems.
+
+Orgni Controls
+Define what intelligent systems can access, suggest, or act on.
+
+6. Use cases section
+
+Title:
+Built for operations where context matters.
+
+Create four use cases:
+
+Finance
+Reconcile records, understand decisions, and maintain financial context.
+
+Logistics
+Connect shipments, suppliers, documents, exceptions, and customer updates.
+
+Operations
+Give teams a live view of how work actually moves.
+
+Knowledge
+Make company knowledge usable beyond search.
+
+7. Why now section
+
+Title:
+Intelligence is getting stronger. Context is the bottleneck.
+
+Body:
+Modern AI can reason, write, code, plan, and use tools. But inside a company, intelligence is only useful when it understands the business. Orgni gives organizations the context layer needed for intelligent systems to support real operations.
+
+8. Final CTA section
+
+Title:
+Build your business context layer.
+
+Body:
+Orgni helps your organization become understandable to intelligent systems.
+
+CTA:
+Request access
+
+Design direction:
+
+* Keep the existing visual identity if present.
+* Use a serious, minimal, technical, infrastructure feel.
+* Avoid hype.
+* Avoid emojis.
+* Avoid overly futuristic language.
+* Avoid “ChatGPT for business,” “AI workflow automation,” “AI agents for teams,” or “chat with your documents.”
+* The design should feel like serious infrastructure software.
+
+Implementation requirements:
+
+* Update page copy across the current landing page.
+* Keep the site responsive.
+* Preserve existing routing and components where possible.
+* If the site has reusable section components, update them instead of duplicating code.
+* Ensure CTAs point to the existing contact, waitlist, or request-access route. If none exists, use a mailto or placeholder route /request-access.
+* Check for build errors and fix them.
+* Keep code clean and consistent with the existing stack.

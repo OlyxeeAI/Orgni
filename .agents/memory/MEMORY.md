@@ -1,0 +1,2 @@
+- [createArtifact whole-tree scan](createartifact-tree-scan.md) — createArtifact registers EVERY artifact.toml in the workspace tree; an in-tree backup dir becomes duplicate artifacts/workflows.
+- [Vite config env guard](vite-config-env-guard.md) — artifact vite.config must guard PORT/BASE_PATH throws behind `command === "serve"`, else `pnpm run build` fails at config load.

@@ -18,3 +18,10 @@ expertMode = true
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 20000
+
+[userenv]
+
+[userenv.shared]
+AI_PROVIDER = "grok"
+AI_BASE_URL = "https://api.x.ai"
+AI_MODEL = "grok-2-latest"
