@@ -246,11 +246,12 @@ export default function Home() {
         </section>
 
         {/* 2. Problem Section */}
-        <section className="py-16 md:py-24 relative z-10">
-          <div className="container max-w-screen-xl px-4 md:px-8 mx-auto">
+        <section className="py-20 md:py-28 relative z-10 overflow-hidden">
+          <div className="pointer-events-none absolute -top-20 -left-20 h-80 w-80 rounded-full bg-primary/10 blur-3xl"></div>
+          <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 md:gap-16 items-start">
               <div>
-                <div className="font-mono text-xs font-bold text-white/50 mb-4">01 / THE GAP</div>
+                <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">01</span> / THE GAP</div>
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">
                   Your business changes faster than your systems understand.
                 </h2>
@@ -259,7 +260,7 @@ export default function Home() {
                 <p>
                   Company knowledge lives across documents, chats, spreadsheets, tools, and people. Decisions are made every day, but the context behind them is rarely captured. Processes change, responsibilities shift, and teams lose operational memory.
                 </p>
-                <p className="text-white">
+                <p className="text-white border-l-2 border-primary pl-5">
                   Orgni creates a live context layer that keeps your business understandable as it operates.
                 </p>
               </div>
@@ -271,7 +272,7 @@ export default function Home() {
         <section className="border-t border-white/10 py-16 md:py-24 bg-black scroll-mt-20" id="what">
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto">
             <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4">02 / WHAT ORGNI DOES</div>
+              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">02</span> / WHAT ORGNI DOES</div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
                 Orgni maps the operating context of your business.
               </h2>
@@ -355,9 +356,11 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: i * 0.05 }}
                   >
-                    <Card className="h-full p-6 md:p-8 rounded-sm border-white/10 bg-white/5 text-white hover:bg-white/[0.07] transition-colors">
-                      <div className="h-10 w-10 bg-white/10 flex items-center justify-center mb-6 rounded-sm">
-                        <Icon className="h-5 w-5 text-white" />
+                    <Card className="group relative h-full p-6 md:p-8 rounded-sm border-white/10 bg-white/5 text-white hover:bg-white/[0.07] hover:border-white/20 transition-all overflow-hidden">
+                      <span className="absolute top-0 left-0 h-px w-0 bg-primary transition-all duration-500 group-hover:w-full"></span>
+                      <span aria-hidden="true" className="absolute top-4 right-5 font-mono text-xs text-white/20 group-hover:text-primary/70 transition-colors select-none">0{i + 1}</span>
+                      <div className="h-10 w-10 bg-white/10 flex items-center justify-center mb-6 rounded-sm group-hover:bg-primary/15 transition-colors">
+                        <Icon className="h-5 w-5 text-white group-hover:text-primary transition-colors" />
                       </div>
                       <h3 className="font-mono text-sm font-bold mb-3 uppercase">{item.name}</h3>
                       <p className="text-white/60 leading-relaxed text-sm md:text-base">{item.desc}</p>
@@ -374,7 +377,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:32px_32px]"></div>
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative z-10">
             <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4">03 / THE SHIFT</div>
+              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">03</span> / THE SHIFT</div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
                 From static knowledge to live operational context.
               </h2>
@@ -399,7 +402,7 @@ export default function Home() {
               </Card>
 
               {/* Live */}
-              <Card className="p-6 md:p-8 rounded-sm border-white/10 bg-white/[0.05] text-white border-t-4 border-t-primary">
+              <Card className="p-6 md:p-8 rounded-sm border-white/10 bg-white/[0.05] text-white border-t-4 border-t-primary shadow-2xl shadow-primary/20">
                 <div className="font-mono text-xs font-bold uppercase tracking-widest text-primary mb-6">
                   Live business context
                 </div>
@@ -419,10 +422,11 @@ export default function Home() {
         </section>
 
         {/* 5. Product Modules Section */}
-        <section className="border-t border-white/10 py-16 md:py-24 bg-black scroll-mt-20" id="modules">
-          <div className="container max-w-screen-xl px-4 md:px-8 mx-auto">
+        <section className="border-t border-white/10 py-16 md:py-24 bg-black scroll-mt-20 relative overflow-hidden" id="modules">
+          <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 h-64 w-[700px] bg-primary/[0.07] blur-3xl"></div>
+          <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative">
             <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4">04 / PLATFORM</div>
+              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">04</span> / PLATFORM</div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
                 The context layer for intelligent operations.
               </h2>
@@ -439,11 +443,12 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: i * 0.05 }}
                   >
-                    <Card className="h-full p-6 md:p-8 rounded-sm border-white/10 bg-white/5 text-white hover:bg-white/[0.07] transition-colors flex items-start gap-5">
-                      <div className="h-11 w-11 shrink-0 bg-primary/10 flex items-center justify-center rounded-sm">
+                    <Card className="group relative h-full p-6 md:p-8 rounded-sm border-white/10 bg-white/5 text-white hover:bg-white/[0.07] hover:border-primary/30 transition-all flex items-start gap-5 overflow-hidden">
+                      <span aria-hidden="true" className="pointer-events-none absolute -bottom-5 right-1 font-mono text-7xl font-bold text-white/[0.04] group-hover:text-primary/10 transition-colors select-none">0{i + 1}</span>
+                      <div className="h-11 w-11 shrink-0 bg-primary/10 flex items-center justify-center rounded-sm group-hover:bg-primary/20 transition-colors">
                         <Icon className="h-5 w-5 text-primary" />
                       </div>
-                      <div>
+                      <div className="relative">
                         <h3 className="text-lg md:text-xl font-bold tracking-tight mb-2">{mod.name}</h3>
                         <p className="text-white/60 leading-relaxed text-sm md:text-base">{mod.desc}</p>
                       </div>
@@ -459,7 +464,7 @@ export default function Home() {
         <section className="border-t border-white/10 py-16 md:py-24 bg-black scroll-mt-20" id="use-cases">
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto">
             <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4">05 / USE CASES</div>
+              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">05</span> / USE CASES</div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
                 Built for operations where context matters.
               </h2>
@@ -476,9 +481,10 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: i * 0.05 }}
                   >
-                    <Card className="h-full p-6 md:p-8 rounded-sm border-white/10 bg-white/5 text-white hover:bg-white/[0.07] transition-colors">
-                      <div className="h-10 w-10 bg-white/10 flex items-center justify-center mb-6 rounded-sm">
-                        <Icon className="h-5 w-5 text-white" />
+                    <Card className="group relative h-full p-6 md:p-8 rounded-sm border-white/10 bg-white/5 text-white hover:bg-white/[0.07] transition-all overflow-hidden hover:-translate-y-1 duration-300">
+                      <span className="absolute top-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-primary transition-transform duration-500 group-hover:scale-x-100"></span>
+                      <div className="h-10 w-10 bg-white/10 flex items-center justify-center mb-6 rounded-sm group-hover:bg-primary/15 transition-colors">
+                        <Icon className="h-5 w-5 text-white group-hover:text-primary transition-colors" />
                       </div>
                       <h3 className="font-mono text-sm font-bold mb-3 uppercase">{uc.name}</h3>
                       <p className="text-white/60 leading-relaxed text-sm md:text-base">{uc.desc}</p>
@@ -496,7 +502,7 @@ export default function Home() {
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-10 md:gap-16 items-center">
               <div className="max-w-xl">
-                <div className="font-mono text-xs font-bold text-white/50 mb-4">06 / WHY NOW</div>
+                <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">06</span> / WHY NOW</div>
                 <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-6">
                   Intelligence is getting stronger. <span className="text-primary">Context</span> is the bottleneck.
                 </h2>
@@ -511,6 +517,7 @@ export default function Home() {
                 transition={{ duration: 0.8 }}
                 className="relative"
               >
+                <div className="pointer-events-none absolute inset-0 -z-10 bg-primary/10 blur-3xl rounded-full"></div>
                 <img
                   src={architectureImg}
                   alt="Orgni context layer connecting business knowledge, processes, decisions, and systems to intelligent operations"
@@ -526,6 +533,7 @@ export default function Home() {
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto">
             <div className="relative overflow-hidden border border-white/10 bg-white/5 rounded-sm py-16 md:py-24 px-6 text-center max-w-4xl mx-auto">
               <div className="absolute inset-0 opacity-[0.07] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+              <div className="pointer-events-none absolute -bottom-24 left-1/2 -translate-x-1/2 h-72 w-[520px] bg-primary/15 blur-3xl rounded-full"></div>
               <div className="relative z-10">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-6">
                   Build your business context layer.
@@ -537,7 +545,7 @@ export default function Home() {
                   <Button
                     size="lg"
                     onClick={open}
-                    className="w-full sm:w-auto rounded-sm bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)] h-14 px-10 text-base font-bold"
+                    className="w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-10 text-base font-bold"
                   >
                     Request access
                     <ArrowRight className="h-4 w-4" />
