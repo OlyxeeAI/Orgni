@@ -27,14 +27,15 @@ export function SiteFooter({ dark = false }: { dark?: boolean }) {
               <img src={`${import.meta.env.BASE_URL}orgni-logo.png`} alt="Orgni logo" className="h-6 w-6 rounded-sm object-cover" />
               <span className="font-mono font-bold tracking-tight">ORGNI</span>
             </div>
-            <p className={`text-sm ${muted} mb-4 max-w-xs`}>Business context for AI-enabled execution.</p>
+            <p className={`text-sm ${muted} mb-4 max-w-xs`}>Live business context for modern operations.</p>
+            <p className={`text-xs ${muted} max-w-xs`}>A product by Olyxee, a research and infrastructure company for operational intelligence.</p>
           </div>
           <div>
             <h4 className="font-mono text-xs font-bold uppercase mb-4 tracking-wider">Product</h4>
             <ul className={`space-y-3 text-sm ${muted}`}>
-              <li><Link href="/#product" onClick={(e) => handleHashNav(e, "#product")} className={linkHover}>Business Map</Link></li>
-              <li><a href="https://workflow.olyxee.com" target="_blank" rel="noreferrer" className={linkHover}>Workflows</a></li>
-              <li><a href="https://finance.olyxee.com" target="_blank" rel="noreferrer" className={linkHover}>Finance Context</a></li>
+              <li><Link href="/#what" onClick={(e) => handleHashNav(e, "#what")} className={linkHover}>What Orgni does</Link></li>
+              <li><Link href="/#modules" onClick={(e) => handleHashNav(e, "#modules")} className={linkHover}>Product modules</Link></li>
+              <li><Link href="/#use-cases" onClick={(e) => handleHashNav(e, "#use-cases")} className={linkHover}>Use cases</Link></li>
               <li><Link href="/pricing" className={linkHover}>Pricing</Link></li>
             </ul>
           </div>
@@ -43,7 +44,6 @@ export function SiteFooter({ dark = false }: { dark?: boolean }) {
             <ul className={`space-y-3 text-sm ${muted}`}>
               <li><Link href="/docs" className={linkHover}>Documentation</Link></li>
               <li><Link href="/api-reference" className={linkHover}>API Reference</Link></li>
-              <li><Link href="/#" className={linkHover}>Blog</Link></li>
             </ul>
           </div>
           <div>

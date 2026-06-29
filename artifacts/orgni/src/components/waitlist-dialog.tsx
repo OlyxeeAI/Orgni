@@ -135,11 +135,11 @@ export function WaitlistProvider({ children }: { children: ReactNode }) {
                   Early access
                 </span>
                 <DialogTitle className="text-center text-2xl tracking-tight">
-                  Join the waitlist
+                  Request access
                 </DialogTitle>
                 <DialogDescription className="text-center text-base">
-                  Orgni's execution engine is in active development. Leave your
-                  email and we'll bring you in as soon as it's ready.
+                  Orgni is in active development. Leave your email and we'll
+                  bring you in as soon as early access opens.
                 </DialogDescription>
               </DialogHeader>
 

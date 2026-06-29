@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, Command, ChevronDown, Menu, X, Map, Workflow, Banknote, ScrollText } from "lucide-react";
+import { Search, Command, ChevronDown, Menu, X, Network, Layers, Boxes, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useWaitlist } from "@/components/waitlist-dialog";
 import { useCommandPalette } from "@/components/command-palette";
@@ -70,40 +70,40 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
               {/* Mega Menu Dropdown */}
               <div className="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="bg-background text-foreground border border-border shadow-xl p-2 rounded-none flex flex-col gap-1">
-                  <Link href="/#product" className="p-2 hover:bg-muted transition-colors flex items-start gap-3">
+                  <Link href="/#what" className="p-2 hover:bg-muted transition-colors flex items-start gap-3">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center border border-border bg-muted text-primary">
-                      <Map className="h-4 w-4" />
+                      <Network className="h-4 w-4" />
                     </span>
                     <span className="flex flex-col gap-0.5">
-                      <span className="font-mono text-xs font-bold">Business Map</span>
-                      <span className="text-xs text-muted-foreground">Map your operational context</span>
+                      <span className="font-mono text-xs font-bold">What Orgni does</span>
+                      <span className="text-xs text-muted-foreground">Map your operating context</span>
                     </span>
                   </Link>
-                  <a href="https://workflow.olyxee.com" className="p-2 hover:bg-muted transition-colors flex items-start gap-3">
+                  <Link href="/#modules" className="p-2 hover:bg-muted transition-colors flex items-start gap-3">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center border border-border bg-muted text-primary">
-                      <Workflow className="h-4 w-4" />
+                      <Layers className="h-4 w-4" />
                     </span>
                     <span className="flex flex-col gap-0.5">
-                      <span className="font-mono text-xs font-bold">Orgni Workflows</span>
-                      <span className="text-xs text-muted-foreground">Execution logic & routing</span>
+                      <span className="font-mono text-xs font-bold">Product modules</span>
+                      <span className="text-xs text-muted-foreground">The context layer platform</span>
                     </span>
-                  </a>
-                  <a href="https://finance.olyxee.com" className="p-2 hover:bg-muted transition-colors flex items-start gap-3">
+                  </Link>
+                  <Link href="/#use-cases" className="p-2 hover:bg-muted transition-colors flex items-start gap-3">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center border border-border bg-muted text-primary">
-                      <Banknote className="h-4 w-4" />
+                      <Boxes className="h-4 w-4" />
                     </span>
                     <span className="flex flex-col gap-0.5">
-                      <span className="font-mono text-xs font-bold">Orgni Finance</span>
-                      <span className="text-xs text-muted-foreground">Financial context for AI agents</span>
+                      <span className="font-mono text-xs font-bold">Use cases</span>
+                      <span className="text-xs text-muted-foreground">Where context matters</span>
                     </span>
-                  </a>
-                  <Link href="/#product" className="p-2 hover:bg-muted transition-colors flex items-start gap-3">
+                  </Link>
+                  <Link href="/#modules" className="p-2 hover:bg-muted transition-colors flex items-start gap-3">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center border border-border bg-muted text-primary">
-                      <ScrollText className="h-4 w-4" />
+                      <Clock className="h-4 w-4" />
                     </span>
                     <span className="flex flex-col gap-0.5">
-                      <span className="font-mono text-xs font-bold">Audit Trail</span>
-                      <span className="text-xs text-muted-foreground">Full transparency logging</span>
+                      <span className="font-mono text-xs font-bold">Orgni Memory</span>
+                      <span className="text-xs text-muted-foreground">Decisions and operating history</span>
                     </span>
                   </Link>
                 </div>
@@ -131,7 +131,7 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
           <a href="/app/">
             <Button size="sm" variant="outline" className={isDark ? "rounded-sm text-xs h-8 px-4 font-bold border-white/30 text-white hover:bg-white hover:text-black bg-transparent" : "rounded-sm text-xs h-8 px-4 font-bold"}>Try it</Button>
           </a>
-          <Button size="sm" className="rounded-sm text-xs h-8 px-4 font-bold bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)]" onClick={open}>Join waitlist</Button>
+          <Button size="sm" className="rounded-sm text-xs h-8 px-4 font-bold bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)]" onClick={open}>Request access</Button>
 
           {/* Mobile menu toggle */}
           <button

@@ -330,14 +330,14 @@ export default function Docs() {
                 <div>
                   <h3 className="text-[15px] font-semibold mb-1">Ready to give your business context to AI?</h3>
                   <p className="text-sm text-muted-foreground">
-                    The engine is in active development. Join the waitlist for early access.
+                    The engine is in active development. Request access for early access.
                   </p>
                 </div>
                 <Button
                   onClick={open}
                   className="rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 shrink-0"
                 >
-                  Join the waitlist
+                  Request access
                 </Button>
               </div>
             </section>

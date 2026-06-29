@@ -148,7 +148,7 @@ const integrations = [
 const faqs = [
   {
     q: "When will Orgni be available?",
-    a: "The execution engine is in active development. Join the waitlist and we will reach out with early access before public launch.",
+    a: "The execution engine is in active development. Request access and we will reach out with early access before public launch.",
   },
   {
     q: "How does annual billing work?",
@@ -204,7 +204,7 @@ export default function Pricing() {
             Enterprise execution, predictable scale.
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            The execution engine is in active development. Here's how pricing will work at launch. Join the waitlist to lock in early access.
+            The execution engine is in active development. Here's how pricing will work at launch. Request access to lock in early access.
           </p>
         </section>
 
@@ -445,7 +445,7 @@ export default function Pricing() {
                   onClick={open}
                   className="text-primary font-medium hover:underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  Join the waitlist
+                  Request access
                 </button>{" "}
                 and we will help you find the right fit.
               </p>
@@ -475,7 +475,7 @@ export default function Pricing() {
                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-8">Ready to put your business context to work?</h2>
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
                   <Button size="lg" onClick={open} className="w-full sm:w-auto rounded-sm bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)] h-14 px-8 text-base font-bold">
-                    Join the waitlist
+                  Request access
                   </Button>
                   <Button size="lg" variant="outline" onClick={open} className="w-full sm:w-auto rounded-sm h-14 px-8 border-border text-foreground hover:bg-foreground hover:text-background bg-transparent text-base font-medium">
                     Talk to Sales

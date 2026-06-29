@@ -296,11 +296,11 @@ export default function Api() {
                   <span className="font-semibold">Preview: not yet live.</span>{" "}
                   <span className="text-muted-foreground">
                     This reference describes the planned Orgni API. The endpoints below are not callable yet.
-                    Join the waitlist to get keys and a stable spec at launch.
+                    Request access to get keys and a stable spec at launch.
                   </span>
                 </p>
                 <Button onClick={open} className="rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 shrink-0">
-                  Join the waitlist
+                  Request access
                 </Button>
               </div>
 
