@@ -24,7 +24,7 @@ export function SiteFooter({ dark = false }: { dark?: boolean }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
           <div className="sm:col-span-2 md:col-span-1">
             <div className="flex items-center gap-2.5 mb-4">
-              <img src={`${import.meta.env.BASE_URL}orgni-logo.png`} alt="Orgni logo" className="h-6 w-6 rounded-sm object-cover grayscale" />
+              <img src={`${import.meta.env.BASE_URL}orgni-logo.png`} alt="Orgni logo" className="h-6 w-6 rounded-sm object-cover" />
               <span className="font-mono font-bold tracking-tight">ORGNI</span>
             </div>
             <p className={`text-sm ${muted} mb-4 max-w-xs`}>Business context for AI-enabled execution.</p>

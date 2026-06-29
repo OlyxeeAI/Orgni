@@ -211,7 +211,7 @@ export default function Home() {
                 className="relative z-20 flex flex-col sm:flex-row items-center justify-center gap-4"
               >
                 <a href="/app/" className="w-full sm:w-auto">
-                  <Button size="lg" className="w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-base font-bold">Try it</Button>
+                  <Button size="lg" className="w-full sm:w-auto rounded-sm bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)] h-14 px-8 text-base font-bold">Try it</Button>
                 </a>
                 <Button size="lg" variant="outline" onClick={open} className="w-full sm:w-auto rounded-sm h-14 px-8 border-white/30 text-white hover:bg-white hover:text-black bg-transparent text-base font-medium">Join the waitlist</Button>
               </motion.div>
@@ -293,7 +293,7 @@ export default function Home() {
                 {/* Core */}
                 <div className="shrink-0 h-24 w-24 md:h-32 md:w-32 bg-primary flex items-center justify-center shadow-2xl shadow-primary/40 relative group my-4 md:my-0 rounded-sm">
                   <div className="absolute inset-0 border border-primary/50 animate-ping rounded-none"></div>
-                  <img src={`${import.meta.env.BASE_URL}orgni-logo.png`} alt="Orgni" className="h-12 w-12 md:h-16 md:w-16 object-contain grayscale" />
+                  <img src={`${import.meta.env.BASE_URL}orgni-logo.png`} alt="Orgni" className="h-12 w-12 md:h-16 md:w-16 object-contain" />
                   <span className="absolute -bottom-8 font-mono text-[10px] md:text-sm font-bold text-white whitespace-nowrap bg-black/40 px-2 py-0.5 rounded md:bg-transparent md:px-0">ORGNI CORE</span>
                   
                   {/* Connectors (visible only on desktop) */}
@@ -648,7 +648,7 @@ export default function Home() {
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-8">Turn business knowledge into execution infrastructure.</h2>
                 <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8 md:mt-12 px-4">
                   <a href="/app/" className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-base font-bold">Try it</Button>
+                    <Button size="lg" className="w-full sm:w-auto rounded-sm bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)] h-14 px-8 text-base font-bold">Try it</Button>
                   </a>
                   <Button size="lg" variant="outline" onClick={open} className="w-full sm:w-auto rounded-sm h-14 px-8 border-white/30 text-white hover:bg-white hover:text-black bg-transparent text-base font-medium">Join the waitlist</Button>
                 </div>

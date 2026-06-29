@@ -56,7 +56,7 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
       <div className="flex h-14 items-center px-4 md:px-6 w-full justify-between">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2.5">
-            <img src={`${import.meta.env.BASE_URL}orgni-logo.png`} alt="Orgni logo" className="h-6 w-6 rounded object-cover grayscale" />
+            <img src={`${import.meta.env.BASE_URL}orgni-logo.png`} alt="Orgni logo" className="h-6 w-6 rounded object-cover" />
             <span className="font-mono font-bold tracking-tight text-base">ORGNI</span>
           </Link>
 
@@ -131,7 +131,7 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
           <a href="/app/">
             <Button size="sm" variant="outline" className={isDark ? "rounded-sm text-xs h-8 px-4 font-bold border-white/30 text-white hover:bg-white hover:text-black bg-transparent" : "rounded-sm text-xs h-8 px-4 font-bold"}>Try it</Button>
           </a>
-          <Button size="sm" className="rounded-sm text-xs h-8 px-4 font-bold bg-primary text-primary-foreground hover:bg-primary/90" onClick={open}>Join waitlist</Button>
+          <Button size="sm" className="rounded-sm text-xs h-8 px-4 font-bold bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)]" onClick={open}>Join waitlist</Button>
 
           {/* Mobile menu toggle */}
           <button

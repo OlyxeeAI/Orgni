@@ -322,7 +322,7 @@ export default function Pricing() {
                         onClick={open}
                         className={`w-full rounded-sm ${
                           featured
-                            ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                            ? "bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)]"
                             : plan.variant === "default"
                               ? "bg-primary hover:bg-primary/90"
                               : ""
@@ -474,7 +474,7 @@ export default function Pricing() {
               <div className="relative z-10">
                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-8">Ready to put your business context to work?</h2>
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
-                  <Button size="lg" onClick={open} className="w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-base font-bold">
+                  <Button size="lg" onClick={open} className="w-full sm:w-auto rounded-sm bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)] h-14 px-8 text-base font-bold">
                     Join the waitlist
                   </Button>
                   <Button size="lg" variant="outline" onClick={open} className="w-full sm:w-auto rounded-sm h-14 px-8 border-border text-foreground hover:bg-foreground hover:text-background bg-transparent text-base font-medium">
