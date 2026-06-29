@@ -52,10 +52,15 @@ One `build.mjs` emits BOTH, from different entries:
   prod needs no worker-thread transport files. (A local require WITHOUT
   NODE_ENV=production WILL crash trying to load a thread-stream worker — test the
   bundle with `NODE_ENV=production`.)
-- Storage driver (`engine/db/index.js`): defaults to lowdb; Postgres is OPT-IN via
-  `ORGNI_DB_DRIVER=postgres` (does NOT auto-switch on `DATABASE_URL`). On Vercel
-  lowdb writes to `os.tmpdir()` (bootstrap.js anchors there when `process.env.VERCEL`
-  is set) — EPHEMERAL per-instance. Use Postgres for real persistence.
+- Storage driver (`engine/db/index.js`): explicit `ORGNI_DB_DRIVER` always wins;
+  else on Vercel (`process.env.VERCEL`) with a `DATABASE_URL` set it AUTO-selects
+  postgres; else lowdb. **Why:** lowdb on Vercel writes to `os.tmpdir()`
+  (bootstrap.js anchors there) and is EPHEMERAL per-instance — a deployed app
+  "loses" its orgs between requests/cold starts, surfacing as cascading 404s
+  ("Organization not found") on every `/orgs/:id/*` route plus a 500 fallback to
+  `/api/build` (the localApi AI fallback in orgni-app). Auto-postgres removes that
+  footgun so the only Vercel env var needed for persistence is `DATABASE_URL`.
+  Local dev stays on lowdb even when DATABASE_URL is present.
 - `postgres.adapter.js` auto-creates per-collection tables (`CREATE TABLE IF NOT
   EXISTS`, race-safe). PG pool tuned low for serverless fan-out.
 

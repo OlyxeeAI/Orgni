@@ -3,17 +3,37 @@
  *
  * THIS IS THE ONLY FILE YOU CHANGE TO SWAP DATABASES.
  *
- * MVP default: lowdb — a zero-setup JSON file store. No database required.
+ * Local default: lowdb — a zero-setup JSON file store. No database required.
  *
- * When you outgrow the prototype, opt into Postgres explicitly with
- * ORGNI_DB_DRIVER=postgres (DATABASE_URL must be set). Nothing else changes.
+ * Driver selection (first match wins):
+ *   1. ORGNI_DB_DRIVER, when set, is always honoured ('lowdb' or 'postgres').
+ *   2. On serverless (Vercel) the filesystem is read-only except a temp dir, so
+ *      lowdb is EPHEMERAL — data is not shared across instances and is wiped on
+ *      cold starts (this is what makes a deployed app "lose" its organizations).
+ *      So when running on Vercel AND a DATABASE_URL is present, we default to
+ *      Postgres automatically — no second env var needed for persistence.
+ *   3. Otherwise (local dev) we keep the zero-setup lowdb default.
  *
- * Note: on serverless (Vercel) the lowdb file lives in a temp dir and is
- * therefore EPHEMERAL — fine for an MVP/demo, but data is not shared across
- * instances or kept across cold starts. Switch to Postgres for real persistence.
+ * To force a driver regardless of environment, set ORGNI_DB_DRIVER explicitly.
  */
 
-const driver = process.env.ORGNI_DB_DRIVER || 'lowdb';
+const explicitDriver = process.env.ORGNI_DB_DRIVER;
+const autoPostgres =
+  Boolean(process.env.DATABASE_URL) && Boolean(process.env.VERCEL);
+const driver = explicitDriver || (autoPostgres ? 'postgres' : 'lowdb');
+
+// Surface the chosen driver in the logs so a misconfigured deployment is obvious.
+// Console is used (not the winston logger) to avoid load-order coupling and so it
+// always shows up in Vercel's function logs.
+if (process.env.VERCEL && driver === 'lowdb') {
+  console.warn(
+    '[orgni] WARNING: running on Vercel with the lowdb driver — storage is ' +
+      'EPHEMERAL (data is lost between requests/cold starts). Set DATABASE_URL ' +
+      'on the Vercel project to enable persistent Postgres.',
+  );
+} else {
+  console.log(`[orgni] DB driver: ${driver}`);
+}
 
 let adapter;
 if (driver === 'postgres') {
