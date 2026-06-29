@@ -123,7 +123,7 @@ export default function Home() {
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const earthScale = useTransform(scrollYProgress, [0, 1], [1.8, 1]);
+  const earthScale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
   const earthOpacity = useTransform(scrollYProgress, [0, 0.85, 1], [1, 1, 0.6]);
   const videoRef = useRef<HTMLVideoElement>(null);
 
