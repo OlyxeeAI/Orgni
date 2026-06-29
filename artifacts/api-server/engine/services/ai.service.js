@@ -33,12 +33,49 @@ class AIError extends Error {
 }
 
 function getConfig() {
-  return {
-    provider: process.env.AI_PROVIDER || 'anthropic',
-    model:    process.env.AI_MODEL    || 'claude-sonnet-4-6',
-    apiKey:   process.env.AI_API_KEY  || process.env.ANTHROPIC_API_KEY || process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY || '',
-    baseUrl:  process.env.AI_BASE_URL || process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL || 'https://api.anthropic.com'
-  };
+  // Accept the key under any of the common names so the app authenticates
+  // regardless of how the deployment environment named it.
+  const apiKey =
+    process.env.AI_API_KEY ||
+    process.env.XAI_API_KEY ||
+    process.env.GROK_API_KEY ||
+    process.env.ANTHROPIC_API_KEY ||
+    process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY ||
+    '';
+
+  const explicitBaseUrl = (process.env.AI_BASE_URL || '').trim();
+  const explicitModel   = (process.env.AI_MODEL   || '').trim();
+
+  // This is a Grok app, so Grok is the default provider. That guarantees a
+  // "key only" deployment still hits the right host (api.x.ai) with the right
+  // auth header (Bearer). Operators can switch providers via AI_PROVIDER
+  // (or AI_DEFAULT_PROVIDER). Picking the wrong provider is what caused the
+  // original auth failure: a Grok key sent to api.anthropic.com with x-api-key.
+  const provider = (process.env.AI_PROVIDER || process.env.AI_DEFAULT_PROVIDER || 'grok')
+    .trim()
+    .toLowerCase();
+
+  if (/anthropic|claude/.test(provider)) {
+    return {
+      provider: 'anthropic',
+      model:    explicitModel   || 'claude-sonnet-4-6',
+      apiKey,
+      baseUrl:  explicitBaseUrl || process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL || 'https://api.anthropic.com'
+    };
+  }
+
+  // Grok / xAI — OpenAI-compatible API (Bearer auth at api.x.ai).
+  if (/grok|xai/.test(provider)) {
+    return {
+      provider: 'grok',
+      model:    explicitModel   || 'grok-2-latest',
+      apiKey,
+      baseUrl:  explicitBaseUrl || 'https://api.x.ai'
+    };
+  }
+
+  // Any other OpenAI-compatible provider: honor operator-supplied base URL/model.
+  return { provider, model: explicitModel, apiKey, baseUrl: explicitBaseUrl };
 }
 
 /**
@@ -188,7 +225,7 @@ async function complete(prompt, options = {}) {
   const cfg = getConfig();
   if (!cfg.apiKey) {
     throw new AIError(
-      'AI_API_KEY is not set. Set AI_API_KEY (or ANTHROPIC_API_KEY) in your environment.',
+      'No AI API key found. Set AI_API_KEY (or GROK_API_KEY / XAI_API_KEY for Grok, or ANTHROPIC_API_KEY) in your environment.',
       'MISSING_API_KEY'
     );
   }
@@ -330,4 +367,4 @@ function isRetryable(err) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-module.exports = { complete, completeJSON, isConfigured, AIError, parseAIJson };
+module.exports = { complete, completeJSON, isConfigured, AIError, parseAIJson, getConfig };
