@@ -183,15 +183,6 @@ export default function Home() {
                 Live business context <br className="hidden md:block" /> for modern operations.
               </motion.h1>
 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="relative z-20 text-lg sm:text-xl md:text-2xl text-white/70 max-w-3xl px-4"
-              >
-                Orgni helps teams turn business knowledge, decisions, processes, and systems into a living context layer for intelligent operations.
-              </motion.p>
-
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
