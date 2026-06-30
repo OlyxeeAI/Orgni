@@ -6,7 +6,6 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CodeBlock } from "@/components/code-block";
 import { DocMobileNav } from "@/components/doc-mobile-nav";
-import { useWaitlist } from "@/components/waitlist-dialog";
 import { useSeo } from "@/hooks/use-seo";
 
 type Method = "GET" | "POST" | "PATCH";
@@ -193,7 +192,6 @@ function MethodBadge({ method }: { method: Method }) {
 }
 
 export default function Api() {
-  const { open } = useWaitlist();
   const [active, setActive] = useState("overview");
   useSeo({
     title: "API Reference - Orgni",
@@ -299,7 +297,7 @@ export default function Api() {
                     Request access to get keys and a stable spec at launch.
                   </span>
                 </p>
-                <Button onClick={open} className="rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 shrink-0">
+                <Button onClick={() => { window.location.href = "/app/"; }} className="rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 shrink-0">
                   Try it for free
                 </Button>
               </div>

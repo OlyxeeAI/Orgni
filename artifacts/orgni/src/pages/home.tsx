@@ -20,7 +20,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { useWaitlist } from "@/components/waitlist-dialog";
 import { useSeo } from "@/hooks/use-seo";
 import architectureImg from "@assets/image_1781491088810_cropped.png";
 
@@ -111,7 +110,6 @@ const useCases = [
 ];
 
 export default function Home() {
-  const { open } = useWaitlist();
   useSeo({
     title: "Orgni - Live business context for modern operations",
     description:
@@ -207,7 +205,7 @@ export default function Home() {
               >
                 <Button
                   size="lg"
-                  onClick={open}
+                  onClick={() => { window.location.href = "/app/"; }}
                   className="w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-base font-bold"
                 >
                   Try it for free
@@ -560,7 +558,7 @@ export default function Home() {
                 <div className="flex justify-center px-4">
                   <Button
                     size="lg"
-                    onClick={open}
+                    onClick={() => { window.location.href = "/app/"; }}
                     className="w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-10 text-base font-bold"
                   >
                     Try it for free

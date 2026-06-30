@@ -2,11 +2,9 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Search, Command, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useWaitlist } from "@/components/waitlist-dialog";
 import { useCommandPalette } from "@/components/command-palette";
 
 export function SiteHeader({ dark = false }: { dark?: boolean }) {
-  const { open } = useWaitlist();
   const { open: openSearch } = useCommandPalette();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -82,7 +80,9 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
           <a href="/app/">
             <Button size="sm" variant="outline" className={isDark ? "rounded-sm text-xs h-8 px-4 font-bold border-white/30 text-white hover:bg-white hover:text-black bg-transparent" : "rounded-sm text-xs h-8 px-4 font-bold"}>Try it</Button>
           </a>
-          <Button size="sm" className="rounded-sm text-xs h-8 px-4 font-bold bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)]" onClick={open}>Try it for free</Button>
+          <a href="/app/">
+            <Button size="sm" className="rounded-sm text-xs h-8 px-4 font-bold bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)]">Try it for free</Button>
+          </a>
 
           {/* Mobile menu toggle */}
           <button
