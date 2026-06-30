@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: waitlist
+    description: Waitlist operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,50 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /waitlist:
+    post:
+      operationId: joinWaitlist
+      tags: [waitlist]
+      summary: Join the waitlist
+      description: Adds an email to the product waitlist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WaitlistInput"
+      responses:
+        "201":
+          description: Added to the waitlist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitlistEntry"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Email already on the waitlist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /waitlist/count:
+    get:
+      operationId: getWaitlistCount
+      tags: [waitlist]
+      summary: Waitlist count
+      description: Returns the number of people on the waitlist
+      responses:
+        "200":
+          description: Current waitlist size
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitlistCount"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +79,47 @@ components:
           type: string
       required:
         - status
+    WaitlistInput:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 3
+          maxLength: 320
+        company:
+          type: string
+          maxLength: 200
+    WaitlistEntry:
+      type: object
+      required:
+        - id
+        - email
+        - createdAt
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        company:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+    WaitlistCount:
+      type: object
+      required:
+        - count
+      properties:
+        count:
+          type: integer
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
 
