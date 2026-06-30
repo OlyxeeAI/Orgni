@@ -50,7 +50,7 @@ export function SiteFooter({ dark = false }: { dark?: boolean }) {
             <h4 className="font-mono text-xs font-bold uppercase mb-4 tracking-wider">Company</h4>
             <ul className={`space-y-3 text-sm ${muted}`}>
               <li><Link href="/#" className={linkHover}>About Olyxee</Link></li>
-              <li><Link href="/#" className={linkHover}>Contact</Link></li>
+              <li><a href="https://www.olyxee.com/contact" target="_blank" rel="noopener noreferrer" className={linkHover}>Contact</a></li>
               <li><Link href="/#" className={linkHover}>Terms of Service</Link></li>
             </ul>
           </div>
