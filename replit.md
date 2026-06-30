@@ -14,8 +14,8 @@ Orgni is a live business-context layer by Olyxee: it reads a company's documents
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- Web (orgni, orgni-app): React 19 + Vite 7 + Tailwind 4 + framer-motion + wouter
+- pnpm workspaces, Node.js 24 LTS (pinned via `engines`), TypeScript 5.9
+- Web (orgni, orgni-app): React 19.2 + Vite 7 + Tailwind 4 + framer-motion + wouter
 - API: Express on esbuild bundle; the `engine/` directory is plain CommonJS
 - AI: configurable provider via env (`AI_PROVIDER`, `AI_BASE_URL`, `AI_MODEL`); currently Grok (xAI) using `GROK_API_KEY`
 - Build: esbuild (API), Vite (web artifacts)
@@ -51,6 +51,11 @@ Orgni is a live business-context layer by Olyxee: it reads a company's documents
 - Restart the `api-server` workflow after changing any AI / engine env var — config is read at call time but the running process caches the environment.
 - The engine's `safeExtract` swallows non-auth errors, so an upstream AI failure (e.g. no provider credits) can silently produce an empty knowledge map rather than a visible error.
 - Document upload uses the multipart field name `files` (multer array), not `file`.
+
+## Deployment
+
+- See `DEPLOYMENT.md` for the Azure deployment guide (Static Web Apps for the two
+  front-ends, App Service / Container Apps for the API server, env vars, CI sketch).
 
 ## Pointers
 
