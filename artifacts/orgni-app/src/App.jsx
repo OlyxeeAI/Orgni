@@ -21,6 +21,8 @@ import {
   LogOut,
   Map,
   Maximize2,
+  Megaphone,
+  MessageSquare,
   Minus,
   Pencil,
   Plus,
@@ -285,6 +287,7 @@ export function App() {
   const [notice, setNotice] = useState(null);
   const [busy, setBusy] = useState('');
   const [showCreate, setShowCreate] = useState(false);
+  const [showWhatsNew, setShowWhatsNew] = useState(false);
   const [profile, setProfile] = useState(emptyProfile);
   const [actionResult, setActionResult] = useState(null);
   const [actionContext, setActionContext] = useState('');
@@ -778,14 +781,34 @@ export function App() {
           })}
         </nav>
 
-        <button
-          className={`ios-item ios-profile ${view === 'profile' ? 'active' : ''}`}
-          onClick={() => setView('profile')}
-          aria-pressed={view === 'profile'}
-        >
-          <span className="ios-icon"><Building2 size={17} /></span>
-          <span className="ios-label">Profile</span>
-        </button>
+        <div className="ios-rail-foot">
+          <button
+            className="ios-item"
+            onClick={() => setShowWhatsNew(true)}
+          >
+            <span className="ios-icon"><Megaphone size={17} /></span>
+            <span className="ios-label">What's New</span>
+          </button>
+
+          <a
+            className="ios-item"
+            href="https://www.olyxee.com/contact"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="ios-icon"><MessageSquare size={17} /></span>
+            <span className="ios-label">Send Feedback</span>
+          </a>
+
+          <button
+            className={`ios-item ios-profile ${view === 'profile' ? 'active' : ''}`}
+            onClick={() => setView('profile')}
+            aria-pressed={view === 'profile'}
+          >
+            <span className="ios-icon"><Building2 size={17} /></span>
+            <span className="ios-label">Profile</span>
+          </button>
+        </div>
       </aside>
 
       <main className={view === 'model' && modelTab === 'map' ? 'main--map' : ''}>
@@ -793,6 +816,7 @@ export function App() {
       </main>
 
       {showCreate && <CreateOrgModal onClose={() => setShowCreate(false)} onSubmit={createOrg} />}
+      {showWhatsNew && <WhatsNewModal onClose={() => setShowWhatsNew(false)} />}
       {notice && <div className={`toast ${notice.tone}`}>{notice.message}</div>}
       {busy && <div className="busy"><Loader2 size={20} /> {busy}</div>}
     </div>
@@ -2611,6 +2635,52 @@ function Profile({ profile, setProfile, onSave, currentOrg, onLogout }) {
         </div>
       </form>
     </section>
+  );
+}
+
+const WHATS_NEW = [
+  {
+    date: 'June 2026',
+    title: 'Document-first onboarding',
+    body: 'Skip the long forms — just upload a document and Orgni builds your operating model from it.'
+  },
+  {
+    date: 'June 2026',
+    title: 'Lucy, your operations analyst',
+    body: 'Ask grounded questions about your business and get answers with evidence, risks and next actions.'
+  },
+  {
+    date: 'June 2026',
+    title: 'Cleaner sidebar',
+    body: 'A unified, lighter layout with quick access to what\u2019s new and feedback.'
+  }
+];
+
+function WhatsNewModal({ onClose }) {
+  return (
+    <div className="modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="modal" role="dialog" aria-modal="true" aria-label="What's New">
+        <div className="modal-head">
+          <h2>What&rsquo;s New</h2>
+          <button type="button" className="icon-btn" onClick={onClose} aria-label="Close"><X size={16} /></button>
+        </div>
+        <p className="modal-intro">The latest improvements to Orgni.</p>
+
+        <div className="whats-new-list">
+          {WHATS_NEW.map((item, index) => (
+            <div className="whats-new-item" key={index}>
+              <span className="whats-new-date">{item.date}</span>
+              <strong className="whats-new-title">{item.title}</strong>
+              <p className="whats-new-body">{item.body}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="modal-foot">
+          <button type="button" className="primary" onClick={onClose}>Got it</button>
+        </div>
+      </div>
+    </div>
   );
 }
 

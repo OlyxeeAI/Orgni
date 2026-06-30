@@ -2467,8 +2467,57 @@ label {
   gap: 6px;
 }
 
-.ios-profile {
+.ios-rail-foot {
   margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ios-profile {
+  margin-top: 0;
+}
+
+.whats-new-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 4px 0 18px;
+}
+
+.whats-new-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fbfbfd;
+}
+
+.whats-new-date {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.whats-new-title {
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.whats-new-body {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.modal-foot {
+  display: flex;
+  justify-content: flex-end;
 }
 
 main {
