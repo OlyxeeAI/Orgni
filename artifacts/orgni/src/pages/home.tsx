@@ -164,23 +164,29 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.25 }}
-                className="relative z-20 flex flex-col sm:flex-row items-center justify-center gap-4"
+                className="relative z-20 flex flex-col items-center gap-5"
               >
-                <Button
-                  size="lg"
-                  onClick={() => { window.location.href = "/app/"; }}
-                  className="w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-base font-bold"
-                >
-                  Try it for free
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => scrollToId("what")}
-                  className="w-full sm:w-auto rounded-sm h-14 px-8 border-white/30 text-white hover:bg-white hover:text-black bg-transparent text-base font-medium"
-                >
-                  Explore Orgni
-                </Button>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+                  <Button
+                    size="lg"
+                    onClick={() => { window.location.href = "/app/"; }}
+                    className="group w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-base font-bold transition-all duration-300 shadow-[0_8px_24px_-10px_hsl(var(--primary)/0.6)] hover:shadow-[0_12px_36px_-8px_hsl(var(--primary)/0.7)] hover:-translate-y-0.5"
+                  >
+                    Try it for free
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    onClick={() => scrollToId("what")}
+                    className="w-full sm:w-auto rounded-sm h-14 px-8 border-white/25 text-white hover:bg-white/10 hover:border-white/50 bg-white/[0.02] backdrop-blur-sm text-base font-medium transition-all duration-300"
+                  >
+                    See how it works
+                  </Button>
+                </div>
+                <p className="text-sm text-muted-foreground font-mono">
+                  Free to start · No credit card required
+                </p>
               </motion.div>
 
               {/* Earth video - blended into the black background, fades on scroll.

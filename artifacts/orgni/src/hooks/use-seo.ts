@@ -33,7 +33,7 @@ function upsertCanonical(href: string) {
   el.setAttribute("href", href);
 }
 
-export function useSeo({ title, description, path, image = DEFAULT_OG_IMAGE }: SeoOptions) {
+export function useSeo({ title, description, path, image = DEFAULT_OG_IMAGE, jsonLd }: SeoOptions) {
   useEffect(() => {
     const url = `${SITE_URL}${path}`;
 
