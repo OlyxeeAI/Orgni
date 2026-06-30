@@ -82,7 +82,7 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
           <a href="/app/">
             <Button size="sm" variant="outline" className={isDark ? "rounded-sm text-xs h-8 px-4 font-bold border-white/30 text-white hover:bg-white hover:text-black bg-transparent" : "rounded-sm text-xs h-8 px-4 font-bold"}>Try it</Button>
           </a>
-          <Button size="sm" className="rounded-sm text-xs h-8 px-4 font-bold bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)]" onClick={open}>Request access</Button>
+          <Button size="sm" className="rounded-sm text-xs h-8 px-4 font-bold bg-[hsl(0_0%_92%)] text-[hsl(0_0%_12%)] border border-[hsl(0_0%_85%)] hover:bg-[hsl(0_0%_87%)]" onClick={open}>Try it for free</Button>
 
           {/* Mobile menu toggle */}
           <button

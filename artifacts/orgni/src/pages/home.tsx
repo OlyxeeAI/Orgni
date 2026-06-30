@@ -200,7 +200,7 @@ export default function Home() {
                   onClick={open}
                   className="w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-base font-bold"
                 >
-                  Request access
+                  Try it for free
                 </Button>
                 <Button
                   size="lg"
@@ -552,7 +552,7 @@ export default function Home() {
                     onClick={open}
                     className="w-full sm:w-auto rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-10 text-base font-bold"
                   >
-                    Request access
+                    Try it for free
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </div>

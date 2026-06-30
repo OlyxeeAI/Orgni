@@ -337,7 +337,7 @@ export default function Docs() {
                   onClick={open}
                   className="rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 shrink-0"
                 >
-                  Request access
+                  Try it for free
                 </Button>
               </div>
             </section>
