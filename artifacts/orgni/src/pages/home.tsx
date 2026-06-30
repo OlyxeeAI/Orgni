@@ -391,15 +391,11 @@ export default function Home() {
                 </ul>
               </Card>
             </div>
-          </div>
-        </section>
 
-        {/* 5. Product Modules Section */}
-        <section className="border-t border-white/10 py-16 md:py-24 bg-black scroll-mt-20 relative overflow-hidden" id="modules">
-          <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative">
-            <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">03</span> / CAPABILITIES</div>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+            {/* Capabilities */}
+            <div className="max-w-2xl mt-20 md:mt-28 mb-10 md:mb-12 scroll-mt-20" id="modules">
+              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">02</span> / CAPABILITIES</div>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
                 Orgni is one product. These are its capabilities.
               </h2>
               <p className="text-lg text-white/60 mt-4">
@@ -439,7 +435,7 @@ export default function Home() {
         <section className="border-t border-white/10 py-16 md:py-24 bg-black scroll-mt-20" id="use-cases">
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto">
             <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">04</span> / USE CASES</div>
+              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">03</span> / USE CASES</div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
                 Built for operations where context matters.
               </h2>
@@ -477,7 +473,7 @@ export default function Home() {
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-10 md:gap-16 items-center">
               <div className="max-w-xl">
-                <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">05</span> / WHY NOW</div>
+                <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">04</span> / WHY NOW</div>
                 <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-6">
                   Intelligence is getting stronger. <span className="text-primary">Context</span> is the bottleneck.
                 </h2>
