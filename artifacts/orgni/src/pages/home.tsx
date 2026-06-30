@@ -186,13 +186,23 @@ export default function Home() {
                 transition={{ duration: 0.5 }}
                 className="relative z-20 text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter"
               >
-                Live business context <br className="hidden md:block" /> for modern operations.
+                Everything your business knows, <br className="hidden md:block" /> finally in one place.
               </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                className="relative z-20 text-lg md:text-xl text-white/70 max-w-2xl leading-relaxed"
+              >
+                Orgni turns your scattered docs, tools, and decisions into one live
+                source of truth your team — and your AI — can actually use.
+              </motion.p>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.25 }}
                 className="relative z-20 flex flex-col sm:flex-row items-center justify-center gap-4"
               >
                 <Button
@@ -259,15 +269,15 @@ export default function Home() {
               <div>
                 <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">01</span> / THE GAP</div>
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">
-                  Your business changes faster than your systems understand.
+                  How your business runs lives in too many heads and too many tabs.
                 </h2>
               </div>
               <div className="space-y-6 text-lg text-white/60 leading-relaxed lg:pt-2">
                 <p>
-                  Company knowledge lives across documents, chats, spreadsheets, tools, and people. Decisions are made every day, but the context behind them is rarely captured. Processes change, responsibilities shift, and teams lose operational memory.
+                  The real context behind your operations is scattered across docs, chats, tools, and people — and written down nowhere. When someone leaves, it leaves with them.
                 </p>
                 <p className="text-white border-l-2 border-primary pl-5">
-                  Orgni creates a live context layer that keeps your business understandable as it operates.
+                  Orgni pulls it all into one living picture that stays current as you work.
                 </p>
               </div>
             </div>
@@ -280,10 +290,10 @@ export default function Home() {
             <div className="max-w-2xl mb-10 md:mb-12">
               <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">02</span> / WHAT ORGNI DOES</div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                Orgni maps the operating context of your business.
+                Drop in a document. Watch your business map itself.
               </h2>
               <p className="text-lg text-white/60">
-                Orgni reads your sources and maps them into a live operating model your teams and intelligent systems can rely on.
+                No long setup, no forms. Orgni reads your sources and builds a live operating model your team and your AI can rely on.
               </p>
             </div>
 
@@ -515,7 +525,7 @@ export default function Home() {
                   Intelligence is getting stronger. <span className="text-primary">Context</span> is the bottleneck.
                 </h2>
                 <p className="text-lg text-white/60 leading-relaxed">
-                  Modern AI can reason, write, code, plan, and use tools. But inside a company, intelligence is only useful when it understands the business. Orgni gives organizations the context layer needed for intelligent systems to support real operations.
+                  AI can reason, write, and plan — but inside your company it's only as good as what it knows. Orgni gives it the business context to actually be useful.
                 </p>
               </div>
               <motion.div
@@ -542,10 +552,10 @@ export default function Home() {
               <div className="absolute inset-0 opacity-[0.07] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:48px_48px]"></div>
               <div className="relative z-10">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-6">
-                  Build your business context layer.
+                  See Orgni work on your own business.
                 </h2>
                 <p className="text-lg text-white/60 max-w-2xl mx-auto mb-8 md:mb-10">
-                  Orgni helps your organization become understandable to intelligent systems.
+                  Upload a document and get a live map of how your business runs — in minutes.
                 </p>
                 <div className="flex justify-center px-4">
                   <Button
