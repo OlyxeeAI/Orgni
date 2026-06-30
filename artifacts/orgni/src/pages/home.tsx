@@ -9,10 +9,6 @@ import {
   Network,
   History,
   ShieldCheck,
-  Banknote,
-  Truck,
-  Activity,
-  BookOpen,
   Check,
   X,
 } from "lucide-react";
@@ -83,29 +79,6 @@ const modules = [
     name: "Controls",
     icon: ShieldCheck,
     desc: "Define what intelligent systems can access, suggest, or act on.",
-  },
-];
-
-const useCases = [
-  {
-    name: "Finance",
-    icon: Banknote,
-    desc: "Reconcile records, understand decisions, and maintain financial context.",
-  },
-  {
-    name: "Logistics",
-    icon: Truck,
-    desc: "Connect shipments, suppliers, documents, exceptions, and customer updates.",
-  },
-  {
-    name: "Operations",
-    icon: Activity,
-    desc: "Give teams a live view of how work actually moves.",
-  },
-  {
-    name: "Knowledge",
-    icon: BookOpen,
-    desc: "Make company knowledge usable beyond search.",
   },
 ];
 
@@ -431,49 +404,13 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 6. Use Cases Section */}
-        <section className="border-t border-white/10 py-16 md:py-24 bg-black scroll-mt-20" id="use-cases">
-          <div className="container max-w-screen-xl px-4 md:px-8 mx-auto">
-            <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">03</span> / USE CASES</div>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-                Built for operations where context matters.
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {useCases.map((uc, i) => {
-                const Icon = uc.icon;
-                return (
-                  <motion.div
-                    key={uc.name}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.05 }}
-                  >
-                    <Card className="group relative h-full p-6 md:p-8 rounded-sm border-white/10 bg-white/5 text-white hover:bg-white/[0.07] transition-all overflow-hidden hover:-translate-y-1 duration-300">
-                      <span className="absolute top-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-primary transition-transform duration-500 group-hover:scale-x-100"></span>
-                      <div className="h-10 w-10 bg-white/10 flex items-center justify-center mb-6 rounded-sm group-hover:bg-primary/15 transition-colors">
-                        <Icon className="h-5 w-5 text-white group-hover:text-primary transition-colors" />
-                      </div>
-                      <h3 className="font-mono text-sm font-bold mb-3 uppercase">{uc.name}</h3>
-                      <p className="text-white/60 leading-relaxed text-sm md:text-base">{uc.desc}</p>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
         {/* 7. Why now Section */}
         <section className="bg-black text-white py-16 md:py-24 border-t border-white/10 relative overflow-hidden">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:32px_32px]"></div>
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-10 md:gap-16 items-center">
               <div className="max-w-xl">
-                <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">04</span> / WHY NOW</div>
+                <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">03</span> / WHY NOW</div>
                 <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-6">
                   Intelligence is getting stronger. <span className="text-primary">Context</span> is the bottleneck.
                 </h2>
