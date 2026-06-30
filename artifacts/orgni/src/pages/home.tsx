@@ -241,33 +241,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 2. Problem Section */}
-        <section className="py-20 md:py-28 relative z-10 overflow-hidden">
-          <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 md:gap-16 items-start">
-              <div>
-                <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">01</span> / THE GAP</div>
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">
-                  How your business runs lives in too many heads and too many tabs.
-                </h2>
-              </div>
-              <div className="space-y-6 text-lg text-white/60 leading-relaxed lg:pt-2">
-                <p>
-                  The real context behind your operations is scattered across docs, chats, tools, and people — and written down nowhere. When someone leaves, it leaves with them.
-                </p>
-                <p className="text-white border-l-2 border-primary pl-5">
-                  Orgni pulls it all into one living picture that stays current as you work.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* 3. What Orgni does Section */}
         <section className="border-t border-white/10 py-16 md:py-24 bg-black scroll-mt-20" id="what">
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto">
             <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">02</span> / WHAT ORGNI DOES</div>
+              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">01</span> / WHAT ORGNI DOES</div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
                 Drop in a document. Watch your business map itself.
               </h2>
@@ -372,7 +350,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:32px_32px]"></div>
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative z-10">
             <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">03</span> / THE SHIFT</div>
+              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">02</span> / THE SHIFT</div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
                 From static knowledge to live operational context.
               </h2>
@@ -420,7 +398,7 @@ export default function Home() {
         <section className="border-t border-white/10 py-16 md:py-24 bg-black scroll-mt-20 relative overflow-hidden" id="modules">
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative">
             <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">04</span> / CAPABILITIES</div>
+              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">03</span> / CAPABILITIES</div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
                 Orgni is one product. These are its capabilities.
               </h2>
@@ -461,7 +439,7 @@ export default function Home() {
         <section className="border-t border-white/10 py-16 md:py-24 bg-black scroll-mt-20" id="use-cases">
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto">
             <div className="max-w-2xl mb-10 md:mb-12">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">05</span> / USE CASES</div>
+              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">04</span> / USE CASES</div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
                 Built for operations where context matters.
               </h2>
@@ -499,7 +477,7 @@ export default function Home() {
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-10 md:gap-16 items-center">
               <div className="max-w-xl">
-                <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">06</span> / WHY NOW</div>
+                <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">05</span> / WHY NOW</div>
                 <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-6">
                   Intelligence is getting stronger. <span className="text-primary">Context</span> is the bottleneck.
                 </h2>
