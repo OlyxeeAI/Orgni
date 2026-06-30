@@ -1,0 +1,246 @@
+# Orgni Engine: First Pilot Readiness Rules
+
+## 1. Core job of the Orgni Engine
+
+The Orgni Engine must take business information and turn it into structured operational context.
+
+It should understand:
+
+* what the company knows
+* how work moves
+* who is responsible
+* what decisions were made
+* what rules apply
+* what systems are involved
+* what changed over time
+* what needs review
+
+The engine is not ready just because it can answer questions.
+
+It is ready when it can build and maintain a usable operating context of the business.
+
+---
+
+## 2. Minimum pilot flow
+
+For the first pilot, Orgni must support this basic flow:
+
+1. Upload business documents or notes.
+2. Extract key business information.
+3. Identify people, roles, processes, rules, decisions, and systems.
+4. Build a structured business context map.
+5. Show what it understood.
+6. Flag missing or uncertain information.
+7. Let a human confirm or correct the context.
+8. Save confirmed context into memory.
+9. Use that context in future answers, summaries, and workflow suggestions.
+
+This proves Orgni is not just reading documents once.
+
+It proves Orgni can learn and improve the company’s operating context over time.
+
+---
+
+## 3. What the engine must extract
+
+For pilot readiness, the engine should reliably extract:
+
+**Company context**
+
+* company name
+* departments
+* teams
+* people
+* roles
+* responsibilities
+
+**Operational context**
+
+* processes
+* steps
+* handovers
+* approvals
+* recurring tasks
+* exceptions
+
+**Decision context**
+
+* decision made
+* person responsible
+* reason or evidence
+* date
+* impact
+* follow-up action
+
+**System context**
+
+* tools used
+* documents used
+* records referenced
+* source of truth
+
+**Control context**
+
+* permissions
+* approval rules
+* compliance rules
+* risks
+* review requirements
+
+---
+
+## 4. Readiness rules
+
+Orgni Engine is ready for a first pilot if it passes these rules:
+
+## Rule 1: It can ingest real business material
+
+It must handle at least:
+
+* PDF
+* DOCX
+* XLSX/CSV
+* plain text
+* pasted notes
+
+Images and voice notes can come later if needed.
+
+## Rule 2: It can separate facts from assumptions
+
+The engine must not pretend uncertain information is confirmed.
+
+It must classify outputs as:
+
+* confirmed
+* inferred
+* missing
+* needs review
+
+## Rule 3: It can show evidence
+
+Every important extracted item must link back to its source.
+
+For example:
+
+* source document
+* page or section
+* text snippet
+* uploaded note
+* timestamp
+
+No black-box answers for pilot.
+
+## Rule 4: It can build a business context map
+
+The engine must connect entities, not just list them.
+
+Example:
+
+* Person → owns process
+* Process → uses document
+* Decision → affects workflow
+* Rule → controls approval
+* System → stores source record
+
+This is what makes Orgni infrastructure, not document search.
+
+## Rule 5: It can remember corrections
+
+If a user corrects something, the engine must save that correction and use it next time.
+
+If it keeps making the same mistake, it is not ready.
+
+## Rule 6: It can detect missing context
+
+The engine should say:
+
+* “Owner not found”
+* “Approval rule unclear”
+* “Decision reason missing”
+* “System of record not identified”
+* “This process needs human confirmation”
+
+This is more valuable than guessing.
+
+## Rule 7: It can produce useful operational outputs
+
+For the pilot, Orgni should generate:
+
+* company context summary
+* process map
+* responsibility map
+* decision log
+* open questions
+* risks or unclear areas
+* recommended next actions
+
+## Rule 8: It can support one real use case end-to-end
+
+Do not try to prove everything.
+
+Pick one pilot use case, for example:
+
+* supplier onboarding
+* finance document review
+* internal approval process
+* customer order operations
+* compliance document tracking
+
+The engine is ready when it can handle one use case properly from upload to structured context to review to memory.
+
+---
+
+## 5. First pilot success criteria
+
+The first pilot is successful if Orgni can:
+
+1. Ingest real company information.
+2. Build a useful context map.
+3. Identify people, processes, decisions, rules, and systems.
+4. Show evidence for its understanding.
+5. Flag uncertain information instead of guessing.
+6. Allow human review and correction.
+7. Save confirmed context.
+8. Use saved context in later interactions.
+9. Improve as more information is added.
+10. Help the company understand how work actually happens.
+
+---
+
+## 6. What is not required for first pilot
+
+The first pilot does not need:
+
+* perfect automation
+* full autonomous agents
+* voice interface
+* every integration
+* beautiful advanced dashboards
+* multi-company scale
+* complex permissions
+* full workflow automation
+* real-time system sync
+
+Those come later.
+
+The first pilot only needs to prove that Orgni can build reliable live business context from real operational material.
+
+---
+
+## 7. The main pilot test
+
+The strongest test is this:
+
+After using Orgni, can the company answer:
+
+* How does this process work?
+* Who owns each part?
+* What documents matter?
+* What decisions were made?
+* What rules apply?
+* What is missing or unclear?
+* What should happen next?
+
+If yes, Orgni is ready for a first pilot.
+
+If no, it is still just an AI document tool.

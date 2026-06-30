@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const createOrgSchema = Joi.object({
   name: Joi.string().min(2).max(200).required(),
-  businessType: Joi.string().min(2).max(100).required(),
+  businessType: Joi.string().max(100).allow('').default(''),
   departments: Joi.array().items(Joi.string()).default([]),
   roles: Joi.array().items(Joi.object({
     role: Joi.string().required(),

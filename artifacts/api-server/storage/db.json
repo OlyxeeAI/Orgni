@@ -1,14 +1,930 @@
 {
-  "organizations": [],
-  "documents": [],
-  "chunks": [],
+  "organizations": [
+    {
+      "id": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "name": "Acme Logistics",
+      "businessType": "",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "ready",
+      "createdAt": "2026-06-30T21:07:20.154Z",
+      "updatedAt": "2026-06-30T21:07:27.322Z"
+    }
+  ],
+  "documents": [
+    {
+      "id": "3bc56790-4e7a-44f4-8228-b0a3c084fd6b",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "filename": "acme-sop.txt",
+      "originalName": "acme-sop.txt",
+      "fileType": ".txt",
+      "filePath": null,
+      "fileSize": 1224,
+      "content": "Acme Logistics — Supplier Invoice Approval SOP\n\nAcme Logistics is a freight and warehousing company based in Cape Town. We move\ngoods for retail clients and handle supplier invoices daily.\n\nFinance Department\n- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the\n  monthly supplier reconciliation. She is the system of record owner for QuickBooks.\n- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each\n  invoice against the delivery note, and captures it into QuickBooks.\n\nInvoice Approval Process\n1. Supplier emails an invoice to accounts@acme.co.za.\n2. The Finance Assistant matches the invoice to the delivery note in the Drive folder.\n3. If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.\n4. If the amount is more than R5,000, it must be approved by the Finance Manager.\n5. Payment is made via EFT and recorded in QuickBooks.\n\nRules\n- Any payment above R5,000 requires Finance Manager approval. No exceptions.\n- Invoices without a matching delivery note must be held and queried with the supplier.\n\nTools used: Gmail, Google Drive, QuickBooks.\n\nNote: We do not yet have a documented process for handling disputed invoices.",
+      "wordCount": 191,
+      "status": "parsed",
+      "parseError": null,
+      "uploadedAt": "2026-06-30T21:07:20.324Z",
+      "parsedAt": "2026-06-30T21:07:20.325Z",
+      "updatedAt": "2026-06-30T21:07:20.325Z"
+    }
+  ],
+  "chunks": [
+    {
+      "id": "d63fa6eb-0b24-48e6-8256-bf9d65e4e3e8",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "documentId": "3bc56790-4e7a-44f4-8228-b0a3c084fd6b",
+      "documentName": "acme-sop.txt",
+      "index": 0,
+      "text": "Acme Logistics — Supplier Invoice Approval SOP\n\nAcme Logistics is a freight and warehousing company based in Cape Town. We move\ngoods for retail clients and handle supplier invoices daily.\n\nFinance Department\n- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the\n  monthly supplier reconciliation. She is the system of record owner for QuickBooks.\n- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each\n  invoice against the delivery note, and captures it into QuickBooks.\n\nInvoice Approval Process\n1. Supplier emails an invoice to accounts@acme.co.za.\n2. The Finance Assistant matches the invoice to the delivery note in the Drive folder.\n3. If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.\n4. If the amount is more than R5,000, it must be approved by the Finance Manager.\n5. Payment is made via EFT and recorded in QuickBooks.\n\nRules\n- Any payment above R5,000 requires Finance Manager approval. No exceptions.\n- Invoices without a matching delivery note must be held and queried with the supplier.\n\nTools used: Gmail, Google Drive, QuickBooks.\n\nNote: We do not yet have a documented process for handling disputed invoices.",
+      "page": null,
+      "section": null,
+      "charCount": 1221,
+      "createdAt": "2026-06-30T21:07:20.326Z"
+    }
+  ],
   "businessMaps": [],
-  "knowledgeMaps": [],
-  "validations": [],
-  "insights": [],
+  "knowledgeMaps": [
+    {
+      "id": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "version": 1,
+      "status": "active",
+      "businessSummary": {
+        "business_name": "Acme Logistics",
+        "business_type": "",
+        "plain_english_summary": "Acme Logistics is a business with 4 documented workflows and 3 extracted rules. The map was built deterministically from profile data and parsed source documents.",
+        "core_function": "",
+        "key_operational_facts": [
+          "Workflow: Key workflows:",
+          "Workflow: Acme Logistics",
+          "Workflow: Invoice Approval Process",
+          "Workflow: Note: We do not yet have a documented process for handling disputed invoices.",
+          "Rule: If the amount is more than R5,000, it must be approved by the Finance Manager",
+          "Rule: - Any payment above R5,000 requires Finance Manager approval",
+          "Rule: - Invoices without a matching delivery note must be held and queried with the supplier"
+        ],
+        "systems_in_use": [],
+        "document_types_in_use": [
+          "txt"
+        ],
+        "confidence": 0.85,
+        "confidence_reason": "Confidence is rule-based: higher when source text contains explicit workflow steps, approval rules, and source excerpts.",
+        "missing_information": []
+      },
+      "departments": [
+        {
+          "name": "Logistics",
+          "functions": [
+            "Delivery operations"
+          ]
+        },
+        {
+          "name": "Finance",
+          "functions": [
+            "Approvals",
+            "Payments",
+            "Invoice processing"
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "role": "Finance Manager",
+          "department": "Finance",
+          "tasks": [
+            "Finance Manager: approves all payments over R5,000 and owns the",
+            "Finance Manager approval"
+          ],
+          "decision_authority": [
+            "Finance Manager: approves all payments over R5,000 and owns the",
+            "Finance Manager approval"
+          ],
+          "approval_authority": [
+            "Finance Manager: approves all payments over R5,000 and owns the",
+            "Finance Manager approval"
+          ],
+          "depends_on": [],
+          "unclear_responsibilities": [],
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "ients and handle supplier invoices daily. Finance Department - Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the monthly supplier reconciliation. She is the system of record owner fo",
+          "_confidence": 0.72
+        },
+        {
+          "role": "Finance Assistant",
+          "department": "Finance",
+          "tasks": [
+            "Finance Assistant: receives supplier invoices by email, checks each",
+            "Finance Assistant matches the invoice to the delivery note in the Drive folder",
+            "Finance Assistant approves and schedules payment"
+          ],
+          "decision_authority": [
+            "Finance Assistant approves and schedules payment"
+          ],
+          "approval_authority": [
+            "Finance Assistant approves and schedules payment"
+          ],
+          "depends_on": [],
+          "unclear_responsibilities": [],
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "onciliation. She is the system of record owner for QuickBooks. - Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each invoice against the delivery note, and captures it into QuickBooks.",
+          "_confidence": 0.72
+        },
+        {
+          "role": "The Finance Assistant",
+          "department": "Finance",
+          "tasks": [
+            "The Finance Assistant matches the invoice to the delivery note in the Drive folder",
+            "the Finance Assistant approves and schedules payment"
+          ],
+          "decision_authority": [
+            "the Finance Assistant approves and schedules payment"
+          ],
+          "approval_authority": [
+            "the Finance Assistant approves and schedules payment"
+          ],
+          "depends_on": [],
+          "unclear_responsibilities": [],
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "voice Approval Process 1. Supplier emails an invoice to accounts@acme.co.za. 2. The Finance Assistant matches the invoice to the delivery note in the Drive folder. 3. If the amount is R5,000 or less, the Finance Assista...",
+          "_confidence": 0.72
+        }
+      ],
+      "workflows": [
+        {
+          "workflow_name": "Key workflows:",
+          "trigger": "",
+          "steps": [],
+          "owner": "",
+          "required_documents": [],
+          "decision_points": [],
+          "approval_points": [],
+          "dependencies": [],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Business: Acme Logistics\nType: \nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+          "_confidence": 0.58,
+          "_supported": true
+        },
+        {
+          "workflow_name": "Acme Logistics",
+          "trigger": "- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each",
+          "steps": [
+            "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+            "- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each",
+            "The Finance Assistant matches the invoice to the delivery note in the Drive folder.",
+            "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+            "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+            "- Invoices without a matching delivery note must be held and queried with the supplier."
+          ],
+          "owner": "Finance Manager",
+          "required_documents": [
+            "Invoice",
+            "Email"
+          ],
+          "decision_points": [
+            "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+            "The Finance Assistant matches the invoice to the delivery note in the Drive folder.",
+            "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+            "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+            "- Invoices without a matching delivery note must be held and queried with the supplier."
+          ],
+          "approval_points": [
+            "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+            "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+            "If the amount is more than R5,000, it must be approved by the Finance Manager."
+          ],
+          "dependencies": [
+            "invoice against the delivery note, and captures it into QuickBooks.",
+            "- Any payment above R5,000 requires Finance Manager approval."
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+          "_confidence": 0.76,
+          "_supported": true
+        },
+        {
+          "workflow_name": "Invoice Approval Process",
+          "trigger": "- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each",
+          "steps": [
+            "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+            "- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each",
+            "The Finance Assistant matches the invoice to the delivery note in the Drive folder.",
+            "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+            "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+            "- Invoices without a matching delivery note must be held and queried with the supplier."
+          ],
+          "owner": "Finance Manager",
+          "required_documents": [
+            "Invoice",
+            "Email"
+          ],
+          "decision_points": [
+            "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+            "The Finance Assistant matches the invoice to the delivery note in the Drive folder.",
+            "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+            "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+            "- Invoices without a matching delivery note must be held and queried with the supplier."
+          ],
+          "approval_points": [
+            "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+            "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+            "If the amount is more than R5,000, it must be approved by the Finance Manager."
+          ],
+          "dependencies": [
+            "invoice against the delivery note, and captures it into QuickBooks.",
+            "- Any payment above R5,000 requires Finance Manager approval."
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+          "_confidence": 0.76,
+          "_supported": true
+        },
+        {
+          "workflow_name": "Note: We do not yet have a documented process for handling disputed invoices.",
+          "trigger": "- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each",
+          "steps": [
+            "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+            "- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each",
+            "The Finance Assistant matches the invoice to the delivery note in the Drive folder.",
+            "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+            "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+            "- Invoices without a matching delivery note must be held and queried with the supplier."
+          ],
+          "owner": "Finance Manager",
+          "required_documents": [
+            "Invoice",
+            "Email"
+          ],
+          "decision_points": [
+            "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+            "The Finance Assistant matches the invoice to the delivery note in the Drive folder.",
+            "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+            "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+            "- Invoices without a matching delivery note must be held and queried with the supplier."
+          ],
+          "approval_points": [
+            "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+            "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+            "If the amount is more than R5,000, it must be approved by the Finance Manager."
+          ],
+          "dependencies": [
+            "invoice against the delivery note, and captures it into QuickBooks.",
+            "- Any payment above R5,000 requires Finance Manager approval."
+          ],
+          "exceptions": [],
+          "risks": [],
+          "bottlenecks": [],
+          "ai_assistance_possible": [],
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+          "_confidence": 0.76,
+          "_supported": true
+        }
+      ],
+      "rules": [
+        {
+          "rule_name": "If the amount is more than R5,000, it must be approved by the Finance Manager",
+          "condition": "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+          "action": "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+          "risk_level": "medium",
+          "department": "Finance",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+          "_confidence": 0.72,
+          "source": "If the amount is more than R5,000, it must be approved by the Finance Manager."
+        },
+        {
+          "rule_name": "- Any payment above R5,000 requires Finance Manager approval",
+          "condition": "- Any payment above R5,000 requires Finance Manager approval.",
+          "action": "- Any payment above R5,000 requires Finance Manager approval.",
+          "risk_level": "medium",
+          "department": "Finance",
+          "ai_allowed": false,
+          "requires_human_approval": true,
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "- Any payment above R5,000 requires Finance Manager approval.",
+          "_confidence": 0.72,
+          "source": "- Any payment above R5,000 requires Finance Manager approval."
+        },
+        {
+          "rule_name": "- Invoices without a matching delivery note must be held and queried with the supplier",
+          "condition": "",
+          "action": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+          "risk_level": "medium",
+          "department": "",
+          "ai_allowed": true,
+          "requires_human_approval": false,
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+          "_confidence": 0.72,
+          "source": "- Invoices without a matching delivery note must be held and queried with the supplier."
+        }
+      ],
+      "approvals": [],
+      "exceptions": [
+        {
+          "exception": "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+          "_confidence": 0.7
+        },
+        {
+          "exception": "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+          "_confidence": 0.7
+        },
+        {
+          "exception": "No exceptions.",
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "No exceptions.",
+          "_confidence": 0.7
+        },
+        {
+          "exception": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+          "_confidence": 0.7
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Main problems:",
+          "severity": "low",
+          "reason": "Main problems:",
+          "affected_workflow": "Key workflows:",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "Business profile",
+          "_sourceExcerpt": "Main problems:",
+          "_confidence": 0.68
+        },
+        {
+          "risk": "- Invoices without a matching delivery note must be held and queried with the supplier",
+          "severity": "medium",
+          "reason": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+          "affected_workflow": "Key workflows:",
+          "recommendation": "Review and document the control for this risk.",
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+          "_confidence": 0.68
+        }
+      ],
+      "bottlenecks": [],
+      "gaps": [],
+      "dependencies": [
+        {
+          "dependency": "invoice against the delivery note, and captures it into QuickBooks.",
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "invoice against the delivery note, and captures it into QuickBooks.",
+          "_confidence": 0.62
+        },
+        {
+          "dependency": "- Any payment above R5,000 requires Finance Manager approval.",
+          "_sourceDocName": "acme-sop.txt",
+          "_sourceExcerpt": "- Any payment above R5,000 requires Finance Manager approval.",
+          "_confidence": 0.62
+        }
+      ],
+      "aiOpportunities": [],
+      "readiness": [
+        {
+          "workflow": "Key workflows:",
+          "readiness_score": 55,
+          "reason": "Readiness is based on documented steps and rules, not AI interpretation.",
+          "blockers": [],
+          "required_integrations": []
+        }
+      ],
+      "blueprint": {
+        "blueprints": []
+      },
+      "missingInformation": [
+        "Business departments are not listed in the profile.",
+        "Approval rules are not clearly documented."
+      ],
+      "overallConfidence": 0.85,
+      "overallRiskScore": 0.36,
+      "sourceDocuments": [
+        {
+          "id": "3bc56790-4e7a-44f4-8228-b0a3c084fd6b",
+          "name": "acme-sop.txt"
+        }
+      ],
+      "recommendedNextSteps": [
+        "Review workflow: Key workflows: — Most clearly documented workflow."
+      ],
+      "generatedAt": "2026-06-30T21:07:27.301Z",
+      "updatedAt": "2026-06-30T21:07:27.301Z"
+    }
+  ],
+  "validations": [
+    {
+      "id": "0b1b81ae-1274-46e6-9083-2e0a189e8298",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "insightType": "workflow",
+      "claim": "Workflow: Key workflows:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Business: Acme Logistics\nType: \nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+      "confidence": 0.58,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Extracted from Business profile",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-30T21:07:27.303Z"
+    },
+    {
+      "id": "dfb2f4f7-682a-4f1d-b057-7f6386773a46",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "insightType": "workflow",
+      "claim": "Workflow: Acme Logistics",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "acme-sop.txt",
+      "sourceExcerpt": "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from acme-sop.txt",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-30T21:07:27.307Z"
+    },
+    {
+      "id": "1fa0b924-4663-4b97-8b18-9927e1c89e18",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "insightType": "workflow",
+      "claim": "Workflow: Invoice Approval Process",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "acme-sop.txt",
+      "sourceExcerpt": "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from acme-sop.txt",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-30T21:07:27.309Z"
+    },
+    {
+      "id": "445d9b05-891e-4e5d-bd30-b248736eab8c",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "insightType": "workflow",
+      "claim": "Workflow: Note: We do not yet have a documented process for handling disputed invoices.",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "acme-sop.txt",
+      "sourceExcerpt": "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+      "confidence": 0.76,
+      "supported": true,
+      "status": "verified",
+      "reason": "Extracted from acme-sop.txt",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-30T21:07:27.311Z"
+    },
+    {
+      "id": "5bae4b87-57b9-4c4c-9e54-af2395a690fb",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "insightType": "rule",
+      "claim": "Rule: If the amount is more than R5,000, it must be approved by the Finance Manager",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "acme-sop.txt",
+      "sourceExcerpt": "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-30T21:07:27.313Z"
+    },
+    {
+      "id": "ff091bb5-c684-42c1-9339-da91b93df2da",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "insightType": "rule",
+      "claim": "Rule: - Any payment above R5,000 requires Finance Manager approval",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "acme-sop.txt",
+      "sourceExcerpt": "- Any payment above R5,000 requires Finance Manager approval.",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-30T21:07:27.315Z"
+    },
+    {
+      "id": "8aee3cba-253d-42a9-93bc-11a3ea59a450",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "insightType": "rule",
+      "claim": "Rule: - Invoices without a matching delivery note must be held and queried with the supplier",
+      "sourceDocumentId": null,
+      "sourceDocumentName": "acme-sop.txt",
+      "sourceExcerpt": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+      "confidence": 0.72,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Direct quote in source",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-30T21:07:27.316Z"
+    },
+    {
+      "id": "d9cb32f1-0542-45df-acd0-d437c65797a8",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "insightType": "risk",
+      "claim": "Risk: Main problems:",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "Main problems:",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-30T21:07:27.319Z"
+    },
+    {
+      "id": "8932d997-7774-42c8-93be-b028d13910a1",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "insightType": "risk",
+      "claim": "Risk: - Invoices without a matching delivery note must be held and queried with the supplier",
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "supported": true,
+      "status": "uncertain",
+      "reason": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "createdAt": "2026-06-30T21:07:27.320Z"
+    }
+  ],
+  "insights": [
+    {
+      "id": "c5d781fe-171d-4026-a35a-54deebd689de",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Key workflows:",
+        "trigger": "",
+        "steps": [],
+        "owner": "",
+        "required_documents": [],
+        "decision_points": [],
+        "approval_points": [],
+        "dependencies": [],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Business: Acme Logistics\nType: \nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+        "_confidence": 0.58,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "Business profile",
+      "sourceExcerpt": "Business: Acme Logistics\nType: \nDepartments: \nKey workflows: \nCurrent tools: \nMain problems: ",
+      "confidence": 0.58,
+      "createdAt": "2026-06-30T21:07:27.302Z"
+    },
+    {
+      "id": "303b6728-0796-4a94-bc37-b64d1446430d",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Acme Logistics",
+        "trigger": "- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each",
+        "steps": [
+          "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+          "- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each",
+          "The Finance Assistant matches the invoice to the delivery note in the Drive folder.",
+          "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+          "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+          "- Invoices without a matching delivery note must be held and queried with the supplier."
+        ],
+        "owner": "Finance Manager",
+        "required_documents": [
+          "Invoice",
+          "Email"
+        ],
+        "decision_points": [
+          "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+          "The Finance Assistant matches the invoice to the delivery note in the Drive folder.",
+          "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+          "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+          "- Invoices without a matching delivery note must be held and queried with the supplier."
+        ],
+        "approval_points": [
+          "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+          "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+          "If the amount is more than R5,000, it must be approved by the Finance Manager."
+        ],
+        "dependencies": [
+          "invoice against the delivery note, and captures it into QuickBooks.",
+          "- Any payment above R5,000 requires Finance Manager approval."
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "acme-sop.txt",
+        "_sourceExcerpt": "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "acme-sop.txt",
+      "sourceExcerpt": "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+      "confidence": 0.76,
+      "createdAt": "2026-06-30T21:07:27.306Z"
+    },
+    {
+      "id": "2404677e-ff29-47de-a538-603abcda515c",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Invoice Approval Process",
+        "trigger": "- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each",
+        "steps": [
+          "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+          "- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each",
+          "The Finance Assistant matches the invoice to the delivery note in the Drive folder.",
+          "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+          "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+          "- Invoices without a matching delivery note must be held and queried with the supplier."
+        ],
+        "owner": "Finance Manager",
+        "required_documents": [
+          "Invoice",
+          "Email"
+        ],
+        "decision_points": [
+          "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+          "The Finance Assistant matches the invoice to the delivery note in the Drive folder.",
+          "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+          "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+          "- Invoices without a matching delivery note must be held and queried with the supplier."
+        ],
+        "approval_points": [
+          "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+          "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+          "If the amount is more than R5,000, it must be approved by the Finance Manager."
+        ],
+        "dependencies": [
+          "invoice against the delivery note, and captures it into QuickBooks.",
+          "- Any payment above R5,000 requires Finance Manager approval."
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "acme-sop.txt",
+        "_sourceExcerpt": "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "acme-sop.txt",
+      "sourceExcerpt": "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+      "confidence": 0.76,
+      "createdAt": "2026-06-30T21:07:27.308Z"
+    },
+    {
+      "id": "bed0d2a8-07ca-4057-8f2a-54acef4e7707",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "type": "workflow",
+      "content": {
+        "workflow_name": "Note: We do not yet have a documented process for handling disputed invoices.",
+        "trigger": "- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each",
+        "steps": [
+          "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+          "- Sipho Dlamini, Finance Assistant: receives supplier invoices by email, checks each",
+          "The Finance Assistant matches the invoice to the delivery note in the Drive folder.",
+          "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+          "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+          "- Invoices without a matching delivery note must be held and queried with the supplier."
+        ],
+        "owner": "Finance Manager",
+        "required_documents": [
+          "Invoice",
+          "Email"
+        ],
+        "decision_points": [
+          "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+          "The Finance Assistant matches the invoice to the delivery note in the Drive folder.",
+          "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+          "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+          "- Invoices without a matching delivery note must be held and queried with the supplier."
+        ],
+        "approval_points": [
+          "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+          "If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.",
+          "If the amount is more than R5,000, it must be approved by the Finance Manager."
+        ],
+        "dependencies": [
+          "invoice against the delivery note, and captures it into QuickBooks.",
+          "- Any payment above R5,000 requires Finance Manager approval."
+        ],
+        "exceptions": [],
+        "risks": [],
+        "bottlenecks": [],
+        "ai_assistance_possible": [],
+        "_sourceDocName": "acme-sop.txt",
+        "_sourceExcerpt": "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+        "_confidence": 0.76,
+        "_supported": true
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "acme-sop.txt",
+      "sourceExcerpt": "- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the",
+      "confidence": 0.76,
+      "createdAt": "2026-06-30T21:07:27.310Z"
+    },
+    {
+      "id": "73ec61ae-d016-4238-9337-1645624c4a6a",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "type": "rule",
+      "content": {
+        "rule_name": "If the amount is more than R5,000, it must be approved by the Finance Manager",
+        "condition": "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+        "action": "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+        "risk_level": "medium",
+        "department": "Finance",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "acme-sop.txt",
+        "_sourceExcerpt": "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+        "_confidence": 0.72,
+        "source": "If the amount is more than R5,000, it must be approved by the Finance Manager."
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "acme-sop.txt",
+      "sourceExcerpt": "If the amount is more than R5,000, it must be approved by the Finance Manager.",
+      "confidence": 0.72,
+      "createdAt": "2026-06-30T21:07:27.312Z"
+    },
+    {
+      "id": "eac76ade-a8a7-4d7c-b1b9-097927c2f66a",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "type": "rule",
+      "content": {
+        "rule_name": "- Any payment above R5,000 requires Finance Manager approval",
+        "condition": "- Any payment above R5,000 requires Finance Manager approval.",
+        "action": "- Any payment above R5,000 requires Finance Manager approval.",
+        "risk_level": "medium",
+        "department": "Finance",
+        "ai_allowed": false,
+        "requires_human_approval": true,
+        "_sourceDocName": "acme-sop.txt",
+        "_sourceExcerpt": "- Any payment above R5,000 requires Finance Manager approval.",
+        "_confidence": 0.72,
+        "source": "- Any payment above R5,000 requires Finance Manager approval."
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "acme-sop.txt",
+      "sourceExcerpt": "- Any payment above R5,000 requires Finance Manager approval.",
+      "confidence": 0.72,
+      "createdAt": "2026-06-30T21:07:27.314Z"
+    },
+    {
+      "id": "d6f8bd11-f182-4e1d-82c0-ff8ad6dbc434",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "type": "rule",
+      "content": {
+        "rule_name": "- Invoices without a matching delivery note must be held and queried with the supplier",
+        "condition": "",
+        "action": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+        "risk_level": "medium",
+        "department": "",
+        "ai_allowed": true,
+        "requires_human_approval": false,
+        "_sourceDocName": "acme-sop.txt",
+        "_sourceExcerpt": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+        "_confidence": 0.72,
+        "source": "- Invoices without a matching delivery note must be held and queried with the supplier."
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": "acme-sop.txt",
+      "sourceExcerpt": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+      "confidence": 0.72,
+      "createdAt": "2026-06-30T21:07:27.316Z"
+    },
+    {
+      "id": "47fa7b74-a8bf-4e64-a90b-f15c5650a2b2",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "type": "risk",
+      "content": {
+        "risk": "Main problems:",
+        "severity": "low",
+        "reason": "Main problems:",
+        "affected_workflow": "Key workflows:",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "Business profile",
+        "_sourceExcerpt": "Main problems:",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-30T21:07:27.318Z"
+    },
+    {
+      "id": "701a8316-575a-4cea-abc4-52c7e1e80de2",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+      "type": "risk",
+      "content": {
+        "risk": "- Invoices without a matching delivery note must be held and queried with the supplier",
+        "severity": "medium",
+        "reason": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+        "affected_workflow": "Key workflows:",
+        "recommendation": "Review and document the control for this risk.",
+        "_sourceDocName": "acme-sop.txt",
+        "_sourceExcerpt": "- Invoices without a matching delivery note must be held and queried with the supplier.",
+        "_confidence": 0.68
+      },
+      "sourceDocumentId": null,
+      "sourceDocumentName": null,
+      "sourceExcerpt": null,
+      "confidence": 0.68,
+      "createdAt": "2026-06-30T21:07:27.319Z"
+    }
+  ],
   "workflows": [],
   "exceptions": [],
   "conversations": [],
   "actions": [],
-  "activity": []
+  "activity": [
+    {
+      "id": "c4e4e436-2e78-4bca-9d3a-fd75ed80d5ee",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "type": "org_created",
+      "description": "Organization \"Acme Logistics\" created",
+      "meta": {},
+      "createdAt": "2026-06-30T21:07:20.155Z"
+    },
+    {
+      "id": "8f2182b0-8e3f-4b35-ab7c-7d0a211a1f22",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "type": "document_uploaded",
+      "description": "Uploaded \"acme-sop.txt\"",
+      "meta": {
+        "docId": "3bc56790-4e7a-44f4-8228-b0a3c084fd6b"
+      },
+      "createdAt": "2026-06-30T21:07:20.330Z"
+    },
+    {
+      "id": "0f75fbcb-5d58-4ca0-9aba-619c88cf57e2",
+      "orgId": "ae79f875-cfe4-422c-9750-e3ad8748a156",
+      "type": "engine_intake_complete",
+      "description": "Knowledge Map built",
+      "meta": {
+        "mapId": "2478f4e4-b1cb-45c8-9b01-eab578507ec3",
+        "version": 1,
+        "docCount": 1
+      },
+      "createdAt": "2026-06-30T21:07:27.323Z"
+    }
+  ]
 }
