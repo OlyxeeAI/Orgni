@@ -746,7 +746,7 @@ export function App() {
         <div className="ios-brand">
           <span className="ios-logo"><img src={orgniLogo} alt="Orgni logo" /></span>
           <span className="ios-brand-text">
-            <strong>Orgni</strong>
+            <strong>Orgni<span className="ios-beta">BETA</span></strong>
             <small>{currentOrg?.name || 'Operating model'}</small>
           </span>
         </div>
