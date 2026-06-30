@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -185,11 +185,24 @@ function renderCell(value: Cell) {
 export default function Pricing() {
   const { open } = useWaitlist();
   const [billing, setBilling] = useState<Billing>("monthly");
+  const faqJsonLd = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    }),
+    [],
+  );
   useSeo({
     title: "Pricing - Orgni",
     description:
       "Simple, transparent Orgni pricing. Start free with the Developer plan and scale to Production when you're ready to put business context into execution.",
     path: "/pricing",
+    jsonLd: faqJsonLd,
   });
 
   return (
