@@ -153,6 +153,21 @@ export default function Docs() {
                   </ul>
                 </div>
               ))}
+              <div>
+                <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-3">
+                  Reference
+                </div>
+                <ul className="space-y-1">
+                  <li>
+                    <Link
+                      href="/api-reference"
+                      className="block text-sm py-1.5 pl-3 border-l-2 border-transparent text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+                    >
+                      API
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </nav>
           </aside>
 
