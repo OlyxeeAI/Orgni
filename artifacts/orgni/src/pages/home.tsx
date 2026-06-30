@@ -333,47 +333,47 @@ export default function Home() {
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
                 From static knowledge to live operational context.
               </h2>
+              <p className="text-lg text-white/60 mt-4">
+                Every piece of scattered, static knowledge becomes connected, living context your team and your AI can act on.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-              {/* Static */}
-              <Card className="p-6 md:p-8 rounded-sm border-white/10 bg-white/[0.03] text-white">
-                <div className="font-mono text-xs font-bold uppercase tracking-widest text-white/50 mb-6">
-                  Static knowledge
-                </div>
-                <ul className="space-y-4">
-                  {comparison.static.map((row) => (
-                    <li key={row} className="flex items-start gap-3 text-white/55">
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm bg-white/5 border border-white/10">
-                        <X className="h-3 w-3 text-white/40" />
-                      </span>
-                      <span className="text-sm md:text-base leading-relaxed">{row}</span>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-
-              {/* Live */}
-              <Card className="p-6 md:p-8 rounded-sm border-white/10 bg-white/[0.05] text-white border-t-4 border-t-primary">
-                <div className="font-mono text-xs font-bold uppercase tracking-widest text-primary mb-6">
-                  Live business context
-                </div>
-                <ul className="space-y-4">
-                  {comparison.live.map((row) => (
-                    <li key={row} className="flex items-start gap-3 text-white/85">
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm bg-primary/15 border border-primary/40">
-                        <Check className="h-3 w-3 text-primary" />
-                      </span>
-                      <span className="text-sm md:text-base leading-relaxed">{row}</span>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
+            {/* Paired before -> after rows */}
+            <div className="space-y-3 md:space-y-4">
+              <div className="hidden md:grid grid-cols-[1fr_auto_1fr] gap-4 px-5">
+                <div className="font-mono text-[11px] font-bold uppercase tracking-widest text-white/40">Static knowledge</div>
+                <div className="w-4"></div>
+                <div className="font-mono text-[11px] font-bold uppercase tracking-widest text-primary">Live business context</div>
+              </div>
+              {comparison.static.map((row, i) => (
+                <motion.div
+                  key={row}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                  className="group grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-3 md:gap-4 rounded-sm border border-white/10 bg-white/[0.02] p-4 md:p-5 hover:border-primary/30 hover:bg-white/[0.04] transition-colors"
+                >
+                  <div className="flex items-center gap-3 text-white/45">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm bg-white/5 border border-white/10">
+                      <X className="h-3 w-3 text-white/40" />
+                    </span>
+                    <span className="text-sm md:text-base leading-snug">{row}</span>
+                  </div>
+                  <ArrowRight className="h-4 w-4 mx-auto rotate-90 md:rotate-0 text-white/25 group-hover:text-primary transition-colors shrink-0" />
+                  <div className="flex items-center gap-3 text-white">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm bg-primary/15 border border-primary/40">
+                      <Check className="h-3 w-3 text-primary" />
+                    </span>
+                    <span className="text-sm md:text-base font-medium leading-snug">{comparison.live[i]}</span>
+                  </div>
+                </motion.div>
+              ))}
             </div>
 
             {/* Capabilities */}
             <div className="max-w-2xl mt-20 md:mt-28 mb-10 md:mb-12 scroll-mt-20" id="modules">
-              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">02</span> / CAPABILITIES</div>
+              <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">03</span> / CAPABILITIES</div>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
                 Orgni is one product. These are its capabilities.
               </h2>
@@ -393,9 +393,10 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: i * 0.05 }}
                   >
-                    <Card className="group relative h-full p-6 md:p-8 rounded-sm border-white/10 bg-white/5 text-white hover:bg-white/[0.07] hover:border-primary/30 transition-all flex items-start gap-5 overflow-hidden">
+                    <Card className="group relative h-full p-6 md:p-8 rounded-sm border-white/10 bg-white/[0.03] text-white hover:bg-white/[0.06] hover:border-primary/30 transition-all flex items-start gap-5 overflow-hidden">
+                      <span className="absolute top-0 left-0 h-px w-0 bg-primary transition-all duration-500 group-hover:w-full"></span>
                       <span aria-hidden="true" className="pointer-events-none absolute -bottom-5 right-1 font-mono text-7xl font-bold text-white/[0.04] group-hover:text-primary/10 transition-colors select-none">0{i + 1}</span>
-                      <div className="h-11 w-11 shrink-0 bg-primary/10 flex items-center justify-center rounded-sm group-hover:bg-primary/20 transition-colors">
+                      <div className="h-12 w-12 shrink-0 bg-primary/10 flex items-center justify-center rounded-sm group-hover:bg-primary/20 transition-colors">
                         <Icon className="h-5 w-5 text-primary" />
                       </div>
                       <div className="relative">
@@ -416,7 +417,7 @@ export default function Home() {
           <div className="container max-w-screen-xl px-4 md:px-8 mx-auto relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-10 md:gap-16 items-center">
               <div className="max-w-xl">
-                <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">03</span> / WHY NOW</div>
+                <div className="font-mono text-xs font-bold text-white/50 mb-4"><span className="text-primary">04</span> / WHY NOW</div>
                 <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-6">
                   Intelligence is getting stronger. <span className="text-primary">Context</span> is the bottleneck.
                 </h2>
