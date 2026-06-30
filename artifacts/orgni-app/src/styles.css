@@ -92,7 +92,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: var(--bg-accent), var(--bg);
+  background: #ffffff;
   background-attachment: fixed;
   font-size: 15px;
   line-height: 1.5;
@@ -2283,10 +2283,8 @@ label {
   flex-direction: column;
   gap: 22px;
   padding: 24px 16px 16px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.82));
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border-right: 1px solid var(--line);
+  background: #ffffff;
+  border-right: none;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -2478,7 +2476,7 @@ main {
     gap: 14px;
     padding: 14px;
     border-right: none;
-    border-bottom: 1px solid var(--line);
+    border-bottom: none;
     overflow: visible;
   }
 
