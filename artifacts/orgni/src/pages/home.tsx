@@ -187,16 +187,6 @@ export default function Home() {
                 Everything your business knows, <br className="hidden md:block" /> finally in one place.
               </motion.h1>
 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.15 }}
-                className="relative z-20 text-lg md:text-xl text-white/70 max-w-2xl leading-relaxed"
-              >
-                Orgni turns your scattered docs, tools, and decisions into one live
-                source of truth your team — and your AI — can actually use.
-              </motion.p>
-
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -219,15 +209,6 @@ export default function Home() {
                   Explore Orgni
                 </Button>
               </motion.div>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="relative z-20 font-mono text-xs md:text-sm text-white/40 max-w-xl"
-              >
-                Built by Olyxee, a research and infrastructure company for operational intelligence.
-              </motion.p>
 
               {/* Earth video - blended into the black background, fades on scroll.
                   Sits behind the heading (z-0 vs z-20) so it never obstructs the text. */}
