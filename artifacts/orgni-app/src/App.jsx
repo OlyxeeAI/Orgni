@@ -387,24 +387,45 @@ export function App() {
     toast.timer = window.setTimeout(() => setNotice(null), 4200);
   }
 
-  async function createOrg(event) {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const body = {
-      name: form.get('name').trim(),
-      businessType: form.get('businessType').trim(),
-      departments: fromLines(form.get('departments') || ''),
-      keyWorkflows: fromLines(form.get('keyWorkflows') || ''),
-      currentTools: fromLines(form.get('currentTools') || ''),
-      mainProblems: fromLines(form.get('mainProblems') || '')
-    };
+  async function createOrg({ files, name } = {}) {
+    const list = files ? [...files] : [];
+    const derivedName =
+      (name || '').trim() ||
+      (list[0]?.name ? list[0].name.replace(/\.[^./\\]+$/, '').trim() : '') ||
+      'My business';
     setBusy('Creating business');
     try {
-      const data = await api('/api/orgs', { method: 'POST', body: JSON.stringify(body) });
-      setOrgs((items) => [...items, data.organization]);
-      setOrgId(data.organization.id);
+      const data = await api('/api/orgs', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: derivedName,
+          businessType: '',
+          departments: [],
+          keyWorkflows: [],
+          currentTools: [],
+          mainProblems: []
+        })
+      });
+      const newOrg = data.organization;
+      setOrgs((items) => [...items, newOrg]);
+      setOrgId(newOrg.id);
       setShowCreate(false);
-      toast('Business created', 'success');
+
+      if (list.length) {
+        setBusy('Uploading your document');
+        const body = new FormData();
+        list.forEach((file) => body.append('files', file));
+        try {
+          const uploaded = await api(`/api/orgs/${newOrg.id}/documents`, { method: 'POST', body });
+          toast(uploaded.message || 'Document uploaded', uploaded.rejected?.length ? 'warn' : 'success');
+        } catch (uploadError) {
+          toast(uploadError.message, 'danger');
+        }
+        await refreshOrgData(newOrg.id);
+        setView('documents');
+      } else {
+        toast('Business created', 'success');
+      }
     } catch (error) {
       toast(error.message, 'danger');
     } finally {
@@ -2594,20 +2615,80 @@ function Profile({ profile, setProfile, onSave, currentOrg, onLogout }) {
 }
 
 function CreateOrgModal({ onClose, onSubmit }) {
+  const [files, setFiles] = useState([]);
+  const [name, setName] = useState('');
+  const [dragging, setDragging] = useState(false);
+
+  function addFiles(fileList) {
+    const incoming = [...(fileList || [])];
+    if (!incoming.length) return;
+    setFiles((current) => {
+      const seen = new Set(current.map((f) => `${f.name}:${f.size}`));
+      return [...current, ...incoming.filter((f) => !seen.has(`${f.name}:${f.size}`))];
+    });
+  }
+
+  function removeFile(index) {
+    setFiles((current) => current.filter((_, i) => i !== index));
+  }
+
+  function handleDrop(event) {
+    event.preventDefault();
+    setDragging(false);
+    addFiles(event.dataTransfer?.files);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (!files.length) return;
+    onSubmit({ files, name });
+  }
+
   return (
     <div className="modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <form className="modal" onSubmit={onSubmit}>
+      <form className="modal" onSubmit={handleSubmit}>
         <div className="modal-head">
-          <h2>New business</h2>
+          <h2>Add your business</h2>
           <button type="button" className="icon-btn" onClick={onClose} aria-label="Close"><X size={16} /></button>
         </div>
-        <label>Company name<input name="name" required minLength={2} autoFocus /></label>
-        <label>Business type<input name="businessType" required minLength={2} placeholder="Logistics, retail, finance..." /></label>
-        <label>Departments<textarea name="departments" placeholder="One per line" /></label>
-        <label>Key workflows<textarea name="keyWorkflows" placeholder="One per line" /></label>
-        <label>Current tools<textarea name="currentTools" placeholder="One per line" /></label>
-        <label>Main problems<textarea name="mainProblems" placeholder="One per line" /></label>
-        <button className="primary"><Plus size={16} /> Create business</button>
+        <p className="modal-intro">
+          Upload any document about your business — a handbook, process notes, an org chart, anything. Orgni reads it and builds your operating model. No long forms.
+        </p>
+
+        <label
+          className={`ios-dropzone ${dragging ? 'is-dragging' : ''}`}
+          onDragOver={(event) => { event.preventDefault(); if (!dragging) setDragging(true); }}
+          onDragLeave={(event) => { event.preventDefault(); if (!event.currentTarget.contains(event.relatedTarget)) setDragging(false); }}
+          onDrop={handleDrop}
+        >
+          <span className="ios-dropzone-icon"><UploadCloud size={26} /></span>
+          <span className="ios-dropzone-text">
+            <strong>{dragging ? 'Drop your document to upload' : 'Upload a document'}</strong>
+            <span>Drag &amp; drop or click to browse · .txt, .md, .csv, .json, .pdf, .docx</span>
+          </span>
+          <input type="file" multiple onChange={(event) => { addFiles(event.target.files); event.target.value = ''; }} />
+        </label>
+
+        {files.length > 0 && (
+          <div className="ios-list-group">
+            {files.map((file, index) => (
+              <div className="ios-cell ios-cell-doc" key={`${file.name}-${index}`}>
+                <span className="ios-doc-icon"><FileText size={18} /></span>
+                <span className="ios-cell-text">
+                  <strong>{file.name}</strong>
+                  <span>{formatBytes(file.size)}</span>
+                </span>
+                <button type="button" className="icon-btn danger" title="Remove" onClick={() => removeFile(index)}><Trash2 size={16} /></button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <label className="modal-name-field">Business name <span className="modal-optional">(optional)</span>
+          <input value={name} onChange={(event) => setName(event.target.value)} placeholder="We'll use the document name if left blank" />
+        </label>
+
+        <button className="primary" disabled={!files.length}><Plus size={16} /> Create business</button>
       </form>
     </div>
   );

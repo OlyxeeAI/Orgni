@@ -2186,6 +2186,23 @@ label {
   justify-content: space-between;
 }
 
+.modal-intro {
+  margin: 10px 0 16px;
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.modal-name-field {
+  display: block;
+  margin-top: 16px;
+}
+
+.modal-optional {
+  color: var(--muted);
+  font-weight: 400;
+}
+
 .toast,
 .busy {
   position: fixed;
