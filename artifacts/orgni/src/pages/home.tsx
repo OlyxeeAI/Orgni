@@ -124,9 +124,9 @@ export default function Home() {
     offset: ["start start", "end start"],
   });
   const earthOpacity = useTransform(scrollYProgress, [0, 0.85, 1], [1, 1, 0.6]);
-  // Video starts zoomed in (only partly visible in the hero) and eases back to
-  // its natural size as the user scrolls down through the hero section.
-  const videoScale = useTransform(scrollYProgress, [0, 0.6], [1.65, 1]);
+  // The whole video frame starts enlarged (full globe visible, just bigger) and
+  // eases back to its natural size as the user scrolls down through the hero.
+  const videoScale = useTransform(scrollYProgress, [0, 0.6], [1.3, 1]);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const scrollToId = (id: string) => {
@@ -227,15 +227,16 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.2, delay: 0.4 }}
-                className="w-full mt-16 md:mt-24 -mb-12 sm:-mb-16 md:-mb-24 relative z-0 aspect-square sm:aspect-video md:aspect-[16/9] overflow-hidden"
+                style={{ scale: videoScale, transformOrigin: "center center" }}
+                className="w-full mt-16 md:mt-24 -mb-12 sm:-mb-16 md:-mb-24 relative z-0 aspect-square sm:aspect-video md:aspect-[16/9] will-change-transform"
               >
                 <motion.div
-                  style={{ opacity: earthOpacity, scale: videoScale, transformOrigin: "center center" }}
-                  className="absolute inset-0 will-change-transform"
+                  style={{ opacity: earthOpacity }}
+                  className="absolute inset-0"
                 >
                   <video
                     ref={videoRef}
-                    className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+                    className="absolute inset-0 h-full w-full object-contain pointer-events-none"
                     src={`${import.meta.env.BASE_URL}hero.mp4`}
                     autoPlay
                     muted
