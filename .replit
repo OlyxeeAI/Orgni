@@ -23,6 +23,6 @@ timeoutMs = 20000
 
 [userenv.shared]
 AI_PROVIDER = "grok"
-AI_MODEL = "grok-2-latest"
+AI_MODEL = "grok-3"
 ORGNI_USE_LLM_EXTRACTION = "true"
 AI_BASE_URL = "https://api.x.ai"

@@ -13,6 +13,48 @@
       "knowledgeStatus": "ready",
       "createdAt": "2026-06-30T21:07:20.154Z",
       "updatedAt": "2026-06-30T21:07:27.322Z"
+    },
+    {
+      "id": "3210a28d-b96a-4600-8b5b-bd6652f93c5a",
+      "name": "Acme Logistics",
+      "businessType": "",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "empty",
+      "createdAt": "2026-06-30T21:11:02.517Z",
+      "updatedAt": "2026-06-30T21:11:02.517Z"
+    },
+    {
+      "id": "6781e5d1-cbc2-44a2-b96d-8c0118025e5a",
+      "name": "Acme Logistics",
+      "businessType": "",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "empty",
+      "createdAt": "2026-06-30T21:11:11.284Z",
+      "updatedAt": "2026-06-30T21:11:11.284Z"
+    },
+    {
+      "id": "ab7aaba4-7673-4b4f-b778-043dba02dc1e",
+      "name": "Acme Logistics",
+      "businessType": "",
+      "departments": [],
+      "roles": [],
+      "keyWorkflows": [],
+      "currentTools": [],
+      "mainProblems": [],
+      "status": "active",
+      "knowledgeStatus": "ready",
+      "createdAt": "2026-06-30T21:11:23.387Z",
+      "updatedAt": "2026-06-30T21:11:48.984Z"
     }
   ],
   "documents": [
@@ -31,6 +73,22 @@
       "uploadedAt": "2026-06-30T21:07:20.324Z",
       "parsedAt": "2026-06-30T21:07:20.325Z",
       "updatedAt": "2026-06-30T21:07:20.325Z"
+    },
+    {
+      "id": "7c6ea31d-e1ec-4dca-85cf-56f52e3f8c95",
+      "orgId": "ab7aaba4-7673-4b4f-b778-043dba02dc1e",
+      "filename": "acme-sop.txt",
+      "originalName": "acme-sop.txt",
+      "fileType": ".txt",
+      "filePath": null,
+      "fileSize": 1155,
+      "content": "Acme Logistics - Standard Operating Procedures\n\nCompany Overview:\nAcme Logistics is a third-party logistics (3PL) provider based in Johannesburg. We deliver goods for retail clients and handle supplier invoices daily.\n\nFinance Department\n- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the monthly supplier reconciliation. She is the system of record owner for QuickBooks.\n- Sipho Dlamini, Finance Assistant: receives supplier invoices by email (Gmail), checks each invoice against the delivery note, and captures it into QuickBooks.\n\nInvoice Approval Process\n1. Supplier emails an invoice to accounts@acme.co.za.\n2. The Finance Assistant matches the invoice to the delivery note in the Google Drive folder.\n3. If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.\n4. If the amount is more than R5,000, it must be approved by the Finance Manager.\n\nBusiness Rules\n- Any payment above R5,000 requires Finance Manager approval.\n- Invoices without a matching delivery note must be held and queried with the supplier.\n\nNote: We do not yet have a documented process for handling disputed invoices.",
+      "wordCount": 176,
+      "status": "parsed",
+      "parseError": null,
+      "uploadedAt": "2026-06-30T21:11:48.734Z",
+      "parsedAt": "2026-06-30T21:11:48.735Z",
+      "updatedAt": "2026-06-30T21:11:48.735Z"
     }
   ],
   "chunks": [
@@ -45,6 +103,18 @@
       "section": null,
       "charCount": 1221,
       "createdAt": "2026-06-30T21:07:20.326Z"
+    },
+    {
+      "id": "c1ead161-f6c9-4546-a6a5-e99a784ce71c",
+      "orgId": "ab7aaba4-7673-4b4f-b778-043dba02dc1e",
+      "documentId": "7c6ea31d-e1ec-4dca-85cf-56f52e3f8c95",
+      "documentName": "acme-sop.txt",
+      "index": 0,
+      "text": "Acme Logistics - Standard Operating Procedures\n\nCompany Overview:\nAcme Logistics is a third-party logistics (3PL) provider based in Johannesburg. We deliver goods for retail clients and handle supplier invoices daily.\n\nFinance Department\n- Thandi Mokoena, Finance Manager: approves all payments over R5,000 and owns the monthly supplier reconciliation. She is the system of record owner for QuickBooks.\n- Sipho Dlamini, Finance Assistant: receives supplier invoices by email (Gmail), checks each invoice against the delivery note, and captures it into QuickBooks.\n\nInvoice Approval Process\n1. Supplier emails an invoice to accounts@acme.co.za.\n2. The Finance Assistant matches the invoice to the delivery note in the Google Drive folder.\n3. If the amount is R5,000 or less, the Finance Assistant approves and schedules payment.\n4. If the amount is more than R5,000, it must be approved by the Finance Manager.\n\nBusiness Rules\n- Any payment above R5,000 requires Finance Manager approval.\n- Invoices without a matching delivery note must be held and queried with the supplier.\n\nNote: We do not yet have a documented process for handling disputed invoices.",
+      "page": null,
+      "section": null,
+      "charCount": 1154,
+      "createdAt": "2026-06-30T21:11:48.737Z"
     }
   ],
   "businessMaps": [],
@@ -433,6 +503,70 @@
       ],
       "generatedAt": "2026-06-30T21:07:27.301Z",
       "updatedAt": "2026-06-30T21:07:27.301Z"
+    },
+    {
+      "id": "5694c64b-1c24-4c72-9fd8-9ebf4bcac6b5",
+      "orgId": "ab7aaba4-7673-4b4f-b778-043dba02dc1e",
+      "version": 1,
+      "status": "archived",
+      "businessSummary": {},
+      "departments": [],
+      "roles": [],
+      "workflows": [],
+      "rules": [],
+      "approvals": [],
+      "exceptions": [],
+      "risks": [],
+      "bottlenecks": [],
+      "gaps": [],
+      "dependencies": [],
+      "aiOpportunities": [],
+      "readiness": [],
+      "blueprint": {},
+      "missingInformation": [],
+      "overallConfidence": 0,
+      "overallRiskScore": 0,
+      "sourceDocuments": [
+        {
+          "id": "7c6ea31d-e1ec-4dca-85cf-56f52e3f8c95",
+          "name": "acme-sop.txt"
+        }
+      ],
+      "recommendedNextSteps": [],
+      "generatedAt": "2026-06-30T21:11:23.853Z",
+      "updatedAt": "2026-06-30T21:11:48.983Z"
+    },
+    {
+      "id": "8381a3cf-7dc8-4ff6-ac97-9f483915175e",
+      "orgId": "ab7aaba4-7673-4b4f-b778-043dba02dc1e",
+      "version": 2,
+      "status": "active",
+      "businessSummary": {},
+      "departments": [],
+      "roles": [],
+      "workflows": [],
+      "rules": [],
+      "approvals": [],
+      "exceptions": [],
+      "risks": [],
+      "bottlenecks": [],
+      "gaps": [],
+      "dependencies": [],
+      "aiOpportunities": [],
+      "readiness": [],
+      "blueprint": {},
+      "missingInformation": [],
+      "overallConfidence": 0,
+      "overallRiskScore": 0,
+      "sourceDocuments": [
+        {
+          "id": "7c6ea31d-e1ec-4dca-85cf-56f52e3f8c95",
+          "name": "acme-sop.txt"
+        }
+      ],
+      "recommendedNextSteps": [],
+      "generatedAt": "2026-06-30T21:11:48.984Z",
+      "updatedAt": "2026-06-30T21:11:48.984Z"
     }
   ],
   "validations": [
@@ -925,6 +1059,75 @@
         "docCount": 1
       },
       "createdAt": "2026-06-30T21:07:27.323Z"
+    },
+    {
+      "id": "83268a14-c639-4142-b5b6-50c713262bfb",
+      "orgId": "3210a28d-b96a-4600-8b5b-bd6652f93c5a",
+      "type": "org_created",
+      "description": "Organization \"Acme Logistics\" created",
+      "meta": {},
+      "createdAt": "2026-06-30T21:11:02.518Z"
+    },
+    {
+      "id": "0b3b3316-32eb-4cb8-b6f3-1df9270515f4",
+      "orgId": "6781e5d1-cbc2-44a2-b96d-8c0118025e5a",
+      "type": "org_created",
+      "description": "Organization \"Acme Logistics\" created",
+      "meta": {},
+      "createdAt": "2026-06-30T21:11:11.285Z"
+    },
+    {
+      "id": "1495214c-0ac3-4320-8577-42d7dc415cb4",
+      "orgId": "ab7aaba4-7673-4b4f-b778-043dba02dc1e",
+      "type": "org_created",
+      "description": "Organization \"Acme Logistics\" created",
+      "meta": {},
+      "createdAt": "2026-06-30T21:11:23.388Z"
+    },
+    {
+      "id": "48a3c2f9-87cd-4fa1-b50f-610a6c9a291d",
+      "orgId": "ab7aaba4-7673-4b4f-b778-043dba02dc1e",
+      "type": "engine_intake_complete",
+      "description": "Knowledge Map built",
+      "meta": {
+        "mapId": "5694c64b-1c24-4c72-9fd8-9ebf4bcac6b5",
+        "version": 1,
+        "docCount": 0
+      },
+      "createdAt": "2026-06-30T21:11:23.855Z"
+    },
+    {
+      "id": "17a75c7f-d874-4582-86aa-3235faa63734",
+      "orgId": "ab7aaba4-7673-4b4f-b778-043dba02dc1e",
+      "type": "document_uploaded",
+      "description": "Uploaded \"acme-sop.txt\"",
+      "meta": {
+        "docId": "7c6ea31d-e1ec-4dca-85cf-56f52e3f8c95"
+      },
+      "createdAt": "2026-06-30T21:11:48.738Z"
+    },
+    {
+      "id": "7619392d-424d-40be-9f72-f0ee09fee347",
+      "orgId": "ab7aaba4-7673-4b4f-b778-043dba02dc1e",
+      "type": "engine_incremental_update",
+      "description": "Knowledge updated from \"acme-sop.txt\"",
+      "meta": {
+        "docId": "7c6ea31d-e1ec-4dca-85cf-56f52e3f8c95",
+        "mapId": "5694c64b-1c24-4c72-9fd8-9ebf4bcac6b5"
+      },
+      "createdAt": "2026-06-30T21:11:48.860Z"
+    },
+    {
+      "id": "6f49dff1-dc76-4a8d-bad3-0b8b122d0316",
+      "orgId": "ab7aaba4-7673-4b4f-b778-043dba02dc1e",
+      "type": "engine_intake_complete",
+      "description": "Knowledge Map built",
+      "meta": {
+        "mapId": "8381a3cf-7dc8-4ff6-ac97-9f483915175e",
+        "version": 2,
+        "docCount": 1
+      },
+      "createdAt": "2026-06-30T21:11:48.986Z"
     }
   ]
 }
